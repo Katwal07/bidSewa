@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/widgets/button/reactive_button.dart';
+import 'package:nepa_bid/core/config/validators/validator.dart';
+import 'package:nepa_bid/data/auth/model/signup_req_params_for_auctioneer.dart';
+import 'package:nepa_bid/domain/auth/usecases/signup_for_auctioneer.dart';
 import 'package:nepa_bid/presentation/auth/bloc/image_picker/image_picker_cubit.dart';
 
 import '../../../common/bloc/button_bloc/button_cubit.dart';
@@ -21,8 +24,8 @@ import '../../../domain/auth/usecases/signup.dart';
 import '../../../service_locator.dart';
 import '../../home/pages/home.dart';
 import '../bloc/image_picker/image_picker_state.dart';
-import '../bloc/signup/signup_cubit.dart';
-import '../bloc/signup/signup_state.dart';
+import '../bloc/checkbox/checkbox_cubit.dart';
+import '../bloc/checkbox/checkbox_state.dart';
 
 part '../pages/login_or_signup/choose_auth.dart';
 part '../pages/login/login.dart';

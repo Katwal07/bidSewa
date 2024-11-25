@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:nepa_bid/data/auth/model/signup_req_params_for_auctioneer.dart';
 import 'package:nepa_bid/data/auth/source/auth_local_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +33,20 @@ class AuthRepositoryImpl extends AuthRepository {
       Response response = data;
       return Right(response);
     });
+  }
+
+    @override
+  Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneer params) async{
+    Either result = await sl<AuthApiService>().signupForAuctioneer(params);
+    return result.fold(
+      (error){
+        return Left(error);
+      }, 
+      (data){
+        Response response = data;
+        return Right(response);
+      }
+    );
   }
 
   @override

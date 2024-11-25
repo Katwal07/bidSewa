@@ -8,6 +8,7 @@ import 'package:nepa_bid/domain/auth/usecases/is_logged_in.dart';
 import 'package:nepa_bid/domain/auth/usecases/logged_out.dart';
 import 'package:nepa_bid/domain/auth/usecases/signin.dart';
 import 'package:nepa_bid/domain/auth/usecases/signup.dart';
+import 'package:nepa_bid/domain/auth/usecases/signup_for_auctioneer.dart';
 
 final sl = GetIt.instance;
 
@@ -27,4 +28,5 @@ void setupServiceLocator() {
   sl.registerSingleton<SignUpUseCase>(SignUpUseCase());
   sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
   sl.registerSingleton<LoggedOut>(LoggedOut());
+  sl.registerSingleton<SignupUseCaseForAuctioneer>(SignupUseCaseForAuctioneer());
 }

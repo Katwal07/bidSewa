@@ -8,12 +8,12 @@ class SignupScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => SignupCubit(),
+          create: (context) => CheckBoxCubit(),
         ),
         BlocProvider(
           create: (context) => ButtonCubit(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => ImagePickerCubit(),
         ),
       ],
@@ -23,8 +23,13 @@ class SignupScreen extends StatelessWidget {
             const CircularProgressIndicator();
           }
           if (state is ButtonLoaded) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => LoginScreen()));
+            if (state.success) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
+            } else {
+              var snackBar = SnackBar(content: Text(state.message));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
           }
           if (state is ButtonFailure) {
             var snackBar = SnackBar(content: Text(state.message));
@@ -49,7 +54,7 @@ class SignupScreen extends StatelessWidget {
                     ),
 
                     /// Signup Form
-                    const SignupForm(),
+                    SignupForm(),
                   ],
                 ),
               ),

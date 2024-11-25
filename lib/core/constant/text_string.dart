@@ -42,4 +42,6 @@ class AppStrings{
   static const String imePayNo = 'ImePay Number';
   static const String khaltiNo = 'Khalti Number';
   static const String esewaNo = 'Esewa Number';
+  static const String selectImage = "Select Image";
+  static const String pleaseSelectProfileImage = "Please select a profile image";
 }

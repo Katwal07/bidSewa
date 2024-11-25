@@ -1,13 +1,8 @@
 part of '../pages/auth_imports.dart';
 
-class SignupForm extends StatefulWidget {
-  const SignupForm({super.key});
+class SignupForm extends StatelessWidget {
+  SignupForm({super.key});
 
-  @override
-  State<SignupForm> createState() => _SignupFormState();
-}
-
-class _SignupFormState extends State<SignupForm> {
   final TextEditingController _fullNameCon = TextEditingController();
 
   final TextEditingController _emailCon = TextEditingController();
@@ -16,10 +11,30 @@ class _SignupFormState extends State<SignupForm> {
 
   final TextEditingController _phoneNumberCon = TextEditingController();
 
+  final TextEditingController _bankAccountNameCon = TextEditingController();
+
+  final TextEditingController _bankAccountNumberCon = TextEditingController();
+
+  final TextEditingController _bankNameCon = TextEditingController();
+
+  final TextEditingController _swiftCodeCon = TextEditingController();
+
+  final TextEditingController _addressCon = TextEditingController();
+
+  final TextEditingController _payPalEmailCon = TextEditingController();
+
+  final TextEditingController _imePayNoCon = TextEditingController();
+
+  final TextEditingController _khaltiCon = TextEditingController();
+
+  final TextEditingController _esewaCon = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-    return BlocBuilder<SignupCubit, SignupState>(
+    return BlocBuilder<CheckBoxCubit, CheckBoxState>(
       builder: (context, state) {
         return SingleChildScrollView(
           child: Container(
@@ -36,173 +51,178 @@ class _SignupFormState extends State<SignupForm> {
                 ComponentsSizes.defaultSpace,
               ),
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //! Bidder
-                    if (state.checkbox1) ...[
-                      Column(
-                        children: [
-                          /// Submit Your Details
-                          _submitYourDetailsText(context),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields * 2,
-                          ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //! Bidder
+                      if (state.checkbox1) ...[
+                        Column(
+                          children: [
+                            /// Submit Your Details
+                            _submitYourDetailsText(context),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields * 2,
+                            ),
 
-                          /// FullName TextField
-                          _fullNameTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
+                            /// FullName TextField
+                            _fullNameTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
 
-                          /// Email TextField
-                          _emailTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
+                            /// Email TextField
+                            _emailTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
 
-                          /// Password TextField
-                          _passwordTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
+                            /// Password TextField
+                            _passwordTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
 
-                          /// PhoneNumber TextField
-                          _phoneNumberTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
+                            /// PhoneNumber TextField
+                            _phoneNumberTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
 
-                          /// Upload ProfileImage
-                          _uploadProfileImage(context),
+                            /// Upload ProfileImage
+                            _uploadProfileImage(context),
 
-                          /// Select Role
-                          _selectRole(context),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
+                            /// Select Role
+                            _selectRole(context),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
 
-                          /// Signup Button
-                          _signupButton(context),
-                          const SizedBox(
-                            height: ComponentsSizes.md,
-                          ),
+                            /// Signup Button
+                            _signupButton(context),
 
-                          /// Don't Have an Account
-                          _dontHaveAccountText(context),
-                        ],
-                      ),
+                            const SizedBox(
+                              height: ComponentsSizes.md,
+                            ),
+
+                            /// Don't Have an Account
+                            _dontHaveAccountText(context),
+                          ],
+                        ),
+                      ],
+
+                      //! Auctioneer
+                      if (state.checkbox2) ...[
+                        Column(
+                          children: [
+                            /// Submit Your Details
+                            _submitYourDetailsText(context),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields * 2,
+                            ),
+
+                            /// FullName TextField
+                            _fullNameTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Email TextField
+                            _emailTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Password TextField
+                            _passwordTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// PhoneNumber TextField
+                            _phoneNumberTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// BankAccount Holder TextField
+                            _bankAccountHolderNameTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// BankAccount Number TextField
+                            _bankAccountNumberTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Bank Name TextField
+                            _bankNameTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Bank IdentifierCode TextField
+                            _bankIdentifierCodeTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// UserAddress TextField
+                            _userAddressTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// PayPal Email TextField
+                            _payPalEmailTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// ImePay Number TextField
+                            _imePayNumberTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Khalti Number TextField
+                            _khaltiNumberTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Esewa Number TextField
+                            _eSewaNumberTextField(),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Upload Profile Image
+                            _uploadProfileImage(context),
+
+                            /// SelectRole
+                            _selectRole(context),
+                            SizedBox(
+                              height: ComponentsSizes.spaceBtwInputFields,
+                            ),
+
+                            /// Signup Button
+                            _signupButtonForAuctioneer(context),
+
+                            const SizedBox(
+                              height: ComponentsSizes.md,
+                            ),
+
+                            /// Don't Have an Account
+                            _dontHaveAccountText(context),
+                          ],
+                        ),
+                      ],
                     ],
-
-                    //! Auctioneer
-                    if (state.checkbox2) ...[
-                      Column(
-                        children: [
-                          /// Submit Your Details
-                          _submitYourDetailsText(context),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields * 2,
-                          ),
-
-                          /// FullName TextField
-                          _fullNameTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Email TextField
-                          _emailTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Password TextField
-                          _passwordTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// PhoneNumber TextField
-                          _phoneNumberTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// BankAccount Holder TextField
-                          _bankAccountHolderNameTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// BankAccount Number TextField
-                          _bankAccountNumberTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Bank Name TextField
-                          _bankNameTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Bank IdentifierCode TextField
-                          _bankIdentifierCodeTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// UserAddress TextField
-                          _userAddressTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// PayPal Email TextField
-                          _payPalEmailTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// ImePay Number TextField
-                          _imePayNumberTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Khalti Number TextField
-                          _khaltiNumberTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Esewa Number TextField
-                          _eSewaNumberTextField(),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Upload Profile Image
-                          _uploadProfileImage(context),
-
-                          /// SelectRole
-                          _selectRole(context),
-                          SizedBox(
-                            height: ComponentsSizes.spaceBtwInputFields,
-                          ),
-
-                          /// Signup Button
-                          _signupButton(context),
-                          const SizedBox(
-                            height: ComponentsSizes.md,
-                          ),
-
-                          /// Don't Have an Account
-                          _dontHaveAccountText(context),
-                        ],
-                      ),
-                    ],
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -222,6 +242,7 @@ class _SignupFormState extends State<SignupForm> {
   Widget _fullNameTextField() {
     return TextFormField(
       controller: _fullNameCon,
+      validator: AppValidator.validateName,
       decoration: const InputDecoration(
           labelText: AppStrings.enterFullName,
           prefixIcon: Icon(CupertinoIcons.person)),
@@ -231,6 +252,7 @@ class _SignupFormState extends State<SignupForm> {
   Widget _emailTextField() {
     return TextFormField(
       controller: _emailCon,
+      validator: AppValidator.validateEmail,
       decoration: const InputDecoration(
           labelText: AppStrings.enterEmail,
           prefixIcon: Icon(CupertinoIcons.mail_solid)),
@@ -240,6 +262,7 @@ class _SignupFormState extends State<SignupForm> {
   Widget _passwordTextField() {
     return TextFormField(
       controller: _passwordCon,
+      validator: AppValidator.validatePassword,
       decoration: const InputDecoration(
         prefixIcon: Icon(
           CupertinoIcons.lock_fill,
@@ -255,6 +278,7 @@ class _SignupFormState extends State<SignupForm> {
   Widget _phoneNumberTextField() {
     return TextFormField(
       controller: _phoneNumberCon,
+      validator: AppValidator.validatePhoneNumber,
       decoration: const InputDecoration(
         labelText: AppStrings.phoneNumber,
         prefixIcon: Icon(CupertinoIcons.phone),
@@ -304,7 +328,7 @@ class _SignupFormState extends State<SignupForm> {
                   ),
                 ),
                 child: const Center(
-                  child: Text("Select Image"),
+                  child: Text(AppStrings.selectImage),
                 ),
               ),
             ],
@@ -405,7 +429,7 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   Widget _selectRole(BuildContext context) {
-    return BlocBuilder<SignupCubit, SignupState>(
+    return BlocBuilder<CheckBoxCubit, CheckBoxState>(
       builder: (context, state) {
         return Row(
           children: [
@@ -413,7 +437,7 @@ class _SignupFormState extends State<SignupForm> {
                 value: state.checkbox1,
                 onChanged: (value) {
                   if (value != null) {
-                    context.read<SignupCubit>().toggleCheckbox1(value);
+                    context.read<CheckBoxCubit>().toggleCheckbox1(value);
                   }
                 }),
             Text(
@@ -427,7 +451,7 @@ class _SignupFormState extends State<SignupForm> {
               value: state.checkbox2,
               onChanged: (value) {
                 if (value != null) {
-                  context.read<SignupCubit>().toggleCheckbox2(value);
+                  context.read<CheckBoxCubit>().toggleCheckbox2(value);
                 }
               },
             ),
@@ -447,37 +471,83 @@ class _SignupFormState extends State<SignupForm> {
     return Builder(builder: (context) {
       return SizedBox(
         width: double.infinity,
-        child: ElevatedButton(
+        child: AppReactiveButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                final String? profileImagePath =
+                    imagePickerCubit.getSelectedImagePath();
+
+                if (profileImagePath == null || profileImagePath.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(AppStrings.pleaseSelectProfileImage)),
+                  );
+                  return;
+                }
+
+                final File profileImage = File(profileImagePath);
+
+                context.read<ButtonCubit>().execute(
+                      usecase: sl<SignUpUseCase>(),
+                      params: SignupReqParams(
+                        fullName: _fullNameCon.text,
+                        phoneNumber: _phoneNumberCon.text,
+                        email: _emailCon.text,
+                        password: _passwordCon.text,
+                        profileImage: profileImage,
+                      ),
+                    );
+              }
+            },
+            label: AppStrings.singup),
+      );
+    });
+  }
+
+  Widget _signupButtonForAuctioneer(BuildContext context) {
+    ImagePickerCubit imagePickerCubit = context.read<ImagePickerCubit>();
+
+    return Builder(builder: (context) {
+      return SizedBox(
+        width: double.infinity,
+        child: AppReactiveButton(
           onPressed: () {
-            final String? profileImagePath =
-                imagePickerCubit.getSelectedImagePath();
+            if (_formKey.currentState!.validate()) {
+              final String? profileImagePath =
+                  imagePickerCubit.getSelectedImagePath();
 
-            debugPrint("Profile image path: $profileImagePath");
-
-            if (profileImagePath == null || profileImagePath.isEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Please select a profile image")),
-              );
-              return;
-            }
-
-            final File profileImage = File(profileImagePath);
-
-            context.read<ButtonCubit>().execute(
-                  usecase: sl<SignUpUseCase>(),
-                  params: SignupReqParams(
-                    fullName: _fullNameCon.text,
-                    phoneNumber: _phoneNumberCon.text,
-                    email: _emailCon.text,
-                    password: _passwordCon.text,
-                    profileImage: profileImage,
-                  ),
+              if (profileImagePath == null || profileImagePath.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text(AppStrings.pleaseSelectProfileImage)),
                 );
+                return;
+              }
+
+              final File profileImage = File(profileImagePath);
+
+              context.read<ButtonCubit>().execute(
+                    usecase: sl<SignupUseCaseForAuctioneer>(),
+                    params: SignupReqParamsForAuctioneer(
+                      fullName: _fullNameCon.text,
+                      email: _emailCon.text,
+                      password: _passwordCon.text,
+                      phoneNumber: _phoneNumberCon.text,
+                      profileImage: profileImage,
+                      bankAccountName: _bankAccountNameCon.text,
+                      bankAccountNumber: _bankAccountNumberCon.text,
+                      bankName: _bankNameCon.text,
+                      swiftCode: _swiftCodeCon.text,
+                      address: _addressCon.text,
+                      paypalEmail: _payPalEmailCon.text,
+                      imepayNumber: _imePayNoCon.text,
+                      khaltiNumber: _khaltiCon.text,
+                      esewaNumber: _esewaCon.text,
+                    ),
+                  );
+            }
           },
-          child: Text(
-            AppStrings.singup,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          label: AppStrings.singup,
         ),
       );
     });
@@ -491,19 +561,26 @@ class _SignupFormState extends State<SignupForm> {
           AppStrings.haveAnAccout,
           style: Theme.of(context).textTheme.labelLarge,
         ),
-        Text(
-          AppStrings.signin,
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall!
-              .copyWith(color: AppColors.lightPrimaryColor),
-        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutesName.loginScreen);
+          },
+          child: Text(
+            AppStrings.signin,
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(color: AppColors.lightPrimaryColor),
+          ),
+        )
       ],
     );
   }
 
   Widget _bankAccountHolderNameTextField() {
     return TextFormField(
+      controller: _bankAccountNameCon,
+      validator: AppValidator.validateAccountHolderName,
       decoration: const InputDecoration(
           labelText: AppStrings.bankAccountHolderName,
           prefixIcon: Icon(CupertinoIcons.person_fill)),
@@ -512,6 +589,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _bankAccountNumberTextField() {
     return TextFormField(
+      validator: AppValidator.validateBankAccountNumber,
+      controller: _bankAccountNumberCon,
       decoration: const InputDecoration(
           labelText: AppStrings.bankAccountNumber,
           prefixIcon: Icon(CupertinoIcons.creditcard)),
@@ -520,6 +599,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _bankNameTextField() {
     return TextFormField(
+      validator: AppValidator.validateBankName,
+      controller: _bankNameCon,
       decoration: const InputDecoration(
           labelText: AppStrings.bankName,
           prefixIcon: Icon(CupertinoIcons.building_2_fill)),
@@ -528,6 +609,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _bankIdentifierCodeTextField() {
     return TextFormField(
+      controller: _swiftCodeCon,
+      validator: AppValidator.validateBankIdentifierCode,
       decoration: const InputDecoration(
           labelText: AppStrings.bic,
           prefixIcon: Icon(CupertinoIcons.chart_bar)),
@@ -536,6 +619,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _userAddressTextField() {
     return TextFormField(
+      controller: _addressCon,
+      validator: AppValidator.validateAddress,
       decoration: const InputDecoration(
           labelText: AppStrings.address, prefixIcon: Icon(CupertinoIcons.map)),
     );
@@ -543,6 +628,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _payPalEmailTextField() {
     return TextFormField(
+      controller: _payPalEmailCon,
+      validator: AppValidator.validatePayPalEmail,
       decoration: const InputDecoration(
           labelText: AppStrings.payPalEmail,
           prefixIcon: Icon(CupertinoIcons.mail)),
@@ -551,6 +638,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _imePayNumberTextField() {
     return TextFormField(
+      validator: AppValidator.validateIMEpayNumber,
+      controller: _imePayNoCon,
       decoration: const InputDecoration(
           labelText: AppStrings.imePayNo,
           prefixIcon: Icon(CupertinoIcons.list_number)),
@@ -559,6 +648,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _khaltiNumberTextField() {
     return TextFormField(
+      controller: _khaltiCon,
+      validator: AppValidator.validateKhaltiNumber,
       decoration: const InputDecoration(
           labelText: AppStrings.khaltiNo,
           prefixIcon: Icon(CupertinoIcons.list_number)),
@@ -567,6 +658,8 @@ class _SignupFormState extends State<SignupForm> {
 
   Widget _eSewaNumberTextField() {
     return TextFormField(
+      controller: _esewaCon,
+      validator: AppValidator.validateEsewaNumber,
       decoration: const InputDecoration(
           labelText: AppStrings.esewaNo,
           prefixIcon: Icon(CupertinoIcons.list_number)),

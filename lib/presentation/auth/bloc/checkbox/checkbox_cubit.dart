@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/presentation/auth/bloc/signup/signup_state.dart';
+import 'package:nepa_bid/presentation/auth/bloc/checkbox/checkbox_state.dart';
 
-class SignupCubit extends Cubit<SignupState>{
-  SignupCubit(): super(SignupState());
+class CheckBoxCubit extends Cubit<CheckBoxState>{
+  CheckBoxCubit(): super(CheckBoxState());
 
   void toggleCheckbox1(bool value){
     emit(state.copyWith(checkbox1: value,checkbox2: false));

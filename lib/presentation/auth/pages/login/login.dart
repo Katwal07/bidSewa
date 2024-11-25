@@ -3,6 +3,8 @@ part of '../auth_imports.dart';
 class LoginScreen extends StatelessWidget {
   final TextEditingController _emailCon = TextEditingController();
   final TextEditingController _passCon = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   LoginScreen({super.key});
 
   @override
@@ -15,8 +17,13 @@ class LoginScreen extends StatelessWidget {
             const CircularProgressIndicator();
           }
           if (state is ButtonLoaded) {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const HomePage()));
+            if (state.success) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const HomePage()));
+            } else {
+              var snackBar = SnackBar(content: Text(state.message));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
           }
           if (state is ButtonFailure) {
             var snackBar = SnackBar(content: Text(state.message));
@@ -25,8 +32,7 @@ class LoginScreen extends StatelessWidget {
         },
         child: Scaffold(
           appBar: AppBar(),
-          backgroundColor:
-              AppColors.lightPrimaryColor,
+          backgroundColor: AppColors.lightPrimaryColor,
           body: SafeArea(
               child: Padding(
             padding: EdgeInsets.symmetric(
@@ -43,7 +49,9 @@ class LoginScreen extends StatelessWidget {
                   ),
 
                   /// Login Form
-                  _loginForm(context,),
+                  _loginForm(
+                    context,
+                  ),
                 ],
               ),
             ),
@@ -84,110 +92,113 @@ class LoginScreen extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.all(ComponentsSizes.defaultSpace),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            
-            /// Email Id Text
-            Text(
-              AppStrings.emailId,
-              style: Theme.of(context).textTheme.titleMedium
-            ),
-            SizedBox(
-              height: ComponentsSizes.spaceBtwInputFields,
-            ),
-            
-            /// Email Id TextField
-            TextFormField(
-              controller: _emailCon,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                hintText: AppStrings.enterEmail,
-                prefixIcon: Icon(size: ComponentsSizes.iconMd, Icons.mail),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              /// Email Id Text
+              Text(AppStrings.emailId,
+                  style: Theme.of(context).textTheme.titleMedium),
+              SizedBox(
+                height: ComponentsSizes.spaceBtwInputFields,
               ),
-            ),
-            SizedBox(
-              height: ComponentsSizes.spaceBtwInputFields,
-            ),
 
-            /// Password Text
-            Text(
-              AppStrings.password,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(
-              height: ComponentsSizes.spaceBtwInputFields,
-            ),
-
-            /// Password TextField
-            TextFormField(
-              controller: _passCon,
-              obscureText: true,
-              obscuringCharacter: AppStrings.obscuredCharacter,
-              decoration: InputDecoration(
-                prefixIcon: Icon(
-                  size: ComponentsSizes.iconMd,
-                  Icons.lock,
+              /// Email Id TextField
+              TextFormField(
+                controller: _emailCon,
+                validator: AppValidator.validateEmail,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: AppStrings.enterEmail,
+                  prefixIcon: Icon(size: ComponentsSizes.iconMd, Icons.mail),
                 ),
-                suffixIcon: Icon(
-                  size: ComponentsSizes.iconMd,
-                  Icons.remove_red_eye,
-                ),
-                hintText: AppStrings.enterPass,
               ),
-            ),
-            SizedBox(
-              height: ComponentsSizes.spaceBtwSection,
-            ),
+              SizedBox(
+                height: ComponentsSizes.spaceBtwInputFields,
+              ),
 
-            /// Signin Button
-            Builder(
-              builder: (context) {
-                return SizedBox(
-                  width: double.infinity,
-                  child: AppReactiveButton(
-                    label: AppStrings.signin, 
-                    onPressed: () { 
-                      context.read<ButtonCubit>().execute(
-                        usecase: sl<SignInUseCase>(),
-                        params: SigninReqParams(
-                          email: _emailCon.text, 
-                          password: _passCon.text
-                        ),
-                      );
-                     },
+              /// Password Text
+              Text(
+                AppStrings.password,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              SizedBox(
+                height: ComponentsSizes.spaceBtwInputFields,
+              ),
+
+              /// Password TextField
+              TextFormField(
+                controller: _passCon,
+                validator: AppValidator.validatePassword,
+                obscureText: true,
+                obscuringCharacter: AppStrings.obscuredCharacter,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    size: ComponentsSizes.iconMd,
+                    Icons.lock,
                   ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: ComponentsSizes.md,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FittedBox(
-                  child: FittedBox(
-                    child: Text(
-                      AppStrings.dontHaveAnAccount,
-                      style: Theme.of(context).textTheme.labelLarge,
+                  suffixIcon: Icon(
+                    size: ComponentsSizes.iconMd,
+                    Icons.remove_red_eye,
+                  ),
+                  hintText: AppStrings.enterPass,
+                ),
+              ),
+              SizedBox(
+                height: ComponentsSizes.spaceBtwSection,
+              ),
+
+              /// Signin Button
+              Builder(
+                builder: (context) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: AppReactiveButton(
+                      label: AppStrings.signin,
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<ButtonCubit>().execute(
+                                usecase: sl<SignInUseCase>(),
+                                params: SigninReqParams(
+                                    email: _emailCon.text,
+                                    password: _passCon.text),
+                              );
+                        }
+                      },
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: ComponentsSizes.md,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FittedBox(
+                    child: FittedBox(
+                      child: Text(
+                        AppStrings.dontHaveAnAccount,
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () =>
-                      Navigator.pushNamed(context, AppRoutesName.signupScreen),
-                  child: Text(
-                    AppStrings.createAccount,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: AppColors.lightPrimaryColor,
-                        ),
+                  GestureDetector(
+                    onTap: () => Navigator.pushNamed(
+                        context, AppRoutesName.signupScreen),
+                    child: Text(
+                      AppStrings.createAccount,
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: AppColors.lightPrimaryColor,
+                          ),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

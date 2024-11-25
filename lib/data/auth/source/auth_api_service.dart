@@ -9,10 +9,12 @@ import 'package:nepa_bid/data/auth/model/signin_req_params.dart';
 import 'package:nepa_bid/service_locator.dart';
 
 import '../model/signup_req_params.dart';
+import '../model/signup_req_params_for_auctioneer.dart';
 
 abstract class AuthApiService {
   Future<Either> signin(SigninReqParams params);
   Future<Either> signup(SignupReqParams params);
+  Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneer params);
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -39,19 +41,20 @@ class AuthApiServiceImpl extends AuthApiService {
             'Invalid file type. Please use JPG, PNG or WebP images.');
       }
 
-      final FormData formData = FormData.fromMap({
-        'username': params.fullName,
-        'email': params.email,
-        'password': params.password,
-        'phone': params.phoneNumber,
-        'role': params.role,
-        'profileImage': await MultipartFile.fromFile(
-          params.profileImage.path,
-          filename: params.profileImage.path.split('/').last,
-          contentType:
-              MediaType('image', fileExtension),
-        ),
-      });
+      final FormData formData = FormData.fromMap(
+        {
+          'username': params.fullName,
+          'email': params.email,
+          'password': params.password,
+          'phone': params.phoneNumber,
+          'role': params.role,
+          'profileImage': await MultipartFile.fromFile(
+            params.profileImage.path,
+            filename: params.profileImage.path.split('/').last,
+            contentType: MediaType('image', fileExtension),
+          ),
+        },
+      );
 
       var response = await sl<ApiClient>().postRequest(
         path: ApiEndpointUrls.register,
@@ -59,15 +62,52 @@ class AuthApiServiceImpl extends AuthApiService {
       );
       return Right(response);
     } on DioException catch (e) {
-      print('DioError Type: ${e.type}');
-      print('DioError Message: ${e.message}');
-      print('Response Status: ${e.response?.statusCode}');
-      print('Response Data: ${e.response?.data}');
-      print('Request Data: ${e.requestOptions.data}');
-      return Left(e.response?.data['message'] ?? 'Network error occurred');
-    } catch (e) {
-      print('General error: $e');
-      return const Left('An unexpected error occurred');
+      return Left(e.response!.data['message']);
+    }
+  }
+
+  @override
+  Future<Either> signupForAuctioneer(
+      SignupReqParamsForAuctioneer params) async {
+    try {
+      final String fileExtension =
+          params.profileImage.path.split('.').last.toLowerCase();
+      if (!['jpg', 'jpeg', 'png', 'webp'].contains(fileExtension)) {
+        return const Left(
+            'Invalid file type. Please use JPG, PNG or WebP images.');
+      }
+
+      final FormData formData = FormData.fromMap(
+        {
+          'username': params.fullName,
+          'email': params.email,
+          'password': params.password,
+          'phone': params.phoneNumber,
+          'role': params.role,
+          'bankAccountName': params.bankAccountName,
+          'bankAccountNumber': params.bankAccountNumber,
+          'bankName': params.bankName,
+          'swiftCode': params.swiftCode,
+          'address': params.address,
+          'paypalEmail': params.paypalEmail,
+          'imepayNumber': params.imepayNumber,
+          'khaltiNumber': params.khaltiNumber,
+          'esewaNumber': params.esewaNumber,
+          'profileImage': await MultipartFile.fromFile(
+            params.profileImage.path,
+            filename: params.profileImage.path.split('/').last,
+            contentType: MediaType('image', fileExtension),
+          ),
+        },
+      );
+
+      var response = await sl<ApiClient>().postRequest(
+        path: ApiEndpointUrls.register,
+        body: formData,
+      );
+      return Right(response);
+    } on DioException catch (e) {
+      return Left(e.response!.data['message']);
     }
   }
 }
