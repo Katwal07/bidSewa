@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:nepa_bid/data/auth/model/signup_req_params_for_auctioneer.dart';
 import 'package:nepa_bid/data/auth/source/auth_local_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nepa_bid/data/auth/source/token_service.dart';
 
 import '../../../service_locator.dart';
 import '../../../domain/auth/repositories/auth.dart';
@@ -17,10 +17,14 @@ class AuthRepositoryImpl extends AuthRepository {
     return result.fold((error) {
       return Left(error);
     }, (data) async {
-      Response response = data;
-      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString('token',response.data["token"]);
-      return Right(response);
+      if(data['success']==true){
+        final token = data['token'];
+
+        await TokenService.saveToken(token);
+      }else{
+        debugPrint('Login Failed: ${data['message']}');
+      }
+      return Right(data);
     });
   }
 
@@ -30,8 +34,7 @@ class AuthRepositoryImpl extends AuthRepository {
     return result.fold((error) {
       return Left(error);
     }, (data) async {
-      Response response = data;
-      return Right(response);
+      return Right(data);
     });
   }
 
@@ -43,8 +46,7 @@ class AuthRepositoryImpl extends AuthRepository {
         return Left(error);
       }, 
       (data){
-        Response response = data;
-        return Right(response);
+        return Right(data);
       }
     );
   }

@@ -16,6 +16,9 @@ class SignupScreen extends StatelessWidget {
         BlocProvider(
           create: (context) => ImagePickerCubit(),
         ),
+         BlocProvider(
+          create: (context) => PasswordVisiblityCubit(),
+        ),
       ],
       child: BlocListener<ButtonCubit, ButtonState>(
         listener: (context, state) {
@@ -49,6 +52,7 @@ class SignupScreen extends StatelessWidget {
                   children: [
                     /// Singup Text
                     _signupText(context),
+                    
                     SizedBox(
                       height: ComponentsSizes.defaultSpace * 3,
                     ),

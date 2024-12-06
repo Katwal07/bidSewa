@@ -44,4 +44,9 @@ class AppStrings{
   static const String esewaNo = 'Esewa Number';
   static const String selectImage = "Select Image";
   static const String pleaseSelectProfileImage = "Please select a profile image";
+
+  /// Auctioneer
+  static const String addProduct = "Add Product";
+  static const String productImage = "Product Image (0/4)";
+  static const String addVideo = "Product Video (0/2)";
 }

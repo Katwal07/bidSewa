@@ -33,7 +33,7 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    final bool isDarkTheme = AppUtils.isDarkTheme(context);
     return BlocBuilder<CheckBoxCubit, CheckBoxState>(
       builder: (context, state) {
         return SingleChildScrollView(
@@ -62,49 +62,42 @@ class SignupForm extends StatelessWidget {
                           children: [
                             /// Submit Your Details
                             _submitYourDetailsText(context),
+
                             SizedBox(
                               height: ComponentsSizes.spaceBtwInputFields * 2,
                             ),
 
                             /// FullName TextField
                             _fullNameTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Email TextField
                             _emailTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Password TextField
                             _passwordTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// PhoneNumber TextField
                             _phoneNumberTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Upload ProfileImage
                             _uploadProfileImage(context),
 
                             /// Select Role
                             _selectRole(context),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Signup Button
                             _signupButton(context),
 
-                            const SizedBox(
-                              height: ComponentsSizes.md,
-                            ),
 
                             /// Don't Have an Account
                             _dontHaveAccountText(context),
@@ -118,103 +111,87 @@ class SignupForm extends StatelessWidget {
                           children: [
                             /// Submit Your Details
                             _submitYourDetailsText(context),
+
                             SizedBox(
                               height: ComponentsSizes.spaceBtwInputFields * 2,
                             ),
 
                             /// FullName TextField
                             _fullNameTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Email TextField
                             _emailTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Password TextField
                             _passwordTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// PhoneNumber TextField
                             _phoneNumberTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// BankAccount Holder TextField
                             _bankAccountHolderNameTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// BankAccount Number TextField
                             _bankAccountNumberTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Bank Name TextField
                             _bankNameTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Bank IdentifierCode TextField
                             _bankIdentifierCodeTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// UserAddress TextField
                             _userAddressTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// PayPal Email TextField
                             _payPalEmailTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// ImePay Number TextField
                             _imePayNumberTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Khalti Number TextField
                             _khaltiNumberTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Esewa Number TextField
                             _eSewaNumberTextField(),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Upload Profile Image
                             _uploadProfileImage(context),
 
                             /// SelectRole
                             _selectRole(context),
-                            SizedBox(
-                              height: ComponentsSizes.spaceBtwInputFields,
-                            ),
+
+                            _spaceBtwInputFields(),
 
                             /// Signup Button
                             _signupButtonForAuctioneer(context),
 
-                            const SizedBox(
-                              height: ComponentsSizes.md,
-                            ),
 
                             /// Don't Have an Account
                             _dontHaveAccountText(context),
@@ -242,42 +219,96 @@ class SignupForm extends StatelessWidget {
   Widget _fullNameTextField() {
     return TextFormField(
       controller: _fullNameCon,
+      keyboardType: TextInputType.text,
       validator: AppValidator.validateName,
       decoration: const InputDecoration(
-          labelText: AppStrings.enterFullName,
-          prefixIcon: Icon(CupertinoIcons.person)),
+        labelText: AppStrings.enterFullName,
+        prefixIcon: Icon(CupertinoIcons.person),
+      ),
     );
   }
 
   Widget _emailTextField() {
     return TextFormField(
       controller: _emailCon,
+      keyboardType: TextInputType.emailAddress,
       validator: AppValidator.validateEmail,
       decoration: const InputDecoration(
-          labelText: AppStrings.enterEmail,
-          prefixIcon: Icon(CupertinoIcons.mail_solid)),
+        labelText: AppStrings.enterEmail,
+        prefixIcon: Icon(CupertinoIcons.mail),
+      ),
     );
   }
 
   Widget _passwordTextField() {
-    return TextFormField(
-      controller: _passwordCon,
-      validator: AppValidator.validatePassword,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(
-          CupertinoIcons.lock_fill,
-        ),
-        suffixIcon: Icon(
-          CupertinoIcons.eye_fill,
-        ),
-        labelText: AppStrings.enterPass,
-      ),
+    return BlocBuilder<PasswordVisiblityCubit, PasswordVisibilityState>(
+      builder: (context, state) {
+        if (state is PasswordVisibilityInitial) {
+          return TextFormField(
+            controller: _passwordCon,
+            validator: AppValidator.validatePassword,
+            obscureText: state.obscureText,
+            obscuringCharacter: AppStrings.obscuredCharacter,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                size: ComponentsSizes.iconMd,
+                Icons.lock_outline,
+              ),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  context
+                      .read<PasswordVisiblityCubit>()
+                      .onClick(state.obscureText);
+                },
+                icon: Icon(
+                  Icons.visibility,
+                  size: ComponentsSizes.iconMd,
+                ),
+              ),
+              hintText: AppStrings.enterPass,
+            ),
+          );
+        }
+        if (state is PasswordVisibilityLoaded) {
+          return TextFormField(
+            controller: _passwordCon,
+            validator: AppValidator.validatePassword,
+            obscureText: state.obscureText,
+            obscuringCharacter: AppStrings.obscuredCharacter,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                size: ComponentsSizes.iconMd,
+                Icons.lock,
+              ),
+              suffixIcon: IconButton(
+                onPressed: () {
+                  context
+                      .read<PasswordVisiblityCubit>()
+                      .onClick(state.obscureText);
+                },
+                icon: state.obscureText == true
+                    ? Icon(
+                        Icons.visibility,
+                        size: ComponentsSizes.iconMd,
+                      )
+                    : Icon(
+                        Icons.visibility_off,
+                        size: ComponentsSizes.iconMd,
+                      ),
+              ),
+              hintText: AppStrings.enterPass,
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 
   Widget _phoneNumberTextField() {
     return TextFormField(
       controller: _phoneNumberCon,
+      keyboardType: TextInputType.phone,
       validator: AppValidator.validatePhoneNumber,
       decoration: const InputDecoration(
         labelText: AppStrings.phoneNumber,
@@ -311,7 +342,7 @@ class SignupForm extends StatelessWidget {
                     onPressed: () {
                       context.read<ImagePickerCubit>().pickImage();
                     },
-                    icon: const Icon(Icons.image)),
+                    icon: const Icon(Icons.image_outlined)),
               ),
               Container(
                 height: SizeConfigs.heightMultiplier * 4.3,
@@ -334,55 +365,13 @@ class SignupForm extends StatelessWidget {
             ],
           );
         }
-        if (state is ImageLoadingState) {
-          return Row(
-            children: [
-              Container(
-                height: SizeConfigs.heightMultiplier * 4.3,
-                width: SizeConfigs.widthMultiplier * 9.3,
-                decoration: BoxDecoration(
-                  color: isDarkTheme
-                      ? AppColors.darkBgColor
-                      : AppColors.lightBgColor,
-                  border: Border.all(
-                      color: isDarkTheme ? AppColors.grey : AppColors.black),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(ComponentsSizes.buttonRadius),
-                    bottomLeft: Radius.circular(ComponentsSizes.buttonRadius),
-                  ),
-                ),
-                child:
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.image)),
-              ),
-              Container(
-                height: SizeConfigs.heightMultiplier * 4.3,
-                width: SizeConfigs.widthMultiplier * 9.3,
-                decoration: BoxDecoration(
-                  color: isDarkTheme
-                      ? AppColors.darkBgColor
-                      : AppColors.lightBgColor,
-                  border: Border.all(
-                      color: isDarkTheme ? AppColors.grey : AppColors.black),
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(ComponentsSizes.buttonRadius),
-                    bottomRight: Radius.circular(ComponentsSizes.buttonRadius),
-                  ),
-                ),
-                child: const Center(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
-            ],
-          );
-        }
+
         if (state is ImageLoadedState) {
           return Row(
             children: [
               Container(
-                height: SizeConfigs.heightMultiplier * 4.3,
-                width: SizeConfigs.widthMultiplier * 9.3,
+                height: SizeConfigs.heightMultiplier * 6.3,
+                width: SizeConfigs.widthMultiplier * 13,
                 decoration: BoxDecoration(
                   color: isDarkTheme
                       ? AppColors.darkBgColor
@@ -394,16 +383,29 @@ class SignupForm extends StatelessWidget {
                     bottomLeft: Radius.circular(ComponentsSizes.buttonRadius),
                   ),
                 ),
-                child: IconButton(
-                  onPressed: () {
-                    context.read<ImagePickerCubit>().reset();
+                child: GestureDetector(
+                  onTap: () async {
                     context.read<ImagePickerCubit>().pickImage();
+                    await Future.delayed(const Duration(seconds: 1));
+
+                    /// Checks if widget is still part of the tree
+                    if (!context.mounted) return;
+                    context.read<ImagePickerCubit>().reset();
                   },
-                  icon: const Icon(Icons.image),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(ComponentsSizes.buttonRadius),
+                      bottomLeft: Radius.circular(ComponentsSizes.buttonRadius),
+                    ),
+                    child: Image.file(
+                      File(state.imagePath),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               Container(
-                height: SizeConfigs.heightMultiplier * 4.3,
+                height: SizeConfigs.heightMultiplier * 6.3,
                 width: SizeConfigs.widthMultiplier * 30,
                 decoration: BoxDecoration(
                   color: isDarkTheme
@@ -423,7 +425,48 @@ class SignupForm extends StatelessWidget {
             ],
           );
         }
-        return const SizedBox.shrink();
+        return Row(
+          children: [
+            Container(
+              height: SizeConfigs.heightMultiplier * 4.3,
+              width: SizeConfigs.widthMultiplier * 9.3,
+              decoration: BoxDecoration(
+                color: isDarkTheme
+                    ? AppColors.darkBgColor
+                    : AppColors.lightBgColor,
+                border: Border.all(
+                    color: isDarkTheme ? AppColors.grey : AppColors.black),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(ComponentsSizes.buttonRadius),
+                  bottomLeft: Radius.circular(ComponentsSizes.buttonRadius),
+                ),
+              ),
+              child: IconButton(
+                  onPressed: () {
+                    context.read<ImagePickerCubit>().pickImage();
+                  },
+                  icon: const Icon(Icons.image_outlined)),
+            ),
+            Container(
+              height: SizeConfigs.heightMultiplier * 4.3,
+              width: SizeConfigs.widthMultiplier * 30,
+              decoration: BoxDecoration(
+                color: isDarkTheme
+                    ? AppColors.darkBgColor
+                    : AppColors.lightBgColor,
+                border: Border.all(
+                    color: isDarkTheme ? AppColors.grey : AppColors.black),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(ComponentsSizes.buttonRadius),
+                  bottomRight: Radius.circular(ComponentsSizes.buttonRadius),
+                ),
+              ),
+              child: const Center(
+                child: Text(AppStrings.selectImage),
+              ),
+            ),
+          ],
+        );
       },
     );
   }
@@ -434,12 +477,13 @@ class SignupForm extends StatelessWidget {
         return Row(
           children: [
             Checkbox(
-                value: state.checkbox1,
-                onChanged: (value) {
-                  if (value != null) {
-                    context.read<CheckBoxCubit>().toggleCheckbox1(value);
-                  }
-                }),
+              value: state.checkbox1,
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<CheckBoxCubit>().toggleCheckbox1();
+                }
+              },
+            ),
             Text(
               AppStrings.bidder,
               style: Theme.of(context).textTheme.labelLarge,
@@ -451,7 +495,7 @@ class SignupForm extends StatelessWidget {
               value: state.checkbox2,
               onChanged: (value) {
                 if (value != null) {
-                  context.read<CheckBoxCubit>().toggleCheckbox2(value);
+                  context.read<CheckBoxCubit>().toggleCheckbox2();
                 }
               },
             ),
@@ -583,33 +627,36 @@ class SignupForm extends StatelessWidget {
       validator: AppValidator.validateAccountHolderName,
       decoration: const InputDecoration(
           labelText: AppStrings.bankAccountHolderName,
-          prefixIcon: Icon(CupertinoIcons.person_fill)),
+          prefixIcon: Icon(CupertinoIcons.person)),
     );
   }
 
   Widget _bankAccountNumberTextField() {
     return TextFormField(
+      keyboardType: TextInputType.number,
       validator: AppValidator.validateBankAccountNumber,
       controller: _bankAccountNumberCon,
       decoration: const InputDecoration(
           labelText: AppStrings.bankAccountNumber,
-          prefixIcon: Icon(CupertinoIcons.creditcard)),
+          prefixIcon: Icon(Icons.account_box)),
     );
   }
 
   Widget _bankNameTextField() {
     return TextFormField(
       validator: AppValidator.validateBankName,
+      keyboardType: TextInputType.text,
       controller: _bankNameCon,
       decoration: const InputDecoration(
           labelText: AppStrings.bankName,
-          prefixIcon: Icon(CupertinoIcons.building_2_fill)),
+          prefixIcon: Icon(Icons.account_balance)),
     );
   }
 
   Widget _bankIdentifierCodeTextField() {
     return TextFormField(
       controller: _swiftCodeCon,
+      keyboardType: TextInputType.text,
       validator: AppValidator.validateBankIdentifierCode,
       decoration: const InputDecoration(
           labelText: AppStrings.bic,
@@ -620,16 +667,18 @@ class SignupForm extends StatelessWidget {
   Widget _userAddressTextField() {
     return TextFormField(
       controller: _addressCon,
+      keyboardType: TextInputType.streetAddress,
       validator: AppValidator.validateAddress,
       decoration: const InputDecoration(
-          labelText: AppStrings.address, prefixIcon: Icon(CupertinoIcons.map)),
+          labelText: AppStrings.address,
+          prefixIcon: Icon(Icons.place_outlined)),
     );
   }
 
   Widget _payPalEmailTextField() {
     return TextFormField(
       controller: _payPalEmailCon,
-      validator: AppValidator.validatePayPalEmail,
+      keyboardType: TextInputType.emailAddress,
       decoration: const InputDecoration(
           labelText: AppStrings.payPalEmail,
           prefixIcon: Icon(CupertinoIcons.mail)),
@@ -638,31 +687,37 @@ class SignupForm extends StatelessWidget {
 
   Widget _imePayNumberTextField() {
     return TextFormField(
-      validator: AppValidator.validateIMEpayNumber,
+      keyboardType: TextInputType.number,
       controller: _imePayNoCon,
       decoration: const InputDecoration(
           labelText: AppStrings.imePayNo,
-          prefixIcon: Icon(CupertinoIcons.list_number)),
+          prefixIcon: Icon(Icons.account_balance_wallet_outlined)),
     );
   }
 
   Widget _khaltiNumberTextField() {
     return TextFormField(
       controller: _khaltiCon,
-      validator: AppValidator.validateKhaltiNumber,
+      keyboardType: TextInputType.number,
       decoration: const InputDecoration(
           labelText: AppStrings.khaltiNo,
-          prefixIcon: Icon(CupertinoIcons.list_number)),
+          prefixIcon: Icon(Icons.account_balance_wallet_outlined)),
     );
   }
 
   Widget _eSewaNumberTextField() {
     return TextFormField(
       controller: _esewaCon,
-      validator: AppValidator.validateEsewaNumber,
+      keyboardType: TextInputType.number,
       decoration: const InputDecoration(
           labelText: AppStrings.esewaNo,
-          prefixIcon: Icon(CupertinoIcons.list_number)),
+          prefixIcon: Icon(Icons.account_balance_wallet_outlined)),
+    );
+  }
+
+  Widget _spaceBtwInputFields() {
+    return SizedBox(
+      height: ComponentsSizes.spaceBtwInputFields,
     );
   }
 }

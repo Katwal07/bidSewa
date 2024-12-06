@@ -1,11 +1,12 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:nepa_bid/presentation/auth/bloc/image_picker/image_picker_state.dart';
+
+import 'image_state.dart';
 
 class ImagePickerCubit extends Cubit<ImagePickerState> {
   ImagePickerCubit() : super(ImageInitialState());
 
-  String _truncateFileName(String fileName, {int maxLength = 10}) {
+  String _truncateFileName(String fileName, {int maxLength = 15}) {
     if (fileName.length <= maxLength) return fileName;
 
     /// keep the first name and the extension
@@ -14,7 +15,7 @@ class ImagePickerCubit extends Cubit<ImagePickerState> {
     final truncatedName =
         nameWithoutExt.substring(0, maxLength - extension.length - 3);
 
-    return '$truncatedName...$extension';
+    return '$truncatedName.$extension';
   }
 
   final ImagePicker _imagePicker = ImagePicker();

@@ -15,12 +15,19 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_bloc:
   dio:
+  logger:
   get_it:
   shared_preferences:
   dartz:
-  intl:
+  intl: ^0.19.0
   image_picker:
   http_parser:
+  flutter_svg: ^2.0.15
+  path_provider: ^2.1.5
+  video_thumbnail: ^0.5.3
+  jwt_decoder: ^2.0.1
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +40,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/vectors/
 
   fonts:
     - family: Poppins

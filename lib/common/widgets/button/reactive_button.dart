@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/common/bloc/button_bloc/button_cubit.dart';
-import 'package:nepa_bid/common/res/size_configs.dart';
-import 'package:nepa_bid/core/config/theme/colors.dart';
-import 'package:nepa_bid/core/constant/sizes.dart';
+import '../../../core/config/theme/colors.dart';
+import '../../../core/constant/sizes.dart';
+import '../../bloc/button_bloc/button_cubit.dart';
+import '../../res/size_configs.dart';
 
 class AppReactiveButton extends StatelessWidget {
   const AppReactiveButton({
@@ -74,10 +74,9 @@ class AppReactiveButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         label,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium!
-            .copyWith(color: AppColors.darkFontColor),
+        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: AppColors.darkFontColor,
+            ),
       ),
     );
   }

@@ -8,6 +8,6 @@ class LoggedOut implements UseCase<Either, dynamic> {
 
   @override
   Future<Either> call({dynamic param}) async {
-    return sl<AuthRepository>().loggedOut();
+    return await sl<AuthRepository>().loggedOut();
   }
 }

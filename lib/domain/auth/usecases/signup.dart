@@ -9,6 +9,6 @@ class SignUpUseCase implements UseCase<Either, SignupReqParams> {
 
   @override
   Future<Either> call({SignupReqParams ? param}) async {
-    return sl<AuthRepository>().signup(param!);
+    return await sl<AuthRepository>().signup(param!);
   }
 }

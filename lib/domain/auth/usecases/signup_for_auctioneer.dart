@@ -8,6 +8,6 @@ class SignupUseCaseForAuctioneer implements UseCase<Either, SignupReqParamsForAu
 
   @override
   Future<Either> call({SignupReqParamsForAuctioneer ? param}) async {
-    return sl<AuthRepository>().signupForAuctioneer(param!);
+    return await sl<AuthRepository>().signupForAuctioneer(param!);
   }
 }
