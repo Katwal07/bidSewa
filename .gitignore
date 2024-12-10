@@ -43,4 +43,4 @@ app.*.map.json
 /android/app/release
 
 #api_url
-api_url*.json
+*api_url.json
