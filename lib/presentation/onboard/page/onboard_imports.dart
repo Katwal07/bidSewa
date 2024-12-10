@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/core/config/assets/app_images.dart';
 import 'package:nepa_bid/core/config/routes/routes_name.dart';
@@ -10,6 +11,7 @@ import 'package:nepa_bid/presentation/onboard/widgets/pageview/horizontal_pagevi
 
 import '../../../common/res/size_configs.dart';
 import '../../../core/config/theme/colors.dart';
+import '../../../core/config/utils/utils.dart';
 import '../cubit/onboard_state.dart';
 
 

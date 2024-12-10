@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/config/theme/colors.dart';
 import '../../../../core/config/utils/utils.dart';
@@ -12,6 +13,12 @@ class NavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkTheme = AppUtils.isDarkTheme(context);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor:
+          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+      statusBarIconBrightness: isDarkTheme ? Brightness.dark : Brightness.dark,
+    ));
     return BlocProvider(
       create: (context) => NavigationCubit(),
       child: BlocBuilder<NavigationCubit, NavigationState>(
@@ -53,14 +60,14 @@ class NavigationScreen extends StatelessWidget {
       ),
       child: NavigationBarTheme(
         data: NavigationBarThemeData(
-          indicatorColor: AppColors.lightPrimaryColor.withOpacity(.7),
-          labelTextStyle: WidgetStateTextStyle.resolveWith((Set<WidgetState> states){
-            if(states.contains(WidgetState.selected)){
+            indicatorColor: AppColors.lightPrimaryColor.withOpacity(.7),
+            labelTextStyle:
+                WidgetStateTextStyle.resolveWith((Set<WidgetState> states) {
+              if (states.contains(WidgetState.selected)) {
+                return Theme.of(context).textTheme.bodySmall!;
+              }
               return Theme.of(context).textTheme.bodySmall!;
-            }
-              return Theme.of(context).textTheme.bodySmall!;
-          })
-        ),
+            })),
         child: NavigationBar(
           elevation: 0,
           backgroundColor: AppColors.transparent,

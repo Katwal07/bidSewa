@@ -9,4 +9,5 @@ abstract class AuthRepository{
   Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneer params);
   Future<bool> isLoggedIn();
   Future<Either> loggedOut();
+  Future<Either> getAuctioneerUserProfile();
 }

@@ -15,6 +15,7 @@ abstract class AuthApiService {
   Future<Either> signin(SigninReqParams params);
   Future<Either> signup(SignupReqParams params);
   Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneer params);
+  Future<Either> getAuctioneerUserProfile();
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -25,6 +26,7 @@ class AuthApiServiceImpl extends AuthApiService {
         path: ApiEndpointUrls.login,
         body: params.toMap(),
       );
+      
       return Right(response.data);
     } on DioException catch (e) {
       return Left(e.response!.data['message']);
@@ -108,6 +110,16 @@ class AuthApiServiceImpl extends AuthApiService {
       return Right(response.data);
     } on DioException catch (e) {
       return Left(e.response!.data['message']);
+    }
+  }
+  
+  @override
+  Future<Either> getAuctioneerUserProfile() async{
+    try {
+      var response = await sl<ApiClient>().getRequest(path: ApiEndpointUrls.getUserProiler);
+      return Right(response.data);
+    }on DioException catch (e) {
+      return Left(e.toString());
     }
   }
 }

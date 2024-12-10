@@ -6,8 +6,10 @@ import 'package:nepa_bid/data/auth/repositories/auth.dart';
 import 'package:nepa_bid/data/auth/source/auth_api_service.dart';
 import 'package:nepa_bid/data/auth/source/auth_local_service.dart';
 import 'package:nepa_bid/domain/auctioneer/repositories/auction.dart';
+import 'package:nepa_bid/domain/auctioneer/usecases/auction.dart';
 import 'package:nepa_bid/domain/auctioneer/usecases/create_auction_usecase.dart';
 import 'package:nepa_bid/domain/auth/repositories/auth.dart';
+import 'package:nepa_bid/domain/auth/usecases/get_user_profile.dart';
 import 'package:nepa_bid/domain/auth/usecases/is_logged_in.dart';
 import 'package:nepa_bid/domain/auth/usecases/logged_out.dart';
 import 'package:nepa_bid/domain/auth/usecases/signin.dart';
@@ -35,6 +37,8 @@ void setupServiceLocator() {
   sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
   sl.registerSingleton<LoggedOut>(LoggedOut());
   sl.registerSingleton<SignupUseCaseForAuctioneer>(SignupUseCaseForAuctioneer());
-    sl.registerSingleton<CreateAuctionUsecase>(CreateAuctionUsecase());
+  sl.registerSingleton<CreateAuctionUsecase>(CreateAuctionUsecase());
+  sl.registerSingleton<AuctionUseCase>(AuctionUseCase());
+  sl.registerSingleton<GetUserProfileUseCase>(GetUserProfileUseCase());
 
 }

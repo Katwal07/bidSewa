@@ -9,10 +9,20 @@ import 'package:nepa_bid/data/auctioneer/model/post_auction.dart';
 import 'package:nepa_bid/service_locator.dart';
 
 abstract class AuctionApiService {
+  Future<Either> getAllAuctionItems();
   Future<Either> createAuction(PostAuctionItemModel model);
 }
 
 class AuctionApiServiceImpl extends AuctionApiService {
+    @override
+  Future<Either> getAllAuctionItems() async{
+    try {
+      var response = await sl<ApiClient>().getRequest(path: ApiEndpointUrls.getAllItems); 
+      return Right(response.data);
+    }on DioException catch (e) {
+      return Left(e.response!.data['message']);
+    }
+  }
   @override
   Future<Either> createAuction(PostAuctionItemModel model) async {
     try {
@@ -31,7 +41,7 @@ class AuctionApiServiceImpl extends AuctionApiService {
           file.path,
           filename: file.path.split('/').last,
           contentType: MediaType(
-            'videos',
+            'video',
             fileExtension,
           ),
         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nepa_bid/domain/auctioneer/entity/product_argument.dart';
 import 'package:nepa_bid/presentation/auctioneer/home/pages/home.dart';
 import 'package:nepa_bid/presentation/auctioneer/profile/pages/profile.dart';
+import 'package:nepa_bid/presentation/auctioneer/profile/widgets/user_information/user.dart';
 import 'package:nepa_bid/presentation/bidder/home/pages/home.dart';
 import 'package:nepa_bid/presentation/bidder/home/widgets/category/see_all.dart';
 import 'package:nepa_bid/presentation/bidder/search/pages/search.dart';
@@ -45,6 +46,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => const HomeScreen());
       case AppRoutesName.profileScreen:
         return MaterialPageRoute(builder: (context) => const ProfileScreen());
+      case AppRoutesName.userDetails:
+        return MaterialPageRoute(builder: (context) => const UserPersonalInformation());
       /// Bidder
       case AppRoutesName.navPageBidder:
         return MaterialPageRoute(builder: (context) => const NavigationScreenBidder());

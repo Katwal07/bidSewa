@@ -10,7 +10,7 @@ class ApiClient {
   ApiClient()
       : dio = Dio(
           BaseOptions(
-            baseUrl: ApiConstant.baseUrl,
+            baseUrl: baseUrl,
             headers: {
               'Content-Type': 'application/json; charset=UTF-8',
             },

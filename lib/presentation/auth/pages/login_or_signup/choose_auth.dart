@@ -7,7 +7,13 @@ class ChooseAuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    
+    final isDarkTheme = AppUtils.isDarkTheme(context);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor:
+          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
+    ));
     return Scaffold(
         backgroundColor: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         body: Stack(

@@ -65,10 +65,8 @@ class BottomSizedBox2 extends StatelessWidget {
                 debugPrint(productCondition);
                 debugPrint(productDesc);
                 debugPrint(receivedStartingBid.text);
-                                debugPrint(startTime);
-                                                debugPrint(endTime);
-
-
+                debugPrint(startTime);
+                debugPrint(endTime);
 
                 context.read<ButtonCubit>().execute(
                       usecase: sl<CreateAuctionUsecase>(),

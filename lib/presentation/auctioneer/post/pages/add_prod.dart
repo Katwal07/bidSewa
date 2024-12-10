@@ -20,11 +20,6 @@ class AddProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:
-          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
-      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
-    ));
 
     return MultiBlocProvider(
       providers: [

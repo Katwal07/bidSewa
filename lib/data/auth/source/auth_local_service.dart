@@ -23,7 +23,7 @@ class AuthLocalServiceImpl extends AuthLocalService{
   @override
   Future<Either> loggedOut() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.clear();
+    sharedPreferences.remove('token');
     return const Right(true);
   }
 

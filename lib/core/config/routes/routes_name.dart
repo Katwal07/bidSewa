@@ -14,6 +14,7 @@ class AppRoutesName {
   static const String addPostAuctionner = 'add_post';
   static const String homeScreen = 'home_screen';
   static const String profileScreen = 'profile_screen';
+  static const String userDetails = 'user_details';
 
   /// Bidder
   static const String navPageBidder = 'nav_page_bidder';

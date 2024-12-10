@@ -37,7 +37,8 @@ class AddProductDetails extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => VideoPickerCubit(),
-        ),BlocProvider(create: (context)=> DateTimePickerCubit())
+        ),
+        BlocProvider(create: (context) => DateTimePickerCubit())
       ],
       child: Scaffold(
         backgroundColor:
@@ -51,10 +52,10 @@ class AddProductDetails extends StatelessWidget {
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.only(
-                left: ComponentsSizes.defaultSpace / 2,
-                right: ComponentsSizes.defaultSpace / 2,
-                top: ComponentsSizes.defaultSpace,
-              ),
+              left: ComponentsSizes.defaultSpace / 2,
+              right: ComponentsSizes.defaultSpace / 2,
+              top: ComponentsSizes.defaultSpace,
+            ),
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -68,36 +69,34 @@ class AddProductDetails extends StatelessWidget {
                 ),
 
                 /// Bottom SizedBox
-                Builder(
-                  builder: (context) {
-                    return BottomSizedBox1(
-                      onContinue: () {
-                        DateTime now = DateTime.now();
-                         final DateTimePickerCubit dateTimePickerCubit =
-                          context.read<DateTimePickerCubit>();
-                          final DateTime? getEndTime =
-                          dateTimePickerCubit.getUserCombinedDateTime();
-                        final productName = _productNameCon.text;
-                        final productCategory = _productCategoryCon.text;
-                        final productCondition = _productConditionCon.text;
-                        final productDesc = _productDescCon.text;
-                    
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutesName.addPostAuctionner,
-                          arguments: ProductArguments(
-                            productName: productName,
-                            productCategory: productCategory,
-                            productCondition: productCondition,
-                            productDesc: productDesc,
-                            startTime: DateFormat('yyyy-MM-dd HH:mm').format(now).toString(),
-                            endTime: getEndTime.toString(),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                ),
+                Builder(builder: (context) {
+                  return BottomSizedBox1(
+                    onContinue: () {
+                      DateTime now = DateTime.now();
+                       final DateTimePickerCubit dateTimePickerCubit =
+                        context.read<DateTimePickerCubit>();
+                        final DateTime? getEndTime =
+                        dateTimePickerCubit.getUserCombinedDateTime();
+                      final productName = _productNameCon.text;
+                      final productCategory = _productCategoryCon.text;
+                      final productCondition = _productConditionCon.text;
+                      final productDesc = _productDescCon.text;
+
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutesName.addPostAuctionner,
+                        arguments: ProductArguments(
+                          productName: productName,
+                          productCategory: productCategory,
+                          productCondition: productCondition,
+                          productDesc: productDesc,
+                          startTime: DateFormat('yyyy-MM-dd HH:mm').format(now).toString(),
+                          endTime: getEndTime.toString(),
+                        ),
+                      );
+                    },
+                  );
+                }),
               ],
             ),
           ),
@@ -106,3 +105,5 @@ class AddProductDetails extends StatelessWidget {
     );
   }
 }
+
+

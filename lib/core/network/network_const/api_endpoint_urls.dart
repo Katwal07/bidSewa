@@ -9,4 +9,6 @@ class ApiEndpointUrls {
 
   /// Auctioneer
   static const String createItem = "auction/createitem";
+  static const String getAllItems = "auction/allitems";
+  static const String getUserProiler = "user/me";
 }

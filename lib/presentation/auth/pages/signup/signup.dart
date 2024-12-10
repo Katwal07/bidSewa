@@ -5,6 +5,13 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final isDarkTheme = AppUtils.isDarkTheme(context);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor:
+          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
+    ));
     return MultiBlocProvider(
       providers: [
         BlocProvider(

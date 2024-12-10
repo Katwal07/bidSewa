@@ -9,6 +9,13 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkTheme = AppUtils.isDarkTheme(context);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: isDarkTheme
+          ? AppColors.lightPrimaryColor
+          : AppColors.lightPrimaryColor,
+      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
+    ));
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -28,22 +35,33 @@ class LoginScreen extends StatelessWidget {
               if (state.role == "Auctioneer") {
                 Navigator.pushNamedAndRemoveUntil(
                     context, AppRoutesName.navPage, (route) => false);
-              }
-              else if (state.role == "Bidder") {
+                CustomSnackBar.showCustomSnackBar(
+                  context,
+                  AppColors.borderPrimary,
+                  state.message,
+                );
+              } else if (state.role == "Bidder") {
                 Navigator.pushNamedAndRemoveUntil(
                     context, AppRoutesName.navPageBidder, (route) => false);
-              } 
-               else {
+              } else {
                 debugPrint("Navigation not triggered; role is //${state.role}");
               }
             } else {
-              var snackBar = SnackBar(content: Text(state.message));
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              CustomSnackBar.showCustomSnackBar(
+                context,
+                Colors.redAccent,
+                state.message,
+              );
+              debugPrint(state.message);
             }
           }
           if (state is ButtonFailure) {
-            var snackBar = SnackBar(content: Text(state.message));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            CustomSnackBar.showCustomSnackBar(
+              context,
+              Colors.redAccent,
+              state.message,
+            );
+            debugPrint(state.message);
           }
         },
         child: Scaffold(
@@ -87,7 +105,7 @@ class LoginScreen extends StatelessWidget {
   _loginForm(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
     return Container(
-      height: 46 * (SizeConfigs.heightMultiplier),
+      height: 42 * (SizeConfigs.heightMultiplier),
       decoration: BoxDecoration(
         color: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         border: Border.all(color: AppColors.darkgrey),
@@ -95,43 +113,45 @@ class LoginScreen extends StatelessWidget {
           ComponentsSizes.borderRadiusLg,
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(ComponentsSizes.defaultSpace),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              /// Email Id Text
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(ComponentsSizes.defaultSpace),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                /// Email Id Text
 
-              _emailIdText(context),
+                _emailIdText(context),
 
-              _spaceBtwField(),
+                _spaceBtwField(),
 
-              /// Email Id TextField
-              _emailTextField(),
+                /// Email Id TextField
+                _emailTextField(),
 
-              _spaceBtwField(),
+                _spaceBtwField(),
 
-              /// Password Text
+                /// Password Text
 
-              _passText(context),
+                _passText(context),
 
-              _spaceBtwField(),
+                _spaceBtwField(),
 
-              /// Password TextField
-              _passTextField(),
+                /// Password TextField
+                _passTextField(),
 
-              _spaceBtwSection(),
+                _spaceBtwSection(),
 
-              /// Signin Button
-              _signInButton(),
+                /// Signin Button
+                _signInButton(),
 
-              _spaceBtwField(),
+                _spaceBtwField(),
 
-              _dontHaveAnAccount(context),
-            ],
+                _dontHaveAnAccount(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -251,14 +271,15 @@ class LoginScreen extends StatelessWidget {
                       .read<PasswordVisiblityCubit>()
                       .onClick(state.obscureText);
                 },
-                icon: state.obscureText == true ? Icon(
-                  Icons.visibility,
-                  size: ComponentsSizes.iconMd,
-                ):
-                Icon(
-                  Icons.visibility_off,
-                  size: ComponentsSizes.iconMd,
-                ),
+                icon: state.obscureText == true
+                    ? Icon(
+                        Icons.visibility,
+                        size: ComponentsSizes.iconMd,
+                      )
+                    : Icon(
+                        Icons.visibility_off,
+                        size: ComponentsSizes.iconMd,
+                      ),
               ),
               hintText: AppStrings.enterPass,
             ),
