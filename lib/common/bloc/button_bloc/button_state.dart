@@ -15,8 +15,7 @@ class ButtonLoaded extends ButtonState {
 }
 
 class ButtonFailure extends ButtonState {
-  final String message;
-  final StackTrace? stackTrace;
+  final AppErrorType errorType;
 
-  ButtonFailure( {required this.message,this.stackTrace,});
+  ButtonFailure({required this.errorType});
 }

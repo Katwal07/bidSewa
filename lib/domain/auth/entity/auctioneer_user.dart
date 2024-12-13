@@ -49,7 +49,6 @@ class AuctioneerUserClassEntity {
     final int? moneySpent;
     final DateTime? createdAt;
     final int? v;
-
 }
 
 class PaymentMethodsEntity {
@@ -66,7 +65,6 @@ class PaymentMethodsEntity {
     final KhaltiEntity? khalti;
     final ImepayEntity? imepay;
     final PaypalEntity? paypal;
-
 }
 
 class BankTransferEntity {
@@ -83,7 +81,6 @@ class BankTransferEntity {
     final String? swiftCode;
 
 }
-
 class EsewaEntity {
     EsewaEntity({
         required this.esewaNumber,

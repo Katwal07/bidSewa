@@ -42,8 +42,8 @@ class SignupScreen extends StatelessWidget {
             }
           }
           if (state is ButtonFailure) {
-            var snackBar = SnackBar(content: Text(state.message));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            // var snackBar = SnackBar(content: Text(state.message));
+            // ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
         child: Scaffold(

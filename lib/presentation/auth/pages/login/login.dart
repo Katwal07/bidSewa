@@ -56,12 +56,19 @@ class LoginScreen extends StatelessWidget {
             }
           }
           if (state is ButtonFailure) {
-            CustomSnackBar.showCustomSnackBar(
-              context,
-              Colors.redAccent,
-              state.message,
+            showDialog(
+              context: context, 
+              builder: (context)=> AppErrorWidget(
+                errorType: state.errorType, 
+                buttonCubit: context.read<ButtonCubit>()
+              ),
             );
-            debugPrint(state.message);
+            // CustomSnackBar.showCustomSnackBar(
+            //   context,
+            //   Colors.redAccent,
+            //   state.message,
+            // );
+            // debugPrint(state.message);
           }
         },
         child: Scaffold(

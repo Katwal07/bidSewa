@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/widgets/button/reactive_button.dart';
+import 'package:nepa_bid/common/widgets/error/error.dart';
 import 'package:nepa_bid/common/widgets/snackbar/snackbar.dart';
 import 'package:nepa_bid/core/config/validators/validator.dart';
 import 'package:nepa_bid/data/auth/model/signup_req_params_for_auctioneer.dart';

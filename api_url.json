@@ -1,9 +1,0 @@
-{
-    "BASE_URL": "http://192.168.1.117:3000/api/v1/",
-    "login": "user/login",
-    "register": "user/register",
-    "logout": "user/logout",
-    "createItem": "auction/createitem",
-    "getAllItems": "auction/allitems",
-    "getUserProiler": "user/me"
-}
