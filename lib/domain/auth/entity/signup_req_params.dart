@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class SignupReqParamsModel {
+class SignupReqParamsEntity {
   final String fullName;
   final String email;
   final String password;
@@ -8,7 +8,7 @@ class SignupReqParamsModel {
   final String role;
   final File profileImage;
 
-  SignupReqParamsModel({
+  SignupReqParamsEntity({
     required this.fullName,
     required this.phoneNumber,
     required this.email,

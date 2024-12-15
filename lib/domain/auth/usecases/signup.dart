@@ -1,14 +1,8 @@
-import 'package:dartz/dartz.dart';
-import 'package:nepa_bid/core/usecase/usecase.dart';
-import 'package:nepa_bid/domain/auth/repositories/auth.dart';
-import 'package:nepa_bid/service_locator.dart';
+part of 'usecase_imports.dart';
 
-import '../../../data/auth/model/signup_req_params.dart';
-
-class SignUpUseCase implements UseCase<Either, SignupReqParams> {
-
+class SignUpUseCase implements UseCase<Either<Failure, UserResponseEntity>, SignupReqParamsEntity> {
   @override
-  Future<Either> call({SignupReqParams ? param}) async {
+  Future<Either<Failure, UserResponseEntity>> call({SignupReqParamsEntity? param}) async {
     return await sl<AuthRepository>().signup(param!);
   }
 }

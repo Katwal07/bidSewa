@@ -80,7 +80,7 @@ class BottomSizedBox2 extends StatelessWidget {
                         endTime: endTime,
                         images: imagesPath.map((e) => File(e)).toList(),
                         videos: videosPath.map((e) => File(e)).toList(),
-                      ),
+                      ), context: context,
                     );
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

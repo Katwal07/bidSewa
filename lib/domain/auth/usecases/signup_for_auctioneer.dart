@@ -1,13 +1,9 @@
-import 'package:dartz/dartz.dart';
-import 'package:nepa_bid/core/usecase/usecase.dart';
-import 'package:nepa_bid/data/auth/model/signup_req_params_for_auctioneer.dart';
-import 'package:nepa_bid/domain/auth/repositories/auth.dart';
-import 'package:nepa_bid/service_locator.dart';
+part of 'usecase_imports.dart';
 
-class SignupUseCaseForAuctioneer implements UseCase<Either, SignupReqParamsForAuctioneer> {
-
+class SignupUseCaseForAuctioneer
+    implements UseCase<Either<Failure, UserResponseEntity>, SignupReqParamsForAuctioneerEntity> {
   @override
-  Future<Either> call({SignupReqParamsForAuctioneer ? param}) async {
+  Future<Either<Failure, UserResponseEntity>> call({SignupReqParamsForAuctioneerEntity? param}) async {
     return await sl<AuthRepository>().signupForAuctioneer(param!);
   }
 }

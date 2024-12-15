@@ -18,7 +18,7 @@ class SignupScreen extends StatelessWidget {
           create: (context) => CheckBoxCubit(),
         ),
         BlocProvider(
-          create: (context) => ButtonCubit(),
+          create: (context) => AuthCubit(),
         ),
         BlocProvider(
           create: (context) => ImagePickerCubit(),
@@ -27,23 +27,25 @@ class SignupScreen extends StatelessWidget {
           create: (context) => PasswordVisiblityCubit(),
         ),
       ],
-      child: BlocListener<ButtonCubit, ButtonState>(
+      child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is ButtonLoading) {
+          if (state is ButtonLoadingState) {
             const CircularProgressIndicator();
           }
-          if (state is ButtonLoaded) {
-            if (state.success) {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()));
-            } else {
-              var snackBar = SnackBar(content: Text(state.message));
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            }
+          if (state is ButtonLoadedState) {
+            CustomSnackBar.showCustomSnackBar(
+              context,
+              AppColors.borderPrimary,
+              state.message,
+            );
           }
-          if (state is ButtonFailure) {
-            // var snackBar = SnackBar(content: Text(state.message));
-            // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          if (state is ButtonFailureState) {
+             CustomSnackBar.showCustomSnackBar(
+              context,
+              AppColors.error,
+              state.errorMessage,
+            );
+            context.read<AuthCubit>().reset();
           }
         },
         child: Scaffold(

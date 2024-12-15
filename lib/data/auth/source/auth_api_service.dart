@@ -1,46 +1,55 @@
-// ignore_for_file: avoid_print
-
-import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:nepa_bid/core/network/api_client.dart';
-import 'package:nepa_bid/core/network/network_const/api_endpoint_urls.dart';
-import 'package:nepa_bid/data/auth/model/signin_req_params.dart';
-import 'package:nepa_bid/service_locator.dart';
-
-import '../model/signup_req_params.dart';
-import '../model/signup_req_params_for_auctioneer.dart';
+part of 'auth_api_imports.dart';
 
 abstract class AuthApiService {
-  Future<Either> signin(SigninReqParams params);
-  Future<Either> signup(SignupReqParams params);
-  Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneer params);
+  Future<Either<AppException, UserResponseModel>> signin(
+      SigninReqParamsModel params);
+  Future<Either<AppException, UserResponseModel>> signup(
+      SignupReqParamsModel params);
+  Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneerModel params);
   Future<Either> getAuctioneerUserProfile();
 }
 
 class AuthApiServiceImpl extends AuthApiService {
   @override
-  Future<Either> signin(SigninReqParams params) async {
+  Future<Either<AppException, UserResponseModel>> signin(
+      SigninReqParamsModel params) async {
     try {
       var response = await sl<ApiClient>().postRequest(
         path: ApiEndpointUrls.login,
         body: params.toMap(),
       );
-      
-      return Right(response.data);
+      final userResponseModel = UserResponseModel.fromJson(response.data);
+      return Right(userResponseModel);
     } on DioException catch (e) {
-      return Left(e.response!.data['message']);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        throw NetworkException(message: "Unable to connect to the server.");
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        throw NetworkException(message: "No internet connection.");
+      }
+      if (e.response?.statusCode == 401) {
+        throw UnAuthorizedException(
+            message: e.response?.data['message'] ?? "Invalid credentials.");
+      }
+      throw ServerException(
+          message: e.response?.data['message'] ?? "An error occurred.");
     }
   }
 
   @override
-  Future<Either> signup(SignupReqParams params) async {
+  Future<Either<AppException, UserResponseModel>> signup(
+      SignupReqParamsModel params) async {
     try {
       final String fileExtension =
           params.profileImage.path.split('.').last.toLowerCase();
       if (!['jpg', 'jpeg', 'png', 'webp'].contains(fileExtension)) {
-        return const Left(
-            'Invalid file type. Please use JPG, PNG or WebP images.');
+        return Left(
+          ValidationException(
+            message: 'Invalid file type. Please use JPG, PNG or WebP images.',
+          ),
+        );
       }
 
       final FormData formData = FormData.fromMap(
@@ -62,21 +71,38 @@ class AuthApiServiceImpl extends AuthApiService {
         path: ApiEndpointUrls.register,
         body: formData,
       );
-      return Right(response.data);
+      final userResponse = UserResponseModel.fromJson(response.data);
+      return Right(userResponse);
     } on DioException catch (e) {
-      return Left(e.response!.data['message']);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        throw NetworkException(message: "Unable to connect to the server.");
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        throw NetworkException(message: "No internet connection.");
+      }
+      if (e.response?.statusCode == 401) {
+        throw UnAuthorizedException(
+            message: e.response?.data['message'] ?? "Invalid credentials.");
+      }
+      throw ServerException(
+          message: e.response?.data['message'] ?? "An error occurred.");
     }
   }
 
   @override
-  Future<Either> signupForAuctioneer(
-      SignupReqParamsForAuctioneer params) async {
+  Future<Either<AppException, UserResponseModel>> signupForAuctioneer(
+      SignupReqParamsForAuctioneerModel params) async {
     try {
       final String fileExtension =
           params.profileImage.path.split('.').last.toLowerCase();
       if (!['jpg', 'jpeg', 'png', 'webp'].contains(fileExtension)) {
-        return const Left(
-            'Invalid file type. Please use JPG, PNG or WebP images.');
+        return Left(
+          ValidationException(
+            message: 'Invalid file type. Please use JPG, PNG or WebP images.',
+          ),
+        );
       }
 
       final FormData formData = FormData.fromMap(
@@ -107,19 +133,47 @@ class AuthApiServiceImpl extends AuthApiService {
         path: ApiEndpointUrls.register,
         body: formData,
       );
-      return Right(response.data);
+      final userResponse = UserResponseModel.fromJson(response.data);
+      return Right(userResponse);
     } on DioException catch (e) {
-      return Left(e.response!.data['message']);
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        throw NetworkException(message: "Unable to connect to the server.");
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        throw NetworkException(message: "No internet connection.");
+      }
+      if (e.response?.statusCode == 401) {
+        throw UnAuthorizedException(
+            message: e.response?.data['message'] ?? "Invalid credentials.");
+      }
+      throw ServerException(
+          message: e.response?.data['message'] ?? "An error occurred.");
     }
   }
-  
+
   @override
-  Future<Either> getAuctioneerUserProfile() async{
+  Future<Either> getAuctioneerUserProfile() async {
     try {
-      var response = await sl<ApiClient>().getRequest(path: ApiEndpointUrls.getUserProiler);
+      var response = await sl<ApiClient>()
+          .getRequest(path: ApiEndpointUrls.getUserProiler);
       return Right(response.data);
-    }on DioException catch (e) {
-      return Left(e.toString());
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        throw NetworkException(message: "Unable to connect to the server.");
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        throw NetworkException(message: "No internet connection.");
+      }
+      if (e.response?.statusCode == 401) {
+        throw UnAuthorizedException(
+            message: e.response?.data['message'] ?? "Invalid credentials.");
+      }
+      throw ServerException(
+          message: e.response?.data['message'] ?? "An error occurred.");
     }
   }
 }

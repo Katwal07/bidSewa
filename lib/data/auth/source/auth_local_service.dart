@@ -1,6 +1,4 @@
-import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+part of 'auth_api_imports.dart';
 
 abstract class AuthLocalService {
   Future<bool> isLoggedIn();

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class SignupReqParamsForAuctioneerModel {
+class SignupReqParamsForAuctioneerEntity {
   final String fullName;
   final String email;
   final String password;
@@ -17,7 +17,7 @@ class SignupReqParamsForAuctioneerModel {
   final String khaltiNumber;
   final String esewaNumber;
 
-  SignupReqParamsForAuctioneerModel({
+  SignupReqParamsForAuctioneerEntity({
     required this.fullName,
     required this.email,
     required this.password,

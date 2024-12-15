@@ -15,7 +15,7 @@ class ButtonLoaded extends ButtonState {
 }
 
 class ButtonFailure extends ButtonState {
-  final AppErrorType errorType;
+  final String errorMessage;
 
-  ButtonFailure({required this.errorType});
+  ButtonFailure({required this.errorMessage});
 }

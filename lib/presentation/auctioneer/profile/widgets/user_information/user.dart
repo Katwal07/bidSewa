@@ -5,12 +5,12 @@ import 'package:nepa_bid/common/bloc/generic_bloc/generic_cubit.dart';
 import 'package:nepa_bid/common/res/size_configs.dart';
 import 'package:nepa_bid/common/widgets/appbar/appbar.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
-import 'package:nepa_bid/domain/auth/usecases/get_user_profile.dart';
 import 'package:nepa_bid/service_locator.dart';
 
 import '../../../../../common/bloc/generic_bloc/generic_state.dart';
 import '../../../../../core/config/theme/colors.dart';
 import '../../../../../core/config/utils/utils.dart';
+import '../../../../../domain/auth/usecases/usecase_imports.dart';
 
 class UserPersonalInformation extends StatelessWidget {
   const UserPersonalInformation({super.key});

@@ -531,15 +531,15 @@ class SignupForm extends StatelessWidget {
 
                 final File profileImage = File(profileImagePath);
 
-                context.read<ButtonCubit>().execute(
+                context.read<AuthCubit>().execute(
                       usecase: sl<SignUpUseCase>(),
-                      params: SignupReqParams(
+                      params: SignupReqParamsEntity(
                         fullName: _fullNameCon.text,
                         phoneNumber: _phoneNumberCon.text,
                         email: _emailCon.text,
                         password: _passwordCon.text,
                         profileImage: profileImage,
-                      ),
+                      ), context: context,
                     );
               }
             },
@@ -570,9 +570,9 @@ class SignupForm extends StatelessWidget {
 
               final File profileImage = File(profileImagePath);
 
-              context.read<ButtonCubit>().execute(
+              context.read<AuthCubit>().execute(
                     usecase: sl<SignupUseCaseForAuctioneer>(),
-                    params: SignupReqParamsForAuctioneer(
+                    params: SignupReqParamsForAuctioneerEntity(
                       fullName: _fullNameCon.text,
                       email: _emailCon.text,
                       password: _passwordCon.text,
@@ -587,7 +587,7 @@ class SignupForm extends StatelessWidget {
                       imepayNumber: _imePayNoCon.text,
                       khaltiNumber: _khaltiCon.text,
                       esewaNumber: _esewaCon.text,
-                    ),
+                    ), context: context,
                   );
             }
           },

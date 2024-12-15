@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepa_bid/presentation/auth/bloc/auth/auth_cubit.dart';
 import '../../../core/config/theme/colors.dart';
 import '../../../core/constant/sizes.dart';
-import '../../bloc/button_bloc/button_cubit.dart';
 import '../../res/size_configs.dart';
 
 class AppReactiveButton extends StatelessWidget {
@@ -17,9 +17,9 @@ class AppReactiveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ButtonCubit, ButtonState>(
+    return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
-        if (state is ButtonLoading) {
+        if (state is ButtonLoadingState) {
           return _loading(context);
         }
         return _loaded(context);

@@ -19,56 +19,31 @@ class LoginScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => ButtonCubit(),
+          create: (context) => AuthCubit(),
         ),
         BlocProvider(
           create: (context) => PasswordVisiblityCubit(),
         ),
       ],
-      child: BlocListener<ButtonCubit, ButtonState>(
+      child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is ButtonLoading) {
+          if (state is ButtonLoadingState) {
             const CircularProgressIndicator();
           }
-          if (state is ButtonLoaded) {
-            if (state.success) {
-              if (state.role == "Auctioneer") {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, AppRoutesName.navPage, (route) => false);
-                CustomSnackBar.showCustomSnackBar(
-                  context,
-                  AppColors.borderPrimary,
-                  state.message,
-                );
-              } else if (state.role == "Bidder") {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, AppRoutesName.navPageBidder, (route) => false);
-              } else {
-                debugPrint("Navigation not triggered; role is //${state.role}");
-              }
-            } else {
-              CustomSnackBar.showCustomSnackBar(
-                context,
-                Colors.redAccent,
-                state.message,
-              );
-              debugPrint(state.message);
-            }
-          }
-          if (state is ButtonFailure) {
-            showDialog(
-              context: context, 
-              builder: (context)=> AppErrorWidget(
-                errorType: state.errorType, 
-                buttonCubit: context.read<ButtonCubit>()
-              ),
+          if (state is ButtonLoadedState) {
+            CustomSnackBar.showCustomSnackBar(
+              context,
+              AppColors.borderPrimary,
+              state.message,
             );
-            // CustomSnackBar.showCustomSnackBar(
-            //   context,
-            //   Colors.redAccent,
-            //   state.message,
-            // );
-            // debugPrint(state.message);
+          }
+          if (state is ButtonFailureState) {
+            CustomSnackBar.showCustomSnackBar(
+              context,
+              AppColors.error,
+              state.errorMessage,
+            );
+            context.read<AuthCubit>().reset();
           }
         },
         child: Scaffold(
@@ -193,14 +168,14 @@ class LoginScreen extends StatelessWidget {
   Widget _signInTitle(BuildContext context) {
     return Text(
       AppStrings.signin,
-      style: Theme.of(context).textTheme.headlineLarge,
+      style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: AppColors.white),
     );
   }
 
   Widget _signInDesc(BuildContext context) {
     return Text(
       AppStrings.unlockYourWorld,
-      style: Theme.of(context).textTheme.bodyLarge,
+      style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.white),
     );
   }
 
@@ -306,12 +281,13 @@ class LoginScreen extends StatelessWidget {
             label: AppStrings.signin,
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                context.read<ButtonCubit>().execute(
+                context.read<AuthCubit>().execute(
                       usecase: sl<SignInUseCase>(),
-                      params: SigninReqParams(
+                      params: SigninReqParamsEntity(
                         email: _emailCon.text,
                         password: _passCon.text,
                       ),
+                      context: context,
                     );
               }
             },

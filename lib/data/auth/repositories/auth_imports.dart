@@ -1,0 +1,19 @@
+import 'package:dartz/dartz.dart';
+import 'package:nepa_bid/common/mapper/auction_user.dart';
+import 'package:nepa_bid/common/mapper/signin_req_params.dart';
+import 'package:nepa_bid/common/mapper/signup_req_params.dart';
+import 'package:nepa_bid/common/mapper/signup_req_params_for_auctioneer.dart';
+import 'package:nepa_bid/common/mapper/user_response.dart';
+import 'package:nepa_bid/core/error/exception.dart';
+import 'package:nepa_bid/core/error/mapping.dart';
+import 'package:nepa_bid/data/auth/model/auctionner_user.dart';
+import 'package:nepa_bid/domain/auth/entity/signin_req_params.dart';
+import 'package:nepa_bid/domain/auth/entity/signup_req_params.dart';
+import 'package:nepa_bid/domain/auth/entity/signup_req_params_for_auctioneer.dart';
+import 'package:nepa_bid/domain/auth/entity/user_response.dart';
+import '../../../core/error/failure.dart';
+import '../../../domain/auth/repositories/auth_imports.dart';
+import '../../../service_locator.dart';
+import '../source/auth_api_imports.dart';
+
+part 'auth.dart';

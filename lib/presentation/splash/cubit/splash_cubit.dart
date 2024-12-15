@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/domain/auth/usecases/is_logged_in.dart';
 import 'package:nepa_bid/service_locator.dart';
+
+import '../../../domain/auth/usecases/usecase_imports.dart';
 
 part 'splash_state.dart';
 

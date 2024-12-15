@@ -7,10 +7,10 @@ import 'package:nepa_bid/common/bloc/logout/logout_state.dart';
 import 'package:nepa_bid/core/config/routes/routes_name.dart';
 import 'package:nepa_bid/core/config/utils/utils.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
-import 'package:nepa_bid/domain/auth/usecases/get_user_profile.dart';
 import 'package:nepa_bid/service_locator.dart';
 
 import '../../../../core/config/theme/colors.dart';
+import '../../../../domain/auth/usecases/usecase_imports.dart';
 import '../widgets/user_details.dart';
 import '../widgets/user_info.dart';
 

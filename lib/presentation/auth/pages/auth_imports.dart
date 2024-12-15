@@ -1,16 +1,13 @@
-
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/widgets/button/reactive_button.dart';
-import 'package:nepa_bid/common/widgets/error/error.dart';
 import 'package:nepa_bid/common/widgets/snackbar/snackbar.dart';
 import 'package:nepa_bid/core/config/validators/validator.dart';
-import 'package:nepa_bid/data/auth/model/signup_req_params_for_auctioneer.dart';
-import 'package:nepa_bid/domain/auth/usecases/signup_for_auctioneer.dart';
+import 'package:nepa_bid/domain/auth/entity/signin_req_params.dart';
+import 'package:nepa_bid/domain/auth/entity/signup_req_params.dart';
 import 'package:nepa_bid/presentation/auth/bloc/password_visibility/password_cubit.dart';
 import 'package:nepa_bid/presentation/auth/bloc/password_visibility/password_state.dart';
 
@@ -22,11 +19,10 @@ import '../../../core/config/theme/colors.dart';
 import '../../../core/config/utils/utils.dart';
 import '../../../core/constant/sizes.dart';
 import '../../../core/constant/text_string.dart';
-import '../../../data/auth/model/signin_req_params.dart';
-import '../../../data/auth/model/signup_req_params.dart';
-import '../../../domain/auth/usecases/signin.dart';
-import '../../../domain/auth/usecases/signup.dart';
+import '../../../domain/auth/entity/signup_req_params_for_auctioneer.dart';
+import '../../../domain/auth/usecases/usecase_imports.dart';
 import '../../../service_locator.dart';
+import '../bloc/auth/auth_cubit.dart';
 import '../bloc/checkbox/checkbox_cubit.dart';
 import '../bloc/checkbox/checkbox_state.dart';
 import '../bloc/image/image_cubit.dart';

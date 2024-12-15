@@ -5,10 +5,10 @@ import 'package:nepa_bid/common/bloc/logout/logout_cubit.dart';
 import 'package:nepa_bid/common/bloc/logout/logout_state.dart';
 import 'package:nepa_bid/common/res/size_configs.dart';
 import 'package:nepa_bid/core/config/routes/routes_name.dart';
-import 'package:nepa_bid/domain/auth/usecases/logged_out.dart';
 import 'package:nepa_bid/service_locator.dart';
 import '../../../../core/config/assets/app_vectors.dart';
 import '../../../../core/config/theme/colors.dart';
+import '../../../../domain/auth/usecases/usecase_imports.dart';
 
 class UserDetails extends StatelessWidget {
   const UserDetails({

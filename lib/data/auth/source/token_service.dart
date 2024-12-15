@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+part of 'auth_api_imports.dart';
 
 class TokenService {
   static Future<void> saveToken(String token) async {
