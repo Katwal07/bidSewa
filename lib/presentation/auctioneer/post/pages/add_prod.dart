@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/button_bloc/button_cubit.dart';
 import 'package:nepa_bid/common/bloc/image_picker/image_picker_cubit.dart';

@@ -52,7 +52,7 @@ class NavigationScreen extends StatelessWidget {
         color: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withOpacity(.1),
+            color: AppColors.black.withValues(alpha: 0.7),
             blurRadius: 1,
             spreadRadius: 1,
           ),
@@ -60,7 +60,7 @@ class NavigationScreen extends StatelessWidget {
       ),
       child: NavigationBarTheme(
         data: NavigationBarThemeData(
-            indicatorColor: AppColors.lightPrimaryColor.withOpacity(.7),
+            indicatorColor: AppColors.lightPrimaryColor.withValues(alpha: 0.7),
             labelTextStyle:
                 WidgetStateTextStyle.resolveWith((Set<WidgetState> states) {
               if (states.contains(WidgetState.selected)) {

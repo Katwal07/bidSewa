@@ -1,28 +1,49 @@
 import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:nepa_bid/core/error/exception.dart';
 import 'package:nepa_bid/core/network/api_client.dart';
 import 'package:nepa_bid/core/network/network_const/api_endpoint_urls.dart';
+import 'package:nepa_bid/core/network/network_const/constant.dart';
+import 'package:nepa_bid/data/auctioneer/model/auction.dart';
 import 'package:nepa_bid/data/auctioneer/model/post_auction.dart';
 import 'package:nepa_bid/service_locator.dart';
 
 abstract class AuctionApiService {
-  Future<Either> getAllAuctionItems();
+  Future<Either<AppException, List<AuctionItemModel>>> getAllAuctionItems(
+      int page);
   Future<Either> createAuction(PostAuctionItemModel model);
 }
 
 class AuctionApiServiceImpl extends AuctionApiService {
-    @override
-  Future<Either> getAllAuctionItems() async{
+  @override
+  Future<Either<AppException, List<AuctionItemModel>>> getAllAuctionItems(
+      int page) async {
     try {
-      var response = await sl<ApiClient>().getRequest(path: ApiEndpointUrls.getAllItems); 
-      return Right(response.data);
-    }on DioException catch (e) {
-      return Left(e.response!.data['message']);
+      var response = await sl<ApiClient>().getRequest(
+          path:
+              "${ApiEndpointUrls.getAllItems}?limit=$fetchLimit&page=$page");
+
+      final List<AuctionItemModel> auctionItemModel = (response.data['items'] as List).map((item)=> AuctionItemModel.fromJson(item)).toList();
+      return Right(auctionItemModel);
+
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        return Left(NetworkException(message: "Unable to connect to the server."));
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        return Left(NetworkException(message: "No internet connection."));
+      }
+      if (e.response?.statusCode == 401) {
+        return Left(UnAuthorizedException(message: e.response?.data['message'] ?? "Invalid credentials."));
+      }
+      return Left(ServerException(message: e.response?.data['message'] ?? "An error occurred."));
     }
   }
+
   @override
   Future<Either> createAuction(PostAuctionItemModel model) async {
     try {

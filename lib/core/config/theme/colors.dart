@@ -15,7 +15,7 @@ class AppColors {
   static Color darkBgColor = const Color(0XFF1D182A);
   static Color darkContainerColor = const Color(0XFF342F3F);
   static Color darkFontColor = const Color(0XFFFFFFFF);
-  static Color darkLabelColor = const Color(0XFFFFFFFF).withOpacity(0.5);
+  static Color darkLabelColor = const Color(0XFFFFFFFF).withValues(alpha: 0.5);
 
   // Button Background Color
   static const Color buttonPrimary = Color(0xFF8E6CEF);

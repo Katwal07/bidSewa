@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/geolocator/geolocator_cubit.dart';
 import 'package:nepa_bid/common/res/size_configs.dart';
+import 'package:nepa_bid/core/config/routes/routes_name.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
 import 'package:nepa_bid/presentation/bidder/home/widgets/new_bidding.dart';
 
 import '../../../../common/bloc/geolocator/geolocator_state.dart';
+import '../../../../common/widgets/search/search_container.dart';
 import '../widgets/category/category.dart';
-import '../widgets/search.dart';
 import '../widgets/top_bidding.dart';
 
 class HomePageBidder extends StatefulWidget {
@@ -46,7 +47,9 @@ class _HomePageBidderState extends State<HomePageBidder> {
           child: Column(
             children: [
               _buildSpacing(),
-              const SearchBarContainer(),
+              const SearchBarContainer(
+                routesName: AppRoutesName.searchPage,
+              ),
               _buildSpacing(),
               const CategorySection(),
               _buildSpacing(),

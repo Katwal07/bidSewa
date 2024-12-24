@@ -13,14 +13,25 @@ List<NavigationDestination> bottomNavigationBarItems = [
       size: 6 * SizeConfigs.imageSizeMultiplier,
     ),
   ),
-  NavigationDestination(
-    label: 'Add',
+    NavigationDestination(
+    label: 'search',
     icon: Icon(
-      Icons.add_outlined,
+      Icons.search_outlined,
       size: 6 * SizeConfigs.imageSizeMultiplier,
     ),
     selectedIcon: Icon(
-      Icons.add,
+      Icons.search,
+      size: 6 * SizeConfigs.imageSizeMultiplier,
+    ),
+  ),
+  NavigationDestination(
+    label: 'Post',
+    icon: Icon(
+      Icons.article_outlined,
+      size: 6 * SizeConfigs.imageSizeMultiplier,
+    ),
+    selectedIcon: Icon(
+      Icons.article,
       size: 6 * SizeConfigs.imageSizeMultiplier,
     ),
   ),

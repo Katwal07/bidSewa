@@ -40,7 +40,6 @@ class AuthRepositoryImpl extends AuthRepository {
     } on AppException catch (exception) {
       return Left(mapExceptionToFailure(exception));
     } catch (e) {
-      print("Error: $e");
       return Left(UnExceptedFailure(message: "An unknown error occured"));
     }
   }
@@ -54,7 +53,7 @@ class AuthRepositoryImpl extends AuthRepository {
       return result.fold((error) {
         return Left(error);
       }, (data) {
-         final userResponse = UserResponseMapper.toUserResponseEntity(data);
+        final userResponse = UserResponseMapper.toUserResponseEntity(data);
         return Right(userResponse);
       });
     } on AppException catch (exception) {
@@ -75,14 +74,21 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either> getAuctioneerUserProfile() async {
-    Either returnedData = await sl<AuthApiService>().getAuctioneerUserProfile();
-    return returnedData.fold((error) {
-      return Left(error);
-    }, (data) {
-      var userProfile = AuctionUserMapper.toAuctionUserEntity(
-          AuctioneerUserModel.fromJson(data));
-      return Right(userProfile);
-    });
+  Future<Either<Failure, AuctioneerUserEntity>>
+      getAuctioneerUserProfile() async {
+    try {
+      Either returnedData =
+          await sl<AuthApiService>().getAuctioneerUserProfile();
+      return returnedData.fold((error) {
+        return Left(error);
+      }, (data) {
+        var userProfile = AuctionUserMapper.toAuctionUserEntity(data);
+        return Right(userProfile);
+      });
+    } on AppException catch (exception) {
+      return Left(mapExceptionToFailure(exception));
+    } catch (e) {
+      return Left(UnExceptedFailure(message: "An unknown error occured"));
+    }
   }
 }

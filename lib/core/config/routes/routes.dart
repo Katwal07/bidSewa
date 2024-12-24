@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nepa_bid/domain/auctioneer/entity/product_argument.dart';
+import 'package:nepa_bid/domain/bidder/entity/item_entity.dart';
 import 'package:nepa_bid/presentation/auctioneer/home/pages/home.dart';
 import 'package:nepa_bid/presentation/auctioneer/profile/pages/profile.dart';
 import 'package:nepa_bid/presentation/auctioneer/profile/widgets/user_information/user.dart';
+import 'package:nepa_bid/presentation/auctioneer/search/pages/search_screen.dart';
 import 'package:nepa_bid/presentation/bidder/home/pages/home.dart';
 import 'package:nepa_bid/presentation/bidder/home/widgets/category/see_all.dart';
 import 'package:nepa_bid/presentation/bidder/search/pages/search.dart';
 import 'package:nepa_bid/presentation/navigation_bar/auctioneer/pages/navigation.dart';
+import '../../../common/widgets/detail_page/detail_page.dart';
 import '../../../presentation/auctioneer/post/pages/add_prod.dart';
 import '../../../presentation/auctioneer/post/pages/add_prod_desc.dart';
 import '../../../presentation/auth/pages/auth_imports.dart';
@@ -48,6 +51,8 @@ class Routes {
         return MaterialPageRoute(builder: (context) => const ProfileScreen());
       case AppRoutesName.userDetails:
         return MaterialPageRoute(builder: (context) => const UserPersonalInformation());
+      case AppRoutesName.searchScreen:
+        return MaterialPageRoute(builder: (context)=> const SearchScreen());
       /// Bidder
       case AppRoutesName.navPageBidder:
         return MaterialPageRoute(builder: (context) => const NavigationScreenBidder());
@@ -57,6 +62,11 @@ class Routes {
         return MaterialPageRoute(builder: (context) => const SearchPageBidder());
       case AppRoutesName.seeAllCategory:
         return MaterialPageRoute(builder: (context) => const SeeAllCategorySection());
+      case AppRoutesName.detailsPage:
+        final itemEntity = settings.arguments as ItemEntity;
+        return MaterialPageRoute(builder: (context) => DetailPage(
+          itemEntity: itemEntity,
+        ));
       default:
         return MaterialPageRoute(builder: (context) {
           return const Scaffold(

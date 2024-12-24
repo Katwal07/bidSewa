@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/generic_bloc/generic_state.dart';
 import 'package:nepa_bid/core/usecase/usecase.dart';
@@ -5,12 +6,12 @@ import 'package:nepa_bid/core/usecase/usecase.dart';
 class GenericCubit extends Cubit<GenericState> {
   GenericCubit() : super(DataInitial());
 
-  void execute<T>(UseCase usecase, {dynamic params}) async {
+  void execute<T>(UseCase usecase, {dynamic params,}) async {
     emit(DataLoading());
 
-    var returnedData = await usecase.call(param: params);
+    Either returnedData = await usecase.call(param: params);
     returnedData.fold((error) {
-      emit(DataFailure(errorMessage: error));
+      emit(DataFailure(errorMessage: error.toString()));
     }, (data) {
       emit(DataLoaded<T>(data: data));
     });

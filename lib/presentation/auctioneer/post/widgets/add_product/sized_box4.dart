@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/button_bloc/button_cubit.dart';
 import 'package:nepa_bid/common/bloc/image_picker/image_picker_cubit.dart';
 import 'package:nepa_bid/common/bloc/video_picker/video_picker_cubit.dart';
-import 'package:nepa_bid/common/widgets/button/reactive_button.dart';
+import 'package:nepa_bid/common/widgets/button/others_reactive_button.dart';
 import 'package:nepa_bid/domain/auctioneer/usecases/create_auction_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
 import '../../../../../domain/auctioneer/entity/post_auction.dart';
@@ -37,7 +37,7 @@ class BottomSizedBox2 extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: Builder(builder: (context) {
-          return AppReactiveButton(
+          return OthersReactiveButton(
             onPressed: () async {
               try {
                 final MultipleImagePickerCubit imagePickerCubit =

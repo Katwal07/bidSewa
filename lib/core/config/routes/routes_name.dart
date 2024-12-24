@@ -15,10 +15,14 @@ class AppRoutesName {
   static const String homeScreen = 'home_screen';
   static const String profileScreen = 'profile_screen';
   static const String userDetails = 'user_details';
+  static const String searchScreen = 'search_screen';
 
   /// Bidder
   static const String navPageBidder = 'nav_page_bidder';
   static const String homeScreenBidder = 'home_screen_bidder';
   static const String searchPage = 'search_page';
   static const String seeAllCategory = 'category_page';
+  static const String detailsPage = 'details_page';
+
+
 }

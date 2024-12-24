@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,11 +27,11 @@ class LoggerInterceptor extends Interceptor {
     /// 2.Log the Full Request Path
     logger.e('${options.baseUrl} request ==> $requestPath');
 
-  print('🐛 Error type: ${err.type}');
-  print('🐛 Error message: ${err.message}');
-  print('🐛 Status code: ${err.response?.statusCode}');
-  print('🐛 Response data: ${err.response?.data}');
-  print('🐛 Request data: ${err.requestOptions.data}');
+  debugPrint('🐛 Error type: ${err.type}');
+  debugPrint('🐛 Error message: ${err.message}');
+  debugPrint('🐛 Status code: ${err.response?.statusCode}');
+  debugPrint('🐛 Response data: ${err.response?.data}');
+  debugPrint('🐛 Request data: ${err.requestOptions.data}');
 
     /// 3.Log Detailed Error Information
     logger.d(

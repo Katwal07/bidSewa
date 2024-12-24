@@ -22,13 +22,15 @@ class CustomCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: isDarkTheme ? AppColors.white : AppColors.grey,
-            ),
-            child: Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: isDarkTheme ? AppColors.white : AppColors.grey,
+              ),
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           Container(
@@ -40,7 +42,7 @@ class CustomCard extends StatelessWidget {
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
-                horizontal: 2.8 * SizeConfigs.heightMultiplier,
+                horizontal: 0.8 * SizeConfigs.heightMultiplier,
                 vertical: 1.07 * SizeConfigs.heightMultiplier,
               ),
               child: Column(

@@ -6,5 +6,5 @@ abstract class AuthRepository{
   Future<Either<Failure, UserResponseEntity>> signupForAuctioneer(SignupReqParamsForAuctioneerEntity params);
   Future<bool> isLoggedIn();
   Future<Either> loggedOut();
-  Future<Either> getAuctioneerUserProfile();
+  Future<Either<Failure, AuctioneerUserEntity>> getAuctioneerUserProfile();
 }

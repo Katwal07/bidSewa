@@ -75,13 +75,36 @@ class TopSizedBox1 extends StatelessWidget {
                           context,
                           "Product Condition",
                         ),
-                        _buildTextField(
-                          context,
-                          "Ex. new",
-                          1,
-                          1,
-                          TextInputType.text,
-                          productConditionCon,
+                        GestureDetector(
+                          onTap: () {
+                            showMenu(
+                              context: context,
+                              position: const RelativeRect.fromLTRB(
+                                  400, 300, 50, 100),
+                              items: [
+                                const PopupMenuItem(
+                                  value: "new",
+                                  child: Text("new"),
+                                ),
+                                const PopupMenuItem(
+                                  value: "old",
+                                  child: Text("old"),
+                                )
+                              ],
+                            );
+                          },
+                          child: Container(
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Select Product Condition",style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                                const Icon(Icons.check_circle_outline_outlined)
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),

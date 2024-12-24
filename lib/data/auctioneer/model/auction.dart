@@ -1,20 +1,3 @@
-class AuctionUserModel {
-    AuctionUserModel({
-        required this.success,
-        required this.items,
-    });
-
-    final bool? success;
-    final List<AuctionItemModel> items;
-
-    factory AuctionUserModel.fromJson(Map<String, dynamic> json){ 
-        return AuctionUserModel(
-            success: json["success"],
-            items: json["items"] == null ? [] : List<AuctionItemModel>.from(json["items"]!.map((x) => AuctionItemModel.fromJson(x))),
-        );
-    }
-}
-
 class AuctionItemModel {
     AuctionItemModel({
         required this.id,

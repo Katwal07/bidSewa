@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/geolocator/geolocator_cubit.dart';
+import 'package:nepa_bid/common/bloc/pagination/pagination_cubit.dart';
 import '../common/res/size_configs.dart';
 import '../core/config/routes/routes.dart';
 import '../core/config/routes/routes_name.dart';
@@ -11,8 +12,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GeolocatorCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GeolocatorCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PaginationCubit(),
+        ),
+      ],
       child: LayoutBuilder(
         builder: (context, constraints) {
           return OrientationBuilder(

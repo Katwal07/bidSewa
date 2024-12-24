@@ -1,12 +1,3 @@
-class AuctionUserEntity {
-  AuctionUserEntity({
-    required this.success,
-    required this.items,
-  });
-
-  final bool? success;
-  final List<AuctionItemEntity> items;
-}
 
 class AuctionItemEntity {
   AuctionItemEntity({

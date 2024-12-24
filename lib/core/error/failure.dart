@@ -22,4 +22,6 @@ class ValidationFailure extends Failure{
 
 class UnExceptedFailure extends Failure{
   UnExceptedFailure({required super.message});
+  @override
+  String toString() => "UnExpectedFailure: $message";
 }

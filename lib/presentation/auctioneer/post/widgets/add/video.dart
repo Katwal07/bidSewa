@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -52,7 +51,9 @@ class AddProductVideo extends StatelessWidget {
                 AppVectors.video,
                 height: 40,
                 width: 40,
-                color: isDarkTheme ? AppColors.white : AppColors.black,
+                colorFilter: ColorFilter.mode(
+                    isDarkTheme ? AppColors.white : AppColors.black,
+                    BlendMode.srcIn),
               ),
             ),
           );
@@ -127,7 +128,8 @@ class AddProductVideo extends StatelessWidget {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        color: AppColors.error.withOpacity(.7),
+                                        color: AppColors.error
+                                            .withValues(alpha: 0.7),
                                         shape: BoxShape.circle),
                                     child: const Icon(
                                       Icons.close,
@@ -149,7 +151,9 @@ class AddProductVideo extends StatelessWidget {
                       AppVectors.video,
                       height: 40,
                       width: 40,
-                      color: isDarkTheme ? AppColors.white : AppColors.black,
+                      colorFilter: ColorFilter.mode(
+                          isDarkTheme ? AppColors.white : AppColors.black,
+                          BlendMode.srcIn),
                     ),
                   ),
                 ],

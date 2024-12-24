@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:nepa_bid/domain/auth/entity/auctioneer_user.dart';
 import 'package:nepa_bid/domain/auth/entity/user_response.dart';
 import '../../../core/error/failure.dart';
 import '../../../core/usecase/usecase.dart';

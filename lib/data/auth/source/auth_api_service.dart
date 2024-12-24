@@ -6,7 +6,7 @@ abstract class AuthApiService {
   Future<Either<AppException, UserResponseModel>> signup(
       SignupReqParamsModel params);
   Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneerModel params);
-  Future<Either> getAuctioneerUserProfile();
+  Future<Either<AppException, AuctioneerUserModel>> getAuctioneerUserProfile();
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -154,11 +154,12 @@ class AuthApiServiceImpl extends AuthApiService {
   }
 
   @override
-  Future<Either> getAuctioneerUserProfile() async {
+  Future<Either<AppException, AuctioneerUserModel>> getAuctioneerUserProfile() async {
     try {
       var response = await sl<ApiClient>()
-          .getRequest(path: ApiEndpointUrls.getUserProiler);
-      return Right(response.data);
+          .getRequest(path: ApiEndpointUrls.getUserProfile);
+      var userProfile = AuctioneerUserModel.fromJson(response.data);
+      return Right(userProfile);
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||

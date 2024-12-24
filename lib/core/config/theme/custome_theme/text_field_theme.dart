@@ -60,7 +60,7 @@ class AppTextFieldTheme {
         color: AppColors.darkLabelColor),
     errorStyle: const TextStyle().copyWith(fontStyle: FontStyle.normal),
     floatingLabelStyle:
-        const TextStyle().copyWith(color: AppColors.grey.withOpacity(0.5)),
+        const TextStyle().copyWith(color: AppColors.grey.withValues(alpha: 0.5)),
     border: const OutlineInputBorder().copyWith(
       borderRadius: BorderRadius.circular(1.5 * (SizeConfigs.heightMultiplier)),
       borderSide: const BorderSide(width: 1, color: AppColors.grey),

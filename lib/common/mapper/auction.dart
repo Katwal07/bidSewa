@@ -2,13 +2,6 @@ import 'package:nepa_bid/data/auctioneer/model/auction.dart';
 import 'package:nepa_bid/domain/auctioneer/entity/auction.dart';
 
 class AuctionMapper {
-  static AuctionUserEntity toEntity(AuctionUserModel user) {
-    return AuctionUserEntity(
-      success: user.success,
-      items: user.items.map(toAuctionItemEntity).toList(),
-    );
-  }
-
   static AuctionItemEntity toAuctionItemEntity(AuctionItemModel item) {
     return AuctionItemEntity(
       id: item.id,

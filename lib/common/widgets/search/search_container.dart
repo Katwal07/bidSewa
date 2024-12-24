@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:nepa_bid/core/config/routes/routes_name.dart';
 import '../../../../common/res/size_configs.dart';
 import '../../../../core/config/theme/colors.dart';
 import '../../../../core/config/utils/utils.dart';
 import '../../../../core/constant/sizes.dart';
 
 class SearchBarContainer extends StatelessWidget {
-  const SearchBarContainer({super.key});
+  const SearchBarContainer({super.key, required this.routesName});
+  final String routesName;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class SearchBarContainer extends StatelessWidget {
     return GestureDetector(
       onTap: (){
 
-        Navigator.pushNamed(context, AppRoutesName.searchPage);
+        Navigator.pushNamed(context, routesName);
       },
       child: Container(
         height: 6.44 * SizeConfigs.heightMultiplier,
