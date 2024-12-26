@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nepa_bid/common/bloc/generic_bloc/generic_cubit.dart';
 import 'package:nepa_bid/common/res/size_configs.dart';
+import 'package:nepa_bid/core/constant/text_string.dart';
 import '../../../../common/bloc/generic_bloc/generic_state.dart';
 import '../../../../core/config/assets/app_vectors.dart';
 import '../../../../core/config/theme/colors.dart';
@@ -71,9 +72,9 @@ class UserInfo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildUserInfos(context, "Order", AppVectors.order),
-          _buildUserInfos(context, "Payments", AppVectors.payment),
-          _buildUserInfos(context, "Address", AppVectors.address),
+          _buildUserInfos(context, AppStrings.order, AppVectors.order),
+          _buildUserInfos(context, AppStrings.payments, AppVectors.payment),
+          _buildUserInfos(context, AppStrings.address, AppVectors.address),
         ],
       ),
     );
@@ -87,8 +88,7 @@ class UserInfo extends StatelessWidget {
           width: 7.3 * SizeConfigs.widthMultiplier,
           height: 3.28 * SizeConfigs.heightMultiplier,
           vectors,
-          // ignore: deprecated_member_use
-          color: AppColors.grey,
+          colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
         ),
         _buildHeight5(),
         Text(

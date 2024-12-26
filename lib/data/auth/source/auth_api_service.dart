@@ -7,6 +7,7 @@ abstract class AuthApiService {
       SignupReqParamsModel params);
   Future<Either> signupForAuctioneer(SignupReqParamsForAuctioneerModel params);
   Future<Either<AppException, AuctioneerUserModel>> getAuctioneerUserProfile();
+  Future<Either<AppException, BidderUserModel>> getBidderUserProfile();
 }
 
 class AuthApiServiceImpl extends AuthApiService {
@@ -159,6 +160,31 @@ class AuthApiServiceImpl extends AuthApiService {
       var response = await sl<ApiClient>()
           .getRequest(path: ApiEndpointUrls.getUserProfile);
       var userProfile = AuctioneerUserModel.fromJson(response.data);
+      return Right(userProfile);
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        throw NetworkException(message: "Unable to connect to the server.");
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        throw NetworkException(message: "No internet connection.");
+      }
+      if (e.response?.statusCode == 401) {
+        throw UnAuthorizedException(
+            message: e.response?.data['message'] ?? "Invalid credentials.");
+      }
+      throw ServerException(
+          message: e.response?.data['message'] ?? "An error occurred.");
+    }
+  }
+  
+  @override
+  Future<Either<AppException, BidderUserModel>> getBidderUserProfile() async{
+    try {
+      var response = await sl<ApiClient>()
+          .getRequest(path: ApiEndpointUrls.getUserProfile);
+      var userProfile = BidderUserModel.fromJson(response.data);
       return Right(userProfile);
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||

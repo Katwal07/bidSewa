@@ -23,6 +23,7 @@ class AppRoutesName {
   static const String searchPage = 'search_page';
   static const String seeAllCategory = 'category_page';
   static const String detailsPage = 'details_page';
+  static const String bidderDetails = 'bidder_details';
 
 
 }

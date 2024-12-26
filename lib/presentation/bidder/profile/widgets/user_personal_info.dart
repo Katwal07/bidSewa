@@ -7,13 +7,13 @@ import 'package:nepa_bid/common/widgets/appbar/appbar.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
 import 'package:nepa_bid/service_locator.dart';
 
-import '../../../../../common/bloc/generic_bloc/generic_state.dart';
-import '../../../../../core/config/theme/colors.dart';
-import '../../../../../core/config/utils/utils.dart';
-import '../../../../../domain/auth/usecases/usecase_imports.dart';
+import '../../../../common/bloc/generic_bloc/generic_state.dart';
+import '../../../../core/config/theme/colors.dart';
+import '../../../../core/config/utils/utils.dart';
+import '../../../../domain/auth/usecases/usecase_imports.dart';
 
-class UserPersonalInformation extends StatelessWidget {
-  const UserPersonalInformation({super.key});
+class BidderPersonalInformation extends StatelessWidget {
+  const BidderPersonalInformation({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class UserPersonalInformation extends StatelessWidget {
       statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
     ));
     return BlocProvider(
-      create: (context) => GenericCubit()..execute(sl<GetUserProfileUseCase>()),
+      create: (context) => GenericCubit()..execute(sl<GetBidderUserProfileUseCase>()),
       child: Scaffold(
         appBar: const CustomAppBar(title: "User Details"),
         backgroundColor:
@@ -64,37 +64,12 @@ class UserPersonalInformation extends StatelessWidget {
                           _userTitleAndInfo(
                               context, "Email", userData.user.email),
                           _buildHeight10(),
-                          _userTitleAndInfo(context, "Address", userData.user.address),
-                          _buildHeight10(),
                           _userTitleAndInfo(context, "Phone", userData.user.phone),
                           _buildHeight10(),
                           _userTitleAndInfo(context, "Role", userData.user.role),
                           _buildHeight10(),
                           _divider(),
                           _buildHeight10(),
-                          _userDetailsTitle(context, "Payment Details"),
-                          _buildHeight15(),
-                          _userTitleAndInfo(
-                              context, "AccountName", userData.user.paymentMethods.bankTransfer.bankAccountName),
-                          _buildHeight5(),
-                          _userTitleAndInfo(
-                              context, "AccountNumber", userData.user.paymentMethods.bankTransfer.bankAccountNumber),
-                          _buildHeight5(),
-                          _userTitleAndInfo(
-                              context, "Bank Name", userData.user.paymentMethods.bankTransfer.bankName),
-                          _buildHeight5(),
-                          _userTitleAndInfo(context, "Swift Code", userData.user.paymentMethods.bankTransfer.swiftCode),
-                          _buildHeight15(),
-                          _userTitleAndInfo(context, "Esewa", userData.user.paymentMethods.esewa.esewaNumber),
-                          _buildHeight5(),
-                          _userTitleAndInfo(context, "Khalti", userData.user.paymentMethods.khalti.khaltiNumber),
-                          _buildHeight5(),
-                          _userTitleAndInfo(context, "Imepay", userData.user.paymentMethods.imepay.imepayNumber),
-                          _buildHeight5(),
-                          _userTitleAndInfo(
-                              context, "Paypal", userData.user.paymentMethods.paypal.paypalEmail),
-                          _divider(),
-                          _buildHeight15(),
                         ],
                       )
                     ],
@@ -169,18 +144,6 @@ class UserPersonalInformation extends StatelessWidget {
   Widget _buildHeight10() {
     return SizedBox(
       height: 1.07 * SizeConfigs.heightMultiplier,
-    );
-  }
-
-  Widget _buildHeight15() {
-    return SizedBox(
-      height: 1.61 * SizeConfigs.heightMultiplier,
-    );
-  }
-
-  Widget _buildHeight5() {
-    return SizedBox(
-      height: 0.54 * SizeConfigs.heightMultiplier,
     );
   }
 }

@@ -7,4 +7,5 @@ abstract class AuthRepository{
   Future<bool> isLoggedIn();
   Future<Either> loggedOut();
   Future<Either<Failure, AuctioneerUserEntity>> getAuctioneerUserProfile();
+  Future<Either<Failure, BidderUserEntity>> getBidderUserProfile();
 }

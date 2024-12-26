@@ -44,9 +44,9 @@ void setupServiceLocator() {
   sl.registerSingleton<CreateAuctionUsecase>(CreateAuctionUsecase());
   sl.registerSingleton<AuctionUseCase>(AuctionUseCase());
   sl.registerSingleton<GetUserProfileUseCase>(GetUserProfileUseCase());
+  sl.registerSingleton<GetBidderUserProfileUseCase>(GetBidderUserProfileUseCase());
   sl.registerSingleton<GetNewsInUsecase>(GetNewsInUsecase());
   sl.registerSingleton<GetTopBiddUsecase>(GetTopBiddUsecase());
   sl.registerSingleton<GetItemsDetailsUsecase>(GetItemsDetailsUsecase());
-    sl.registerSingleton<BidderPlaceBidUsecase>(BidderPlaceBidUsecase());
-
+  sl.registerSingleton<BidderPlaceBidUsecase>(BidderPlaceBidUsecase());
 }

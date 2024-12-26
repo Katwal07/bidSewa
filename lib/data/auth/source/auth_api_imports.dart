@@ -5,6 +5,7 @@ import 'package:nepa_bid/core/error/exception.dart';
 import 'package:nepa_bid/core/network/api_client.dart';
 import 'package:nepa_bid/core/network/network_const/api_endpoint_urls.dart';
 import 'package:nepa_bid/data/auth/model/auctionner_user.dart';
+import 'package:nepa_bid/data/auth/model/bidder_user.dart';
 import 'package:nepa_bid/data/auth/model/signin_req_params.dart';
 import 'package:nepa_bid/data/auth/model/user_response.dart';
 import 'package:nepa_bid/service_locator.dart';

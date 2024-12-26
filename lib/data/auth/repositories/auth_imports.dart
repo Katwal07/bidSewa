@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:nepa_bid/common/mapper/auction_user.dart';
+import 'package:nepa_bid/common/mapper/bidder_user.dart';
 import 'package:nepa_bid/common/mapper/signin_req_params.dart';
 import 'package:nepa_bid/common/mapper/signup_req_params.dart';
 import 'package:nepa_bid/common/mapper/signup_req_params_for_auctioneer.dart';
@@ -7,6 +8,7 @@ import 'package:nepa_bid/common/mapper/user_response.dart';
 import 'package:nepa_bid/core/error/exception.dart';
 import 'package:nepa_bid/core/error/mapping.dart';
 import 'package:nepa_bid/domain/auth/entity/auctioneer_user.dart';
+import 'package:nepa_bid/domain/auth/entity/bidder_user.dart';
 import 'package:nepa_bid/domain/auth/entity/signin_req_params.dart';
 import 'package:nepa_bid/domain/auth/entity/signup_req_params.dart';
 import 'package:nepa_bid/domain/auth/entity/signup_req_params_for_auctioneer.dart';

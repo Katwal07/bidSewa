@@ -49,4 +49,17 @@ class AppStrings{
   static const String addProduct = "Add Product";
   static const String productImage = "Product Image (0/4)";
   static const String addVideo = "Product Video (0/2)";
+
+  /// User
+  static const String userDetails = "User Details";
+  static const String settings = "Settings";
+  static const String helpAndSupport = "Help & Supports";
+  static const String changeLanguage = "Change Language";
+  static const String logOut = "Logout";
+  static const String order = "Order";
+  static const String payments = "Payments";
+  static const String englishValue = "english";
+  static const String english = "English";
+  static const String nepaliValue = "nepali";
+  static const String nepali = "नेपाली";
 }

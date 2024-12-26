@@ -9,10 +9,11 @@ import 'package:nepa_bid/core/config/utils/utils.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
 import 'package:nepa_bid/service_locator.dart';
 
+import '../../../../common/bloc/generic_bloc/generic_state.dart';
+import '../../../../common/widgets/profile/user_details.dart';
+import '../../../../common/widgets/profile/user_info.dart';
 import '../../../../core/config/theme/colors.dart';
 import '../../../../domain/auth/usecases/usecase_imports.dart';
-import '../widgets/user_details.dart';
-import '../widgets/user_info.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -31,7 +32,8 @@ class ProfileScreen extends StatelessWidget {
           create: (context) => LogoutCubit(),
         ),
         BlocProvider(
-          create: (context) => GenericCubit()..execute(sl<GetUserProfileUseCase>()),
+          create: (context) =>
+              GenericCubit()..execute(sl<GetUserProfileUseCase>()),
         ),
       ],
       child: BlocListener<LogoutCubit, LogoutState>(
@@ -48,12 +50,19 @@ class ProfileScreen extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: ComponentsSizes.horizontalPadding),
-              child: const Stack(
-                fit: StackFit.expand,
-                children: [
-                  UserInfo(),
-                  UserDetails(),
-                ],
+              child: BlocBuilder<GenericCubit, GenericState>(
+                builder: (context, state) {
+                  if (state is DataLoaded) {
+                    return Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        const UserInfo(),
+                        UserDetails(userRole: state.data.user.role),
+                      ],
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
             ),
           ),

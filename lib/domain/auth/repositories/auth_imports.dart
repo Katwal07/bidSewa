@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:nepa_bid/domain/auth/entity/auctioneer_user.dart';
+import 'package:nepa_bid/domain/auth/entity/bidder_user.dart';
 import 'package:nepa_bid/domain/auth/entity/signin_req_params.dart';
 import 'package:nepa_bid/domain/auth/entity/signup_req_params.dart';
 import 'package:nepa_bid/domain/auth/entity/signup_req_params_for_auctioneer.dart';

@@ -76,19 +76,23 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<Either<Failure, AuctioneerUserEntity>>
       getAuctioneerUserProfile() async {
-    try {
-      Either returnedData =
-          await sl<AuthApiService>().getAuctioneerUserProfile();
-      return returnedData.fold((error) {
-        return Left(error);
-      }, (data) {
-        var userProfile = AuctionUserMapper.toAuctionUserEntity(data);
-        return Right(userProfile);
-      });
-    } on AppException catch (exception) {
-      return Left(mapExceptionToFailure(exception));
-    } catch (e) {
-      return Left(UnExceptedFailure(message: "An unknown error occured"));
-    }
+    Either returnedData = await sl<AuthApiService>().getAuctioneerUserProfile();
+    return returnedData.fold((error) {
+      return Left(mapExceptionToFailure(error));
+    }, (data) {
+      var userProfile = AuctionUserMapper.toAuctionUserEntity(data);
+      return Right(userProfile);
+    });
+  }
+
+  @override
+  Future<Either<Failure, BidderUserEntity>> getBidderUserProfile() async{
+    Either returnedData = await sl<AuthApiService>().getBidderUserProfile();
+    return returnedData.fold((error) {
+      return Left(mapExceptionToFailure(error));
+    }, (data) {
+      var userProfile = BidderUserMapper.toBidderUserEntity(data);
+      return Right(userProfile);
+    });
   }
 }
