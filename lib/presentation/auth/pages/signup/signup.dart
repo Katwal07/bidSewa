@@ -5,15 +5,12 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final isDarkTheme = AppUtils.isDarkTheme(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:
-          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
-      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
-    ));
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) =>
+              NetworkCubit(networkInfoRepository: sl<NetworkInfoRepository>()),
+        ),
         BlocProvider(
           create: (context) => CheckBoxCubit(),
         ),
@@ -23,7 +20,7 @@ class SignupScreen extends StatelessWidget {
         BlocProvider(
           create: (context) => ImagePickerCubit(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => PasswordVisiblityCubit(),
         ),
       ],
@@ -40,7 +37,7 @@ class SignupScreen extends StatelessWidget {
             );
           }
           if (state is ButtonFailureState) {
-             CustomSnackBar.showCustomSnackBar(
+            CustomSnackBar.showCustomSnackBar(
               context,
               AppColors.error,
               state.errorMessage,
@@ -48,31 +45,50 @@ class SignupScreen extends StatelessWidget {
             context.read<AuthCubit>().reset();
           }
         },
-        child: Scaffold(
-          appBar: AppBar(),
-          backgroundColor: AppColors.lightPrimaryColor,
-          body: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: ComponentsSizes.defaultSpace,
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    /// Singup Text
-                    _signupText(context),
-                    
-                    SizedBox(
-                      height: ComponentsSizes.defaultSpace * 3,
-                    ),
+        child: BlocBuilder<NetworkCubit, ConnectivityState>(
+          builder: (context, state) {
+            if (state is NetworkConnected) {
+              return Scaffold(
+                appBar: CustomAppBar(
+                  darkStatusBarColor: AppColors.lightPrimaryColor,
+                  lightStatusBarColor: AppColors.lightPrimaryColor,
+                  statusBarBrightness: Brightness.dark,
+                  icon: Icons.arrow_back,
 
-                    /// Signup Form
-                    SignupForm(),
-                  ],
                 ),
-              ),
-            ),
-          ),
+                backgroundColor: AppColors.lightPrimaryColor,
+                body: SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: ComponentsSizes.defaultSpace,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          /// Singup Text
+                          _signupText(context),
+
+                          SizedBox(
+                            height: ComponentsSizes.defaultSpace * 3,
+                          ),
+
+                          /// Signup Form
+                          const SignupForm(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+            if (state is NetworkDisconnected) {
+              return const NoInternetConnectionWidget();
+            }
+            if (state is NetworkChecking) {
+              return const NoInternetConnectionWidget();
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );

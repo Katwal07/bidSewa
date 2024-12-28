@@ -1,8 +1,13 @@
 part of '../pages/auth_imports.dart';
 
-class SignupForm extends StatelessWidget {
-  SignupForm({super.key});
+class SignupForm extends StatefulWidget {
+  const SignupForm({super.key});
 
+  @override
+  State<SignupForm> createState() => _SignupFormState();
+}
+
+class _SignupFormState extends State<SignupForm> {
   final TextEditingController _fullNameCon = TextEditingController();
 
   final TextEditingController _emailCon = TextEditingController();
@@ -32,16 +37,34 @@ class SignupForm extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    _fullNameCon.dispose();
+    _emailCon.dispose();
+    _passwordCon.dispose();
+    _phoneNumberCon.dispose();
+    _bankAccountNameCon.dispose();
+    _bankAccountNumberCon.dispose();
+    _bankNameCon.dispose();
+    _swiftCodeCon.dispose();
+    _addressCon.dispose();
+    _payPalEmailCon.dispose();
+    _imePayNoCon.dispose();
+    _khaltiCon.dispose();
+    _esewaCon.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bool isDarkTheme = AppUtils.isDarkTheme(context);
     return BlocBuilder<CheckBoxCubit, CheckBoxState>(
       builder: (context, state) {
         return SingleChildScrollView(
           child: Container(
-            height: ComponentsSizes.productItemHeight * 2,
+            height: ComponentsSizes.productItemHeight * 2.2,
             decoration: BoxDecoration(
               color:
-                  isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+                  isDarkTheme ? AppColors.darkContainerColor : AppColors.lightContainerColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(ComponentsSizes.borderRadiusLg),
               ),
@@ -265,7 +288,7 @@ class SignupForm extends StatelessWidget {
                   size: ComponentsSizes.iconMd,
                 ),
               ),
-              hintText: AppStrings.enterPass,
+              labelText: AppStrings.enterPass,
             ),
           );
         }
@@ -329,8 +352,8 @@ class SignupForm extends StatelessWidget {
                 width: SizeConfigs.widthMultiplier * 9.3,
                 decoration: BoxDecoration(
                   color: isDarkTheme
-                      ? AppColors.darkBgColor
-                      : AppColors.lightBgColor,
+                      ? AppColors.darkContainerColor
+                      : AppColors.lightContainerColor,
                   border: Border.all(
                       color: isDarkTheme ? AppColors.grey : AppColors.black),
                   borderRadius: BorderRadius.only(
@@ -349,8 +372,8 @@ class SignupForm extends StatelessWidget {
                 width: SizeConfigs.widthMultiplier * 30,
                 decoration: BoxDecoration(
                   color: isDarkTheme
-                      ? AppColors.darkBgColor
-                      : AppColors.lightBgColor,
+                      ? AppColors.darkContainerColor
+                      : AppColors.lightContainerColor,
                   border: Border.all(
                       color: isDarkTheme ? AppColors.grey : AppColors.black),
                   borderRadius: BorderRadius.only(
@@ -409,8 +432,8 @@ class SignupForm extends StatelessWidget {
                 width: SizeConfigs.widthMultiplier * 30,
                 decoration: BoxDecoration(
                   color: isDarkTheme
-                      ? AppColors.darkBgColor
-                      : AppColors.lightBgColor,
+                      ? AppColors.darkContainerColor
+                      : AppColors.lightContainerColor,
                   border: Border.all(
                       color: isDarkTheme ? AppColors.grey : AppColors.black),
                   borderRadius: BorderRadius.only(
@@ -603,7 +626,7 @@ class SignupForm extends StatelessWidget {
       children: [
         Text(
           AppStrings.haveAnAccout,
-          style: Theme.of(context).textTheme.labelLarge,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         TextButton(
           onPressed: () {
@@ -613,7 +636,7 @@ class SignupForm extends StatelessWidget {
             AppStrings.signin,
             style: Theme.of(context)
                 .textTheme
-                .bodySmall!
+                .titleMedium!
                 .copyWith(color: AppColors.lightPrimaryColor),
           ),
         )

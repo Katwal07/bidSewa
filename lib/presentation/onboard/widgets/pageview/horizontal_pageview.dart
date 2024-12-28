@@ -22,22 +22,21 @@ class HorizontalPageView extends StatelessWidget {
         SizedBox(
           height: ComponentsSizes.defaultSpace * 2,
         ),
-        
-        /// OnBoard Image
+
+        /// OnBoarding Image
         _onboardImage(),
         SizedBox(
           height: ComponentsSizes.spaceBtwSection,
         ),
 
-        /// OnBoard Title
+        /// OnBoarding Title
         _onboardTitle(context),
         SizedBox(
           height: ComponentsSizes.spaceBtwItems,
         ),
 
-        /// OnBoard SubTitle
+        /// OnBoarding SubTitle
         _onboardSubTitle(context),
-
       ],
     );
   }

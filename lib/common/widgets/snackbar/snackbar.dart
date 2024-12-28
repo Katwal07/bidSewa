@@ -1,7 +1,4 @@
-
-
 import 'package:flutter/material.dart';
-
 import '../../../core/config/theme/colors.dart';
 import '../../res/size_configs.dart';
 
@@ -18,7 +15,8 @@ class CustomSnackBar {
         children: [
           Container(
             padding: EdgeInsets.only(
-                left: 3.1 * SizeConfigs.widthMultiplier,right:  0.5 * SizeConfigs.widthMultiplier),
+                left: 3.1 * SizeConfigs.widthMultiplier,
+                right: 0.5 * SizeConfigs.widthMultiplier),
             decoration: BoxDecoration(
               color: containerColor,
               borderRadius: BorderRadius.all(
@@ -31,7 +29,10 @@ class CustomSnackBar {
                 Expanded(
                   child: Text(
                     snackBarText,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: AppColors.white),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -7,17 +7,17 @@ class OnBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final isDarkTheme = AppUtils.isDarkTheme(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:
-          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
-      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
-    ));
     return BlocProvider(
       create: (context) => OnboardCubit(),
       child: Scaffold(
-        backgroundColor: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+        appBar: CustomAppBar(
+          darkStatusBarColor: AppColors.darkBgColor,
+          lightStatusBarColor: AppColors.lightBgColor,
+          kCustomToolBarheight: 0,
+        ),
+        backgroundColor:
+            isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         body: SafeArea(
             child: Padding(
           padding: EdgeInsets.symmetric(
@@ -26,10 +26,14 @@ class OnBoardScreen extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               /// Top Fractional SizedBox
-              TopFractionalSizedBox(pageController: onBoardPageController.pageController,),
+              TopFractionalSizedBox(
+                pageController: onBoardPageController.pageController,
+              ),
 
               /// Bottom Fractional SizedBox
-              BottomFractionalSizedBox(pageController: onBoardPageController.pageController,),
+              BottomFractionalSizedBox(
+                pageController: onBoardPageController.pageController,
+              ),
             ],
           ),
         )),

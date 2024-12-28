@@ -4,9 +4,9 @@ class AppImages {
   static const String basePath = 'assets/images/';
   static const String format = '.png';
 
-  static const String appLogo = '${basePath}app_logo$format';
-  static const String chooseAuthImage = '${basePath}choose_auth_image$format';
-  static const String onboard1 = '${basePath}onboard1$format';
-  static const String onboard2 = '${basePath}onboard2$format';
-  static const String onboard3 = '${basePath}onboard3$format';
+  static const String appLogo = '${basePath}im_app_logo$format';
+  static const String chooseAuthImage = '${basePath}im_choose_auth_image$format';
+  static const String onboard1 = '${basePath}im_onboard1$format';
+  static const String onboard2 = '${basePath}im_onboard2$format';
+  static const String onboard3 = '${basePath}im_onboard3$format';
 }

@@ -5,25 +5,29 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final isDarkTheme = AppUtils.isDarkTheme(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:
-          isDarkTheme ? AppColors.lightPrimaryColor : AppColors.lightPrimaryColor,
-      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
-    ));
     return BlocProvider(
       create: (context) => SplashCubit()..displaySplash(),
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state is SplashAuthenticatedState) {
-            Navigator.pushReplacementNamed(context, AppRoutesName.navPage);
+            Navigator.pushReplacementNamed(
+              context,
+              AppRoutesName.navPage,
+            );
           }
           if (state is SplashUnAuthenticatedState) {
-            Navigator.pushReplacementNamed(context, AppRoutesName.onboardScreen);
+            Navigator.pushReplacementNamed(
+              context,
+              AppRoutesName.onboardScreen,
+            );
           }
         },
         child: Scaffold(
+          appBar: CustomAppBar(
+            darkStatusBarColor: AppColors.darkBgColor,
+            lightStatusBarColor: AppColors.lightBgColor,
+            statusBarBrightness: Brightness.dark,
+          ),
           backgroundColor: AppColors.lightPrimaryColor,
           body: _splashLogo(context),
         ),
@@ -37,8 +41,12 @@ class SplashScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.asset(AppImages.appLogo),
-        SizedBox(height: ComponentsSizes.defaultSpace*5,),
-        const CircularProgressIndicator(color: Colors.white,)
+        SizedBox(
+          height: ComponentsSizes.defaultSpace * 5,
+        ),
+        const CircularProgressIndicator(
+          color: AppColors.white,
+        )
       ],
     );
   }

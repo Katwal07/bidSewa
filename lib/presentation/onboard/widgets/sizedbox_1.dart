@@ -20,8 +20,11 @@ class TopFractionalSizedBox extends StatelessWidget {
         },
         scrollDirection: Axis.horizontal,
         children: [
+          /// First Page View
           _firstPageView(),
+          /// Second Page View
           _secondPageView(),
+          /// Third Page View
           _thirdPageView(),
         ],
       ),

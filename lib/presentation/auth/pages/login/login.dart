@@ -1,23 +1,37 @@
 part of '../auth_imports.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  
   final TextEditingController _emailCon = TextEditingController();
+
   final TextEditingController _passCon = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  LoginScreen({super.key});
+
+  @override
+  void dispose() {
+    _emailCon.dispose();
+    _passCon.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isDarkTheme = AppUtils.isDarkTheme(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: isDarkTheme
-          ? AppColors.lightPrimaryColor
-          : AppColors.lightPrimaryColor,
-      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
-    ));
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => NetworkCubit(
+            networkInfoRepository: sl<NetworkInfoRepository>(),
+          ),
+        ),
         BlocProvider(
           create: (context) => AuthCubit(),
         ),
@@ -46,28 +60,46 @@ class LoginScreen extends StatelessWidget {
             context.read<AuthCubit>().reset();
           }
         },
-        child: Scaffold(
-          appBar: AppBar(),
-          backgroundColor: AppColors.lightPrimaryColor,
-          body: SafeArea(
-              child: Padding(
-            padding: _padding(),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  /// SignIn text
-                  _signinText(context),
+        child: BlocBuilder<NetworkCubit, ConnectivityState>(
+          builder: (context, state) {
+            if (state is NetworkConnected) {
+              return Scaffold(
+                appBar: CustomAppBar(
+                  darkStatusBarColor: AppColors.lightPrimaryColor,
+                  lightStatusBarColor: AppColors.lightPrimaryColor,
+                  statusBarBrightness: Brightness.dark,
+                ),
+                backgroundColor: AppColors.lightPrimaryColor,
+                body: SafeArea(
+                    child: Padding(
+                  padding: _padding(),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        /// SignIn Text
+                        _signinText(context),
 
-                  _largeDefaultSpace(),
+                        /// Default Space
+                        _largeDefaultSpace(),
 
-                  /// Login Form
-                  _loginForm(
-                    context,
+                        /// Login Form
+                        _loginForm(
+                          context,
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-          )),
+                )),
+              );
+            }
+            if (state is NetworkDisconnected) {
+              return const NoInternetConnectionWidget();
+            }
+            if (state is NetworkChecking) {
+              return const NoInternetConnectionWidget();
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );
@@ -89,7 +121,7 @@ class LoginScreen extends StatelessWidget {
     return Container(
       height: 42 * (SizeConfigs.heightMultiplier),
       decoration: BoxDecoration(
-        color: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+        color: isDarkTheme ? AppColors.darkContainerColor : AppColors.lightContainerColor,
         border: Border.all(color: AppColors.darkgrey),
         borderRadius: BorderRadius.circular(
           ComponentsSizes.borderRadiusLg,
@@ -104,8 +136,8 @@ class LoginScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                /// Email Id Text
 
+                /// Email Id Text
                 _emailIdText(context),
 
                 _spaceBtwField(),
@@ -116,7 +148,6 @@ class LoginScreen extends StatelessWidget {
                 _spaceBtwField(),
 
                 /// Password Text
-
                 _passText(context),
 
                 _spaceBtwField(),
@@ -126,11 +157,12 @@ class LoginScreen extends StatelessWidget {
 
                 _spaceBtwSection(),
 
-                /// Signin Button
+                /// Sign In Button
                 _signInButton(),
 
                 _spaceBtwField(),
 
+                /// Don't Have an Account
                 _dontHaveAnAccount(context),
               ],
             ),
@@ -168,14 +200,20 @@ class LoginScreen extends StatelessWidget {
   Widget _signInTitle(BuildContext context) {
     return Text(
       AppStrings.signin,
-      style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: AppColors.white),
+      style: Theme.of(context)
+          .textTheme
+          .headlineLarge!
+          .copyWith(color: AppColors.white),
     );
   }
 
   Widget _signInDesc(BuildContext context) {
     return Text(
       AppStrings.unlockYourWorld,
-      style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.white),
+      style: Theme.of(context)
+          .textTheme
+          .bodyLarge!
+          .copyWith(color: AppColors.white),
     );
   }
 
@@ -189,7 +227,7 @@ class LoginScreen extends StatelessWidget {
   Widget _emailTextField() {
     return TextFormField(
       controller: _emailCon,
-      validator: AppValidator.validateEmail,
+      validator: AppValidator.checkEmail,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         hintText: AppStrings.enterEmail,
@@ -211,7 +249,7 @@ class LoginScreen extends StatelessWidget {
         if (state is PasswordVisibilityInitial) {
           return TextFormField(
             controller: _passCon,
-            validator: AppValidator.validatePassword,
+            validator: AppValidator.checkPassword,
             obscureText: state.obscureText,
             obscuringCharacter: AppStrings.obscuredCharacter,
             keyboardType: TextInputType.visiblePassword,
@@ -238,7 +276,7 @@ class LoginScreen extends StatelessWidget {
         if (state is PasswordVisibilityLoaded) {
           return TextFormField(
             controller: _passCon,
-            validator: AppValidator.validatePassword,
+            validator: AppValidator.checkPassword,
             obscureText: state.obscureText,
             obscuringCharacter: AppStrings.obscuredCharacter,
             keyboardType: TextInputType.visiblePassword,

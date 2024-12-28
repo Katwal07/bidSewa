@@ -44,6 +44,12 @@ class AppStrings{
   static const String esewaNo = 'Esewa Number';
   static const String selectImage = "Select Image";
   static const String pleaseSelectProfileImage = "Please select a profile image";
+  static const String noInternetConnection = "Please check your internet connection.";
+  static const String invalidCredentials = "Invalid credentials. Please try again.";
+  static const String anErrorOccured = "An error occured";
+  static const String loginFailed = 'Login Failed';
+  static const String success = "success";
+  static const String unknownUserRole = 'Unknown user role';
 
   /// Auctioneer
   static const String addProduct = "Add Product";
@@ -62,4 +68,10 @@ class AppStrings{
   static const String english = "English";
   static const String nepaliValue = "nepali";
   static const String nepali = "नेपाली";
+
+  /// AppException Text
+  static const String unableToConnectToServer = "Unable to connect to the server.";
+  static const String noInternet = "No internet connection.";
+  static const String invalidCredential = "Invalid credentials.";
+  static const String invalidFileType = 'Invalid file type. Please use JPG, PNG or WebP images.';
 }

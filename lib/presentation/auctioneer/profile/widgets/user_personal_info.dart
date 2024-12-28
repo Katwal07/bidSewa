@@ -26,7 +26,7 @@ class UserPersonalInformation extends StatelessWidget {
     return BlocProvider(
       create: (context) => GenericCubit()..execute(sl<GetUserProfileUseCase>()),
       child: Scaffold(
-        appBar: const CustomAppBar(title: "User Details"),
+        appBar:  CustomAppBar(title: "User Details", darkStatusBarColor: AppColors.darkBgColor, lightStatusBarColor: AppColors.lightBgColor,),
         backgroundColor:
             isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         body: SafeArea(

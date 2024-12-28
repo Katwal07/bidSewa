@@ -25,17 +25,17 @@ class AuthApiServiceImpl extends AuthApiService {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException(message: "Unable to connect to the server.");
+        throw NetworkException(message: AppStrings.unableToConnectToServer);
       }
       if (e.type == DioExceptionType.connectionError) {
-        throw NetworkException(message: "No internet connection.");
+        throw NetworkException(message: AppStrings.noInternet);
       }
       if (e.response?.statusCode == 401) {
         throw UnAuthorizedException(
-            message: e.response?.data['message'] ?? "Invalid credentials.");
+            message: e.response?.data['message'] ?? AppStrings.invalidCredential);
       }
       throw ServerException(
-          message: e.response?.data['message'] ?? "An error occurred.");
+          message: e.response?.data['message'] ?? AppStrings.anErrorOccured);
     }
   }
 
@@ -48,7 +48,7 @@ class AuthApiServiceImpl extends AuthApiService {
       if (!['jpg', 'jpeg', 'png', 'webp'].contains(fileExtension)) {
         return Left(
           ValidationException(
-            message: 'Invalid file type. Please use JPG, PNG or WebP images.',
+            message: AppStrings.invalidFileType,
           ),
         );
       }
@@ -78,17 +78,17 @@ class AuthApiServiceImpl extends AuthApiService {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException(message: "Unable to connect to the server.");
+        throw NetworkException(message: AppStrings.unableToConnectToServer);
       }
       if (e.type == DioExceptionType.connectionError) {
-        throw NetworkException(message: "No internet connection.");
+        throw NetworkException(message: AppStrings.noInternet);
       }
       if (e.response?.statusCode == 401) {
         throw UnAuthorizedException(
-            message: e.response?.data['message'] ?? "Invalid credentials.");
+            message: e.response?.data['message'] ?? AppStrings.invalidCredential);
       }
       throw ServerException(
-          message: e.response?.data['message'] ?? "An error occurred.");
+          message: e.response?.data['message'] ?? AppStrings.anErrorOccured);
     }
   }
 
@@ -101,7 +101,7 @@ class AuthApiServiceImpl extends AuthApiService {
       if (!['jpg', 'jpeg', 'png', 'webp'].contains(fileExtension)) {
         return Left(
           ValidationException(
-            message: 'Invalid file type. Please use JPG, PNG or WebP images.',
+            message: AppStrings.invalidFileType,
           ),
         );
       }
@@ -140,17 +140,17 @@ class AuthApiServiceImpl extends AuthApiService {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException(message: "Unable to connect to the server.");
+        throw NetworkException(message: AppStrings.unableToConnectToServer);
       }
       if (e.type == DioExceptionType.connectionError) {
-        throw NetworkException(message: "No internet connection.");
+        throw NetworkException(message: AppStrings.noInternet);
       }
       if (e.response?.statusCode == 401) {
         throw UnAuthorizedException(
-            message: e.response?.data['message'] ?? "Invalid credentials.");
+            message: e.response?.data['message'] ?? AppStrings.invalidCredential);
       }
       throw ServerException(
-          message: e.response?.data['message'] ?? "An error occurred.");
+          message: e.response?.data['message'] ?? AppStrings.anErrorOccured);
     }
   }
 
@@ -165,17 +165,17 @@ class AuthApiServiceImpl extends AuthApiService {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException(message: "Unable to connect to the server.");
+        throw NetworkException(message: AppStrings.unableToConnectToServer);
       }
       if (e.type == DioExceptionType.connectionError) {
-        throw NetworkException(message: "No internet connection.");
+        throw NetworkException(message: AppStrings.noInternet);
       }
       if (e.response?.statusCode == 401) {
         throw UnAuthorizedException(
-            message: e.response?.data['message'] ?? "Invalid credentials.");
+            message: e.response?.data['message'] ?? AppStrings.invalidCredential);
       }
       throw ServerException(
-          message: e.response?.data['message'] ?? "An error occurred.");
+          message: e.response?.data['message'] ?? AppStrings.anErrorOccured);
     }
   }
   
@@ -190,17 +190,17 @@ class AuthApiServiceImpl extends AuthApiService {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) {
-        throw NetworkException(message: "Unable to connect to the server.");
+        throw NetworkException(message: AppStrings.unableToConnectToServer);
       }
       if (e.type == DioExceptionType.connectionError) {
-        throw NetworkException(message: "No internet connection.");
+        throw NetworkException(message: AppStrings.noInternet);
       }
       if (e.response?.statusCode == 401) {
         throw UnAuthorizedException(
-            message: e.response?.data['message'] ?? "Invalid credentials.");
+            message: e.response?.data['message'] ?? AppStrings.invalidCredential);
       }
       throw ServerException(
-          message: e.response?.data['message'] ?? "An error occurred.");
+          message: e.response?.data['message'] ?? AppStrings.anErrorOccured);
     }
   }
 }

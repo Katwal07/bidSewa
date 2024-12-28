@@ -1,0 +1,4 @@
+enum NetworkStatus {
+  connected,
+  disconnected,
+}

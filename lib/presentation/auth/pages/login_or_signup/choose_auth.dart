@@ -1,5 +1,3 @@
-
-
 part of '../auth_imports.dart';
 
 class ChooseAuthPage extends StatelessWidget {
@@ -7,15 +5,15 @@ class ChooseAuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final isDarkTheme = AppUtils.isDarkTheme(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:
-          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
-      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
-    ));
     return Scaffold(
-        backgroundColor: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+        backgroundColor:
+            isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+        appBar: CustomAppBar(
+          darkStatusBarColor: AppColors.darkBgColor,
+          lightStatusBarColor: AppColors.lightBgColor,
+          kCustomToolBarheight: 0,
+        ),
         body: Stack(
           children: [
             Positioned.fill(
@@ -26,15 +24,18 @@ class ChooseAuthPage extends StatelessWidget {
             ),
             Padding(
               padding: EdgeInsets.only(
-                  top: 6.8 * (SizeConfigs.heightMultiplier),
-                  left: 4 * (SizeConfigs.heightMultiplier),
-                  right: 4 * (SizeConfigs.heightMultiplier),
-                  bottom: 5.3 * (SizeConfigs.heightMultiplier)),
+                top: 6.8 * (SizeConfigs.heightMultiplier),
+                left: 4 * (SizeConfigs.heightMultiplier),
+                right: 4 * (SizeConfigs.heightMultiplier),
+                bottom: 5.3 * (SizeConfigs.heightMultiplier),
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+
                   /// Login Button
                   _loginButton(context),
+
                   SizedBox(
                     height: ComponentsSizes.defaultSpace / 2,
                   ),
@@ -61,13 +62,16 @@ class ChooseAuthPage extends StatelessWidget {
             FittedBox(
               child: Text(
                 AppStrings.signin,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColors.darkFontColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: AppColors.darkFontColor),
               ),
             ),
             SizedBox(
               width: ComponentsSizes.defaultSpace / 2,
             ),
-            const Icon(color: Colors.black, Icons.arrow_circle_right_rounded),
+            const Icon(color: AppColors.white, Icons.arrow_circle_right_rounded,size: 26,),
           ],
         ),
       ),
@@ -91,13 +95,16 @@ class ChooseAuthPage extends StatelessWidget {
             FittedBox(
               child: Text(
                 AppStrings.register,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(color: AppColors.darkFontColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: AppColors.darkFontColor),
               ),
             ),
             SizedBox(
               width: ComponentsSizes.defaultSpace / 2,
             ),
-            const Icon(color: Colors.black, Icons.wifi),
+            const Icon(color: AppColors.white, Icons.wifi, size: 26,),
           ],
         ),
       ),
