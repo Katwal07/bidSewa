@@ -61,7 +61,7 @@ class _SignupFormState extends State<SignupForm> {
       builder: (context, state) {
         return SingleChildScrollView(
           child: Container(
-            height: ComponentsSizes.productItemHeight * 2.2,
+            height: ComponentsSizes.productItemHeight * 2.1,
             decoration: BoxDecoration(
               color:
                   isDarkTheme ? AppColors.darkContainerColor : AppColors.lightContainerColor,
