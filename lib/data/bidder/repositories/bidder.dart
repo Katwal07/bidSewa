@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:intl/intl.dart';
 import 'package:nepa_bid/common/mapper/auction_items_details.dart';
 import 'package:nepa_bid/common/mapper/bidder_items.dart';
+import 'package:nepa_bid/common/mapper/category.dart';
 import 'package:nepa_bid/common/mapper/place_bid.dart';
 import 'package:nepa_bid/common/mapper/place_bid_response.dart';
 import 'package:nepa_bid/core/error/failure.dart';
@@ -10,6 +11,7 @@ import 'package:nepa_bid/data/bidder/model/bidder.dart';
 import 'package:nepa_bid/data/bidder/sources/bidder_api_sources.dart';
 import 'package:nepa_bid/domain/bidder/entity/auction_items_details.dart';
 import 'package:nepa_bid/domain/bidder/entity/bidder.dart';
+import 'package:nepa_bid/domain/bidder/entity/category.dart';
 import 'package:nepa_bid/domain/bidder/entity/place_bid_response.dart';
 import 'package:nepa_bid/domain/bidder/repositories/bidder.dart';
 import 'package:nepa_bid/service_locator.dart';
@@ -18,8 +20,8 @@ import '../../../domain/bidder/entity/place_bid.dart';
 
 class BidderRepositoryImpl extends BidderRepository {
   @override
-  Future<Either<Failure, List<BidderItemEntity>>> getNewsIn() async {
-    Either returnedData = await sl<BidderApiSources>().getNewsIn();
+  Future<Either<Failure, List<BidderItemEntity>>> getNewsIn(int page) async {
+    Either returnedData = await sl<BidderApiSources>().getNewsIn(page);
     return returnedData.fold((error) {
       return Left(error);
     }, (data) {
@@ -31,7 +33,7 @@ class BidderRepositoryImpl extends BidderRepository {
           final DateTime aDate = dateFormats.parse(a.startTime!);
           final DateTime bDate = dateFormats.parse(b.startTime!);
 
-           // Sort descending
+          // Sort descending
           return bDate.compareTo(aDate);
         });
 
@@ -44,8 +46,8 @@ class BidderRepositoryImpl extends BidderRepository {
   }
 
   @override
-  Future<Either<Failure, List<BidderItemEntity>>> getTopBidding() async {
-    Either returnedData = await sl<BidderApiSources>().getTopBidding();
+  Future<Either<Failure, List<BidderItemEntity>>> getTopBidding(int page) async {
+    Either returnedData = await sl<BidderApiSources>().getTopBidding(page);
     return returnedData.fold((error) {
       return Left(error);
     }, (data) {
@@ -66,21 +68,50 @@ class BidderRepositoryImpl extends BidderRepository {
     return returnedData.fold((error) {
       return Left(mapExceptionToFailure(error));
     }, (data) {
-      final itemDetails = AuctionItemsDetailsMapper.toAuctionItemDeatilsEntity(data);
+      final itemDetails =
+          AuctionItemsDetailsMapper.toAuctionItemDeatilsEntity(data);
       return Right(itemDetails);
     });
   }
-  
+
   @override
-  Future<Either<Failure, PlaceBidResponseEntity>> placeBid(PlaceBidEntity placeBidEntity,String itemId) async{
-    Either returnedData = await sl<BidderApiSources>().placeBid(PlaceBidMapper.toPlaceBidModel(placeBidEntity), itemId);
+  Future<Either<Failure, PlaceBidResponseEntity>> placeBid(
+      PlaceBidEntity placeBidEntity, String itemId) async {
+    Either returnedData = await sl<BidderApiSources>()
+        .placeBid(PlaceBidMapper.toPlaceBidModel(placeBidEntity), itemId);
+    return returnedData.fold((error) {
+      return Left(mapExceptionToFailure(error));
+    }, (data) {
+      final placeBidResponse =
+          PlaceBidResponseMapper.toPlaceBidResponseEntity(data);
+      return Right(placeBidResponse);
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<BidderItemEntity>>> searchItems(
+      String keywordName, String searchItemName) async {
+    Either returnedData =
+        await sl<BidderApiSources>().searchItems(keywordName, searchItemName);
+    return returnedData.fold((error) {
+      return Left(error);
+    }, (data) {
+      final List<BidderItemEntity> items =
+          (data as List).map((e) => BidderAuctionMapper.toAuctionItemEntity(e)).toList();
+      return Right(items);
+    });
+  }
+
+  @override
+  Future<Either<Failure, List<CategoryElementEntity>>> getAllCategory() async{
+    var returnedData = await sl<BidderApiSources>().getAllCategory();
     return returnedData.fold(
       (error){
         return Left(mapExceptionToFailure(error));
       }, 
       (data){
-        final placeBidResponse = PlaceBidResponseMapper.toPlaceBidResponseEntity(data);
-        return Right(placeBidResponse);
+        final List<CategoryElementEntity> category = (data).map((e)=> CategoryMapper.toCategoryItemEntity(e)).toList();
+        return Right(category);
       }
     );
   }

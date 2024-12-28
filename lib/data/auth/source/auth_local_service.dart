@@ -14,7 +14,7 @@ class AuthLocalServiceImpl extends AuthLocalService{
     if(token == null){
       return false;
     }else{
-       return true;
+       return false;
     } 
   }
   

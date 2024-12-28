@@ -6,9 +6,10 @@ import 'package:nepa_bid/service_locator.dart';
 
 import '../../../core/error/failure.dart';
 
-class GetNewsInUsecase extends UseCase<Either<Failure, List<BidderItemEntity>>, dynamic>{
+class GetNewsInUsecase extends UseCase<Either<Failure, List<BidderItemEntity>>, int>{
   @override
-  Future<Either<Failure, List<BidderItemEntity>>> call({param}) async{
-    return await sl<BidderRepository>().getNewsIn();
+  Future<Either<Failure, List<BidderItemEntity>>> call({int ? param}) async{
+    return await sl<BidderRepository>().getNewsIn(param!);
   }
+
 }

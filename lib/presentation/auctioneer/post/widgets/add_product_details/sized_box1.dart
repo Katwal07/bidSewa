@@ -13,7 +13,8 @@ class TopSizedBox1 extends StatelessWidget {
     required this.productNameCon,
     required this.productCategoryCon,
     required this.productConditionCon,
-    required this.productDescCon,
+    required this.productDescCon, 
+    required this.onItemSelected,
   });
 
   final bool isDarkTheme;
@@ -21,6 +22,7 @@ class TopSizedBox1 extends StatelessWidget {
   final TextEditingController productCategoryCon;
   final TextEditingController productConditionCon;
   final TextEditingController productDescCon;
+  final void Function(String) onItemSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +80,15 @@ class TopSizedBox1 extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             showMenu(
+                              elevation: 0,
+                              popUpAnimationStyle:
+                                  AnimationStyle(curve: Curves.easeInOut),
                               context: context,
                               position: const RelativeRect.fromLTRB(
                                   400, 300, 50, 100),
+                              color: isDarkTheme
+                                  ? AppColors.darkBgColor
+                                  : AppColors.lightBgColor,
                               items: [
                                 const PopupMenuItem(
                                   value: "new",
@@ -91,15 +99,20 @@ class TopSizedBox1 extends StatelessWidget {
                                   child: Text("old"),
                                 )
                               ],
-                            );
+                            ).then((selectedValue){
+                              if(selectedValue != null){
+                                onItemSelected(selectedValue);
+                              }
+                            });
                           },
-                          child: Container(
+                          child: SizedBox(
                             height: 50,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Select Product Condition",style: Theme.of(context).textTheme.labelSmall,
+                                  "Select Product Condition",
+                                  style: Theme.of(context).textTheme.labelSmall,
                                 ),
                                 const Icon(Icons.check_circle_outline_outlined)
                               ],

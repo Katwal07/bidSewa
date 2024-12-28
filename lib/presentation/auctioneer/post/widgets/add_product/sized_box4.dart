@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/button_bloc/button_cubit.dart';
 import 'package:nepa_bid/common/bloc/image_picker/image_picker_cubit.dart';
 import 'package:nepa_bid/common/bloc/video_picker/video_picker_cubit.dart';
+import 'package:nepa_bid/common/res/size_configs.dart';
 import 'package:nepa_bid/common/widgets/button/others_reactive_button.dart';
 import 'package:nepa_bid/domain/auctioneer/usecases/create_auction_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
@@ -33,65 +34,68 @@ class BottomSizedBox2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       alignment: Alignment.bottomCenter,
-      heightFactor: 0.08,
-      child: SizedBox(
-        width: double.infinity,
-        child: Builder(builder: (context) {
-          return OthersReactiveButton(
-            onPressed: () async {
-              try {
-                final MultipleImagePickerCubit imagePickerCubit =
-                    context.read<MultipleImagePickerCubit>();
-                final VideoPickerCubit videoPickerCubit =
-                    context.read<VideoPickerCubit>();
-                final List<String>? imagesPath =
-                    imagePickerCubit.getSelectedImagePath();
-                final List<String>? videosPath =
-                    videoPickerCubit.getSelectedVideoPath();
-
-                if (imagesPath == null || imagesPath.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Please select at least one image")));
-                  return;
+      heightFactor: 0.12,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 3.52 * SizeConfigs.heightMultiplier),
+        child: SizedBox(
+          width: double.infinity,
+          child: Builder(builder: (context) {
+            return OthersReactiveButton(
+              onPressed: () async {
+                try {
+                  final MultipleImagePickerCubit imagePickerCubit =
+                      context.read<MultipleImagePickerCubit>();
+                  final VideoPickerCubit videoPickerCubit =
+                      context.read<VideoPickerCubit>();
+                  final List<String>? imagesPath =
+                      imagePickerCubit.getSelectedImagePath();
+                  final List<String>? videosPath =
+                      videoPickerCubit.getSelectedVideoPath();
+        
+                  if (imagesPath == null || imagesPath.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Please select at least one image")));
+                    return;
+                  }
+        
+                  if (videosPath == null || videosPath.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Please select at least one video")));
+                    return;
+                  }
+                  debugPrint(productName);
+                  debugPrint(productCategory);
+                  debugPrint(productCondition);
+                  debugPrint(productDesc);
+                  debugPrint(receivedStartingBid.text);
+                  debugPrint(startTime);
+                  debugPrint(endTime);
+        
+                  context.read<ButtonCubit>().execute(
+                        usecase: sl<CreateAuctionUsecase>(),
+                        params: PostAuctionItemEntity(
+                          title: productName,
+                          description: productDesc,
+                          category: productCategory,
+                          condition: productCondition,
+                          startingBid: int.tryParse(receivedStartingBid.text),
+                          startTime: startTime,
+                          endTime: endTime,
+                          images: imagesPath.map((e) => File(e)).toList(),
+                          videos: videosPath.map((e) => File(e)).toList(),
+                        ), context: context,
+                      );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('An error occurred: $e'),
+                    backgroundColor: Colors.red,
+                  ));
                 }
-
-                if (videosPath == null || videosPath.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Please select at least one video")));
-                  return;
-                }
-                debugPrint(productName);
-                debugPrint(productCategory);
-                debugPrint(productCondition);
-                debugPrint(productDesc);
-                debugPrint(receivedStartingBid.text);
-                debugPrint(startTime);
-                debugPrint(endTime);
-
-                context.read<ButtonCubit>().execute(
-                      usecase: sl<CreateAuctionUsecase>(),
-                      params: PostAuctionItemEntity(
-                        title: productName,
-                        description: productDesc,
-                        category: productCategory,
-                        condition: productCondition,
-                        startingBid: int.tryParse(receivedStartingBid.text),
-                        startTime: startTime,
-                        endTime: endTime,
-                        images: imagesPath.map((e) => File(e)).toList(),
-                        videos: videosPath.map((e) => File(e)).toList(),
-                      ), context: context,
-                    );
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text('An error occurred: $e'),
-                  backgroundColor: Colors.red,
-                ));
-              }
-            },
-            label: "Publish Product",
-          );
-        }),
+              },
+              label: "Publish Product",
+            );
+          }),
+        ),
       ),
     );
   }

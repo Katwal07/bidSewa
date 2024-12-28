@@ -37,7 +37,8 @@ class _HomePageBidderState extends State<HomePageBidder> {
       child: Scaffold(
         appBar: AppBar(
           title: Padding(
-            padding: EdgeInsets.only(left: 3.48 * SizeConfigs.widthMultiplier),
+            padding:
+                EdgeInsets.only(left: 3.48 * SizeConfigs.widthMultiplier),
             child: _buildAppBarLeading(),
           ),
           actions: [
@@ -75,11 +76,11 @@ class _HomePageBidderState extends State<HomePageBidder> {
   Widget _buildUserName() {
     return BlocBuilder<GenericCubit, GenericState>(
       builder: (context, state) {
-        if(state is DataLoaded){
+        if (state is DataLoaded) {
           return Text(
-          state.data.user.username,
-          style: Theme.of(context).textTheme.titleLarge,
-        );
+            state.data.user.username,
+            style: Theme.of(context).textTheme.titleLarge,
+          );
         }
         return const SizedBox.shrink();
       },

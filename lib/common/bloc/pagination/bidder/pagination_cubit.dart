@@ -1,25 +1,20 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/common/bloc/pagination/pagination_state.dart';
-import 'package:nepa_bid/domain/auctioneer/entity/auction.dart';
-import 'package:nepa_bid/domain/auctioneer/usecases/auction.dart';
-import 'package:nepa_bid/service_locator.dart';
+import 'package:nepa_bid/common/bloc/pagination/bidder/pagination_state.dart';
+import 'package:nepa_bid/domain/bidder/entity/bidder.dart';
 
-import '../../../core/usecase/usecase.dart';
+import '../../../../core/usecase/usecase.dart';
 
 class PaginationCubit extends Cubit<PaginationState> {
   PaginationCubit() : super(PaginationInitialState());
-
   int page = 1;
 
-  void loadPost({
-    dynamic params,
-    required UseCase usecase,
-  }) async {
+  Future<void> loadPost(UseCase usecase, {dynamic params}) async {
     if (state is PaginationLoadingState) return;
 
     final currentState = state;
-    var oldPost = <AuctionItemEntity>[];
+    List<BidderItemEntity> oldPost = [];
 
     if (currentState is PaginationLoadedState) {
       oldPost = currentState.post;
@@ -27,7 +22,7 @@ class PaginationCubit extends Cubit<PaginationState> {
 
     emit(PaginationLoadingState(oldPost: oldPost, isFirstFetch: page == 1));
 
-    final result = await sl<AuctionUseCase>().call(param: page);
+    Either result = await usecase.call(param: page);
 
     result.fold(
       (error) {
@@ -42,7 +37,7 @@ class PaginationCubit extends Cubit<PaginationState> {
         }
 
         page++;
-        final updatedPost = List.of(oldPost)..addAll(newPostList);
+        var updatedPost = List.of(oldPost)..addAll(newPostList);
         emit(PaginationLoadedState(post: updatedPost));
       },
     );

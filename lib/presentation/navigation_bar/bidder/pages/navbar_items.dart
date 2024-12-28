@@ -25,13 +25,13 @@ List<NavigationDestination> bottomNavigationBarItems = [
     ),
   ),
    NavigationDestination(
-    label: 'wishlist',
+    label: 'order',
     icon: Icon(
-      Icons.favorite_outline,
+      Icons.history_outlined,
       size: 6 * SizeConfigs.imageSizeMultiplier,
     ),
     selectedIcon: Icon(
-      Icons.favorite,
+      Icons.history,
       size: 6 * SizeConfigs.imageSizeMultiplier,
     ),
   ),

@@ -9,8 +9,10 @@ import 'package:nepa_bid/domain/auctioneer/repositories/auction.dart';
 import 'package:nepa_bid/domain/auctioneer/usecases/auction.dart';
 import 'package:nepa_bid/domain/auctioneer/usecases/create_auction_usecase.dart';
 import 'package:nepa_bid/domain/bidder/repositories/bidder.dart';
+import 'package:nepa_bid/domain/bidder/usecases/get_category_usecase.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_items_details_usecase.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_news_in_usecase.dart';
+import 'package:nepa_bid/domain/bidder/usecases/get_search_items_usecase.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_top_bidd_usecase.dart';
 import 'package:nepa_bid/domain/bidder/usecases/place_bid_usecase.dart';
 import 'data/auth/source/auth_api_imports.dart';
@@ -49,4 +51,6 @@ void setupServiceLocator() {
   sl.registerSingleton<GetTopBiddUsecase>(GetTopBiddUsecase());
   sl.registerSingleton<GetItemsDetailsUsecase>(GetItemsDetailsUsecase());
   sl.registerSingleton<BidderPlaceBidUsecase>(BidderPlaceBidUsecase());
+  sl.registerSingleton<GetSearchItemsUsecase>(GetSearchItemsUsecase());
+  sl.registerSingleton<GetCategoryUsecase>(GetCategoryUsecase());
 }

@@ -14,12 +14,27 @@ import 'package:nepa_bid/presentation/auctioneer/post/bloc/date_time_picker_cubi
 import '../widgets/add_product_details/sized_box1.dart';
 import '../widgets/add_product_details/sized_box2.dart';
 
-class AddProductDetails extends StatelessWidget {
-  AddProductDetails({super.key});
+class AddProductDetails extends StatefulWidget {
+  const AddProductDetails({super.key});
 
+  @override
+  State<AddProductDetails> createState() => _AddProductDetailsState();
+}
+
+class _AddProductDetailsState extends State<AddProductDetails> {
+
+  String selectedValue = "";
+  void _onItemSelectedValue(String value){
+    setState(() {
+      selectedValue = value;
+    });
+  }
   final TextEditingController _productNameCon = TextEditingController();
+
   final TextEditingController _productConditionCon = TextEditingController();
+
   final TextEditingController _productCategoryCon = TextEditingController();
+
   final TextEditingController _productDescCon = TextEditingController();
 
   @override
@@ -65,8 +80,11 @@ class AddProductDetails extends StatelessWidget {
                   productNameCon: _productNameCon,
                   productCategoryCon: _productCategoryCon,
                   productConditionCon: _productConditionCon,
-                  productDescCon: _productDescCon,
+                  productDescCon: _productDescCon, 
+                  onItemSelected: _onItemSelectedValue,
                 ),
+
+
 
                 /// Bottom SizedBox
                 Builder(builder: (context) {
@@ -79,7 +97,7 @@ class AddProductDetails extends StatelessWidget {
                         dateTimePickerCubit.getUserCombinedDateTime();
                       final productName = _productNameCon.text;
                       final productCategory = _productCategoryCon.text;
-                      final productCondition = _productConditionCon.text;
+                      final productCondition = selectedValue;
                       final productDesc = _productDescCon.text;
 
                       Navigator.pushNamed(
@@ -96,7 +114,8 @@ class AddProductDetails extends StatelessWidget {
                       );
                     },
                   );
-                }),
+                }
+              ),
               ],
             ),
           ),

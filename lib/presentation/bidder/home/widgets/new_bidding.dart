@@ -1,29 +1,57 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/common/bloc/generic_bloc/generic_cubit.dart';
-import 'package:nepa_bid/core/config/theme/colors.dart';
-import 'package:nepa_bid/core/config/utils/utils.dart';
-import 'package:nepa_bid/core/constant/sizes.dart';
+import 'package:nepa_bid/common/bloc/pagination/bidder/pagination_cubit.dart';
+import 'package:nepa_bid/common/bloc/pagination/bidder/pagination_state.dart';
+import 'package:nepa_bid/common/widgets/container/card.dart';
+import 'package:nepa_bid/domain/bidder/entity/bidder.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_news_in_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
-
-import '../../../../common/bloc/generic_bloc/generic_state.dart';
 import '../../../../common/res/size_configs.dart';
 
-class NewBiddingSection extends StatelessWidget {
+class NewBiddingSection extends StatefulWidget {
   const NewBiddingSection({super.key});
 
   @override
+  State<NewBiddingSection> createState() => _NewBiddingSectionState();
+}
+
+class _NewBiddingSectionState extends State<NewBiddingSection> {
+  final scrollController = ScrollController();
+  late PaginationCubit paginationCubit;
+
+  void setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge &&
+          scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent) {
+        paginationCubit.loadPost(sl<GetNewsInUsecase>());
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    paginationCubit = context.read<PaginationCubit>();
+    setupScrollController();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GenericCubit()..execute(sl<GetNewsInUsecase>()),
-      child: Column(
-        children: [
-          _buildTopBiddingHeading(context),
-          _buildSpacing(),
-          _buildTopBidding(context),
-        ],
-      ),
+    return Column(
+      children: [
+        _buildNewsBiddingHeading(context),
+        _buildSpacing(),
+        _buildNewsBidding(),
+      ],
     );
   }
 
@@ -33,7 +61,7 @@ class NewBiddingSection extends StatelessWidget {
     );
   }
 
-  Widget _buildTopBiddingHeading(BuildContext context) {
+  Widget _buildNewsBiddingHeading(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -52,103 +80,59 @@ class NewBiddingSection extends StatelessWidget {
     );
   }
 
-  Widget _buildTopBidding(BuildContext context) {
-    final isDarkTheme = AppUtils.isDarkTheme(context);
-    return BlocBuilder<GenericCubit, GenericState>(
-      builder: (context, state) {
-        if (state is DataLoaded) {
-          return SizedBox(
-            height: 30.26 * SizeConfigs.heightMultiplier,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  width: 41.86 * SizeConfigs.widthMultiplier,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 23.60 * SizeConfigs.heightMultiplier,
-                        width: 41.86 * SizeConfigs.widthMultiplier,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                            topRight:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                          ),
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                            topRight:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                          ),
-                          child: Image(
-                            image: NetworkImage(
-                              state.data[index].images[0].url,
-                            ),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 6.44 * SizeConfigs.heightMultiplier,
-                        width: 41.86 * SizeConfigs.widthMultiplier,
-                        decoration: BoxDecoration(
-                          color: isDarkTheme
-                              ? AppColors.darkContainerColor
-                              : AppColors.lightContainerColor,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                            bottomRight:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: ComponentsSizes.sm),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                state.data[index].title,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                "Rs ${state.data[index].currentBid}",
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) => SizedBox(
-                width: 2 * SizeConfigs.heightMultiplier,
-              ),
-              itemCount: 10,
-            ),
-          );
-        }
-        if (state is DataInitial) {
-          return const SizedBox.shrink();
-        }
-        if (state is DataLoading) {
-          return const CircularProgressIndicator();
-        }
-        if (state is DataFailure) {
-          return Text(state.errorMessage);
-        }
-        return const SizedBox.shrink();
-      },
+  Widget _buildNewsBidding() {
+    return BlocBuilder<PaginationCubit, PaginationState>(
+        builder: (context, state) {
+      if (state is PaginationLoadingState && state.isFirstFetch) {
+        return _loadingIndicator();
+      }
+
+      List<BidderItemEntity> posts = [];
+      bool isLoading = false;
+
+      if (state is PaginationLoadingState) {
+        posts = state.oldPost;
+        isLoading = true;
+      } else if (state is PaginationLoadedState) {
+        posts = state.post;
+      }
+
+      return SizedBox(
+        height: 30.26 * SizeConfigs.heightMultiplier,
+        child: ListView.separated(
+          shrinkWrap: true,
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            if (index < posts.length) {
+              return _post(posts[index], context);
+            } else {
+              Timer(const Duration(milliseconds: 30), () {
+                scrollController
+                    .jumpTo(scrollController.position.maxScrollExtent);
+              });
+
+              return _loadingIndicator();
+            }
+          },
+          separatorBuilder: (context, index) => SizedBox(
+            width: 2 * SizeConfigs.heightMultiplier,
+          ),
+          itemCount: posts.length + (isLoading ? 1 : 0),
+        ),
+      );
+    });
+  }
+
+  Widget _post(BidderItemEntity post, BuildContext context) {
+
+    return CustomCard(imageUrl: post.images[0].url!, title: post.title!, currentBid: post.currentBid!);
+  }
+
+  Widget _loadingIndicator() {
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Center(child: CircularProgressIndicator()),
     );
   }
 }

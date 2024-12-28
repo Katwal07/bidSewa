@@ -24,6 +24,5 @@ class AppRoutesName {
   static const String seeAllCategory = 'category_page';
   static const String detailsPage = 'details_page';
   static const String bidderDetails = 'bidder_details';
-
-
+  static const String categoryBasedItems = 'category_based_items';
 }

@@ -21,8 +21,8 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _amountCon = TextEditingController();
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final TextEditingController amountCon = TextEditingController();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final isDarkTheme = AppUtils.isDarkTheme(context);
     final format = DateFormat('yyyy-MM-dd H:mm');
     return MultiBlocProvider(
@@ -103,100 +103,98 @@ class DetailPage extends StatelessWidget {
                           itemCount: state.data.auction.images.length,
                         ),
                       ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Rs.${state.data.auction.currentBid}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(
+                                        color: AppColors.lightPrimaryColor),
+                              ),
+                              BlocBuilder<TimerCubit, Duration>(
+                                builder: (context, remainingTime) {
+                                  final days = remainingTime.inDays;
+                                  final month = (days ~/ 30);
+                                  final year = (days ~/ 365);
+                                  final hour = remainingTime.inHours % 24;
+                                  final minute = remainingTime.inMinutes % 60;
+                                  final sec = remainingTime.inSeconds % 60;
+                                  return Text(
+                                    '$year years, ${month % 12} months, ${days % 30} days, '
+                                    '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium,
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            state.data.auction.title,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          Text(
+                            state.data.auction.description,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          Text(
+                            "Condition: ${state.data.auction.condition}",
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Builder(builder: (context) {
+                            return Column(
                               children: [
-                                Text(
-                                  "Rs.${state.data.auction.currentBid}",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall!
-                                      .copyWith(
-                                          color: AppColors.lightPrimaryColor),
+                                Form(
+                                  key: formKey,
+                                  child: SizedBox(
+                                    width: 120,
+                                    child: TextField(
+                                      controller: amountCon,
+                                      decoration: const InputDecoration(
+                                        prefixIcon: Icon(Icons.assessment),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                BlocBuilder<TimerCubit, Duration>(
-                                  builder: (context, remainingTime) {
-                                    final days = remainingTime.inDays;
-                                    final month = (days ~/ 30);
-                                    final year = (days ~/ 365);
-                                    final hour = remainingTime.inHours % 24;
-                                    final minute = remainingTime.inMinutes % 60;
-                                    final sec = remainingTime.inSeconds % 60;
-                                    return Text(
-                                      '$year years, ${month % 12} months, ${days % 30} days, '
-                                      '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}:${sec.toString().padLeft(2, '0')}',
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.read<PlaceBidCubit>().execute(
+                                          sl<BidderPlaceBidUsecase>(),
+                                          params1: PlaceBidEntity(amount: int.tryParse(amountCon.text)),
+                                          params2: itemEntity.itemId,
+                                        );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 10, right: 10),
+                                    child: Text(
+                                      "Place Your Bid",
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium,
-                                    );
-                                  },
-                                )
+                                          .bodyLarge,
+                                    ),
+                                  ),
+                                ),
                               ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              state.data.auction.title,
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            Text(
-                              state.data.auction.description,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            Text(
-                              "Condition: ${state.data.auction.condition}",
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Builder(builder: (context) {
-                              return Column(
-                                children: [
-                                  Form(
-                                    key: _formKey,
-                                    child: SizedBox(
-                                      width: 120,
-                                      child: TextField(
-                                        controller: _amountCon,
-                                        decoration: const InputDecoration(
-                                          prefixIcon: Icon(Icons.assessment),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      context.read<PlaceBidCubit>().execute(
-                                            sl<BidderPlaceBidUsecase>(),
-                                            params1: PlaceBidEntity(amount: int.tryParse(_amountCon.text)),
-                                            params2: itemEntity.itemId,
-                                          );
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: Text(
-                                        "Place Your Bid",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }),
-                          ],
-                        ),
+                            );
+                          }),
+                        ],
                       ),
                     ],
                   );

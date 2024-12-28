@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nepa_bid/domain/auctioneer/entity/product_argument.dart';
+import 'package:nepa_bid/domain/bidder/entity/category_name.dart';
 import 'package:nepa_bid/domain/bidder/entity/item_entity.dart';
 import 'package:nepa_bid/presentation/auctioneer/home/pages/home.dart';
 import 'package:nepa_bid/presentation/auctioneer/profile/pages/profile.dart';
 import 'package:nepa_bid/presentation/auctioneer/profile/widgets/user_personal_info.dart';
 import 'package:nepa_bid/presentation/auctioneer/search/pages/search_screen.dart';
 import 'package:nepa_bid/presentation/bidder/home/pages/home.dart';
+import 'package:nepa_bid/presentation/bidder/home/widgets/category/category_based_items.dart';
 import 'package:nepa_bid/presentation/bidder/home/widgets/category/see_all.dart';
 import 'package:nepa_bid/presentation/bidder/profile/widgets/user_personal_info.dart';
 import 'package:nepa_bid/presentation/bidder/search/pages/search.dart';
@@ -27,6 +29,7 @@ class Routes {
         return MaterialPageRoute(builder: (context) => const SplashScreen());
       case AppRoutesName.onboardScreen:
         return MaterialPageRoute(builder: (context) => OnBoardScreen());
+
       /// App Authentication
       case AppRoutesName.authScreen:
         return MaterialPageRoute(builder: (context) => const ChooseAuthPage());
@@ -34,11 +37,13 @@ class Routes {
         return MaterialPageRoute(builder: (context) => LoginScreen());
       case AppRoutesName.signupScreen:
         return MaterialPageRoute(builder: (context) => const SignupScreen());
+
       /// Auctioneer
       case AppRoutesName.navPage:
-        return MaterialPageRoute(builder: (context) => const NavigationScreen());
+        return MaterialPageRoute(
+            builder: (context) => const NavigationScreen());
       case AppRoutesName.addPostDetailsAuctionner:
-        return MaterialPageRoute(builder: (context) => AddProductDetails());
+        return MaterialPageRoute(builder: (context) => const AddProductDetails());
       case AppRoutesName.addPostAuctionner:
         final productArguments = settings.arguments as ProductArguments;
         return MaterialPageRoute(
@@ -51,25 +56,37 @@ class Routes {
       case AppRoutesName.profileScreen:
         return MaterialPageRoute(builder: (context) => const ProfileScreen());
       case AppRoutesName.userDetails:
-        return MaterialPageRoute(builder: (context) => const UserPersonalInformation());
+        return MaterialPageRoute(
+            builder: (context) => const UserPersonalInformation());
       case AppRoutesName.searchScreen:
-        return MaterialPageRoute(builder: (context)=> const SearchScreen());
+        return MaterialPageRoute(builder: (context) => const SearchScreen());
+
       /// Bidder
       case AppRoutesName.navPageBidder:
-        return MaterialPageRoute(builder: (context) => const NavigationScreenBidder());
+        return MaterialPageRoute(
+            builder: (context) => const NavigationScreenBidder());
       case AppRoutesName.homeScreenBidder:
         return MaterialPageRoute(builder: (context) => const HomePageBidder());
       case AppRoutesName.searchPage:
-        return MaterialPageRoute(builder: (context) => const SearchPageBidder());
+        return MaterialPageRoute(
+            builder: (context) => const SearchPageBidder());
       case AppRoutesName.seeAllCategory:
-        return MaterialPageRoute(builder: (context) => const SeeAllCategorySection());
+        return MaterialPageRoute(
+            builder: (context) => const SeeAllCategorySection());
       case AppRoutesName.bidderDetails:
-        return MaterialPageRoute(builder: (context) => const BidderPersonalInformation());
+        return MaterialPageRoute(
+            builder: (context) => const BidderPersonalInformation());
+      case AppRoutesName.categoryBasedItems:
+        final categoryName= settings.arguments as CategoryNameEntity;
+        return MaterialPageRoute(
+            builder: (context) =>
+                CategoryBasedItems(categoryName: categoryName));
       case AppRoutesName.detailsPage:
         final itemEntity = settings.arguments as ItemEntity;
-        return MaterialPageRoute(builder: (context) => DetailPage(
-          itemEntity: itemEntity,
-        ));
+        return MaterialPageRoute(
+            builder: (context) => DetailPage(
+                  itemEntity: itemEntity,
+                ));
       default:
         return MaterialPageRoute(builder: (context) {
           return const Scaffold(

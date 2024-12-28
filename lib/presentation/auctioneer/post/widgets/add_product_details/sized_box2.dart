@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nepa_bid/common/res/size_configs.dart';
 import '../../../../../core/config/theme/colors.dart';
 
 class BottomSizedBox1 extends StatelessWidget {
@@ -13,16 +14,19 @@ class BottomSizedBox1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       alignment: Alignment.bottomCenter,
-      heightFactor: 0.08,
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: onContinue,
-          child: Text(
-            "Continue",
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                  color: AppColors.darkFontColor,
-                ),
+      heightFactor: 0.12,
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 3.52 * SizeConfigs.heightMultiplier),
+        child: SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: onContinue,
+            child: Text(
+              "Continue",
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: AppColors.darkFontColor,
+                  ),
+            ),
           ),
         ),
       ),

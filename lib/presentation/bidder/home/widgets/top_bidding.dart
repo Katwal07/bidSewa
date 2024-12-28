@@ -1,31 +1,57 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/common/bloc/generic_bloc/generic_cubit.dart';
-import 'package:nepa_bid/core/config/routes/routes_name.dart';
-import 'package:nepa_bid/core/config/theme/colors.dart';
-import 'package:nepa_bid/core/config/utils/utils.dart';
-import 'package:nepa_bid/core/constant/sizes.dart';
-import 'package:nepa_bid/domain/bidder/entity/item_entity.dart';
+import 'package:nepa_bid/common/widgets/container/card.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_top_bidd_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
-
-import '../../../../common/bloc/generic_bloc/generic_state.dart';
+import '../../../../common/bloc/pagination/bidder/pagination_cubit.dart';
+import '../../../../common/bloc/pagination/bidder/pagination_state.dart';
 import '../../../../common/res/size_configs.dart';
+import '../../../../domain/bidder/entity/bidder.dart';
 
-class TopBiddingSection extends StatelessWidget {
+class TopBiddingSection extends StatefulWidget {
   const TopBiddingSection({super.key});
 
   @override
+  State<TopBiddingSection> createState() => _TopBiddingSectionState();
+}
+
+class _TopBiddingSectionState extends State<TopBiddingSection> {
+  final scrollController = ScrollController();
+  late PaginationCubit paginationCubit;
+
+  void setupScrollController() {
+    scrollController.addListener(() {
+      if (scrollController.position.atEdge &&
+          scrollController.position.pixels ==
+              scrollController.position.maxScrollExtent) {
+        paginationCubit.loadPost(sl<GetTopBiddUsecase>());
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    paginationCubit = context.read<PaginationCubit>();
+    setupScrollController();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GenericCubit()..execute(sl<GetTopBiddUsecase>()),
-      child: Column(
-        children: [
-          _buildTopBiddingHeading(context),
-          _buildSpacing(),
-          _buildTopBidding(context),
-        ],
-      ),
+    return Column(
+      children: [
+        _buildTopBiddingHeading(context),
+        _buildSpacing(),
+        _buildTopBidding(),
+      ],
     );
   }
 
@@ -54,104 +80,58 @@ class TopBiddingSection extends StatelessWidget {
     );
   }
 
-  Widget _buildTopBidding(BuildContext context) {
-    final isDarkTheme = AppUtils.isDarkTheme(context);
-    return BlocBuilder<GenericCubit, GenericState>(builder: (context, state) {
-      if (state is DataLoaded) {
-        return SizedBox(
-          height: 30.26 * SizeConfigs.heightMultiplier,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return SizedBox(
-                width: 41.86 * SizeConfigs.widthMultiplier,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 23.60 * SizeConfigs.heightMultiplier,
-                      width: 41.86 * SizeConfigs.widthMultiplier,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft:
-                              Radius.circular(ComponentsSizes.borderRadiusMd),
-                          topRight:
-                              Radius.circular(ComponentsSizes.borderRadiusMd),
-                        ),
-                      ),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutesName.detailsPage,
-                            arguments: ItemEntity(
-                              itemId: state.data[index].id,
-                              endTime: state.data[index].endTime,
-                            ),
-                          );
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                            topRight:
-                                Radius.circular(ComponentsSizes.borderRadiusMd),
-                          ),
-                          child: Image(
-                            image: NetworkImage(
-                              state.data[index].images[0].url,
-                            ),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 6.44 * SizeConfigs.heightMultiplier,
-                      width: 41.86 * SizeConfigs.widthMultiplier,
-                      decoration: BoxDecoration(
-                        color: isDarkTheme
-                            ? AppColors.darkContainerColor
-                            : AppColors.lightContainerColor,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft:
-                              Radius.circular(ComponentsSizes.borderRadiusMd),
-                          bottomRight:
-                              Radius.circular(ComponentsSizes.borderRadiusMd),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: ComponentsSizes.sm),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              state.data[index].title,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              "Rs.${state.data[index].currentBid}",
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => SizedBox(
-              width: 2 * SizeConfigs.heightMultiplier,
-            ),
-            itemCount: 10,
-          ),
-        );
+  Widget _buildTopBidding() {
+    return BlocBuilder<PaginationCubit, PaginationState>(
+        builder: (context, state) {
+      if (state is PaginationLoadingState && state.isFirstFetch) {
+        return _loadingIndicator();
       }
-      return const SizedBox.shrink();
+
+      List<BidderItemEntity> posts = [];
+      bool isLoading = false;
+
+      if (state is PaginationLoadingState) {
+        posts = state.oldPost;
+        isLoading = true;
+      } else if (state is PaginationLoadedState) {
+        posts = state.post;
+      }
+
+      return SizedBox(
+        height: 30.26 * SizeConfigs.heightMultiplier,
+        child: ListView.separated(
+          shrinkWrap: true,
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            if (index < posts.length) {
+              return _post(posts[index], context);
+            } else {
+              Timer(const Duration(milliseconds: 30), () {
+                scrollController
+                    .jumpTo(scrollController.position.maxScrollExtent);
+              });
+
+              return _loadingIndicator();
+            }
+          },
+          separatorBuilder: (context, index) => SizedBox(
+            width: 2 * SizeConfigs.heightMultiplier,
+          ),
+          itemCount: posts.length + (isLoading ? 1 : 0),
+        ),
+      );
     });
+  }
+
+  Widget _post(BidderItemEntity post, BuildContext context) {
+    return CustomCard(imageUrl: post.images[0].url!, title: post.title!, currentBid: post.currentBid!);
+  }
+
+  Widget _loadingIndicator() {
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Center(child: CircularProgressIndicator()),
+    );
   }
 }
