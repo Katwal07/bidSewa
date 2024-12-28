@@ -37,7 +37,18 @@ class NetworkInfoRepositoryImpl implements NetworkInfoRepository {
     )) {
       return NetworkStatus.connected;
     }
-
     return NetworkStatus.disconnected;
   }
 }
+
+
+
+
+///Note:
+/*
+A Stream is a sequence of asynchronous data events that allows us to receive data
+over time instead of waiting for all the data to be available at once.
+A async* is an asynchronous generator that produce a stream of value.
+_mapConnectivityToStatus(initialResults); -> map the result from ConnectivityResult to a NetworkStatus.
+yields -> Emits the mapped NetworkStatus as the first value in the stream.
+*/
