@@ -26,7 +26,7 @@ class BidderPersonalInformation extends StatelessWidget {
     return BlocProvider(
       create: (context) => GenericCubit()..execute(sl<GetBidderUserProfileUseCase>()),
       child: Scaffold(
-        appBar: CustomAppBar(title: "User Details", darkStatusBarColor: AppColors.darkBgColor, lightStatusBarColor: AppColors.lightBgColor,),
+        appBar: CustomAppBar(title: "User Details", darkStatusBarColor: AppColors.darkBgColor, lightStatusBarColor: AppColors.lightBgColor,icon: Icons.arrow_back,),
         backgroundColor:
             isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         body: SafeArea(

@@ -1,39 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/presentation/navigation_bar/bidder/bloc/navigation_cubit_bidder.dart';
-import 'package:nepa_bid/presentation/navigation_bar/bidder/bloc/navigation_state_bidder.dart';
+import 'package:nepa_bid/presentation/navigation_bar/bidder/pages/navbar_items.dart';
+import 'package:nepa_bid/presentation/navigation_bar/bidder/pages/navbar_screens.dart';
+
 import '../../../../core/config/theme/colors.dart';
 import '../../../../core/config/utils/utils.dart';
-import 'navbar_items.dart';
-import 'navbar_screens.dart';
+import '../bloc/navigation_cubit_bidder.dart';
+import '../bloc/navigation_state_bidder.dart';
 
-class NavigationScreenBidder extends StatelessWidget {
+class NavigationScreenBidder extends StatefulWidget {
   const NavigationScreenBidder({super.key});
 
   @override
+  State<NavigationScreenBidder> createState() => _NavigationScreenState();
+}
+
+class _NavigationScreenState extends State<NavigationScreenBidder> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _setStatusBarColor();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    _setStatusBarColor();
+  }
+
+  void _setStatusBarColor() {
+    Future.delayed(Duration.zero, () {
+      final isDarkTheme = AppUtils.isDarkTheme(context);
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+        statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
+        statusBarBrightness: isDarkTheme ? Brightness.dark : Brightness.light,
+      ));
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isDarkTheme = AppUtils.isDarkTheme(context);
+    
     return BlocProvider(
       create: (context) => NavigationCubitBidder(),
       child: BlocBuilder<NavigationCubitBidder, NavigationStateBidder>(
         builder: (context, state) {
           if (state is NavigateStateBidder) {
-            return _buildNavigationScaffold(state, context);
+            return Scaffold(
+              backgroundColor: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+              body: SafeArea(
+                child: IndexedStack(
+                  index: state.tabIndex,
+                  children: bottomNavScreen,
+                ),
+              ),
+              bottomNavigationBar: _buildBottomNavigationBar(context, state),
+            );
           }
           return const SizedBox.shrink();
         },
       ),
-    );
-  }
-
-  Widget _buildNavigationScaffold(NavigateStateBidder state, BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: IndexedStack(
-          index: state.tabIndex, // Determines which child is visible
-          children: bottomNavScreen, // List of all possible Screens
-        ),
-      ),
-      bottomNavigationBar: _buildBottomNavigationBar(context, state),
     );
   }
 
@@ -45,7 +81,7 @@ class NavigationScreenBidder extends StatelessWidget {
         color: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         boxShadow: [
           BoxShadow(
-            color: AppColors.black.withValues(alpha: 0.1),
+            color: AppColors.black.withValues(alpha: 0),
             blurRadius: 1,
             spreadRadius: 1,
           ),
@@ -54,13 +90,13 @@ class NavigationScreenBidder extends StatelessWidget {
       child: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: AppColors.lightPrimaryColor.withValues(alpha: 0.7),
-          labelTextStyle: WidgetStateTextStyle.resolveWith((Set<WidgetState> states){
-            if(states.contains(WidgetState.selected)){
+          labelTextStyle:
+              WidgetStateTextStyle.resolveWith((Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
               return Theme.of(context).textTheme.bodySmall!;
             }
-              return Theme.of(context).textTheme.bodySmall!;
-          })
-        ),
+            return Theme.of(context).textTheme.bodySmall!;
+          })),
         child: NavigationBar(
           elevation: 0,
           backgroundColor: AppColors.transparent,
