@@ -1,7 +1,7 @@
 part of '../auth_imports.dart';
 
 class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+  const SignupScreen({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,7 @@ class SignupScreen extends StatelessWidget {
                   darkStatusBarColor: AppColors.lightPrimaryColor,
                   lightStatusBarColor: AppColors.lightPrimaryColor,
                   statusBarBrightness: Brightness.dark,
-                  icon: Icons.arrow_back,
-
+                  icon: Navigator.canPop(context) ? Icons.arrow_back : null,
                 ),
                 backgroundColor: AppColors.lightPrimaryColor,
                 body: SafeArea(
@@ -100,11 +99,11 @@ class SignupScreen extends StatelessWidget {
         children: [
           Text(
             AppStrings.singup,
-            style: Theme.of(context).textTheme.headlineLarge,
+            style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: AppColors.darkFontColor),
           ),
           Text(
             AppStrings.joinTheJourney,
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.darkFontColor),
           ),
         ],
       ),

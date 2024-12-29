@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nepa_bid/common/bloc/logout/logout_cubit.dart';
-import 'package:nepa_bid/common/bloc/logout/logout_state.dart';
 import 'package:nepa_bid/common/res/size_configs.dart';
 import 'package:nepa_bid/core/config/routes/routes_name.dart';
 import 'package:nepa_bid/core/config/utils/utils.dart';
@@ -103,98 +102,97 @@ class UserDetails extends StatelessWidget {
   }
 
   Widget _buildLogoutUser(BuildContext context) {
-    return BlocBuilder<LogoutCubit, LogoutState>(
-      builder: (context, state) {
-        if (state is LogoutInitial) {
-          return GestureDetector(
-            onTap: () {
-              context.read<LogoutCubit>().logoutUser(usecase: sl<LoggedOut>());
-            },
-            child: Row(
-              children: [
+    return GestureDetector(
+      onTap: () {
+        final currentLogoutCubit = context.read<LogoutCubit>();
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            final bool isDarkTheme = AppUtils.isDarkTheme(context);
+            return AlertDialog(
+              alignment: Alignment.center,
+              actionsAlignment: MainAxisAlignment.center,
+              backgroundColor: isDarkTheme
+                  ? AppColors.darkContainerColor
+                  : AppColors.lightContainerColor,
+              title: Center(
+                child: Column(
+                  spacing: 0.54 * SizeConfigs.heightMultiplier,
+                  children: [
+                    Text(
+                      AppStrings.logOut,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const Divider(
+                      thickness: 0.8,
+                    ),
+                  ],
+                ),
+              ),
+              content: Text(AppStrings.areYouSureWantToLogout,
+                  style: Theme.of(context).textTheme.titleMedium),
+              actions: [
                 Container(
-                  width: 10.7 * SizeConfigs.widthMultiplier,
-                  height: 5 * SizeConfigs.heightMultiplier,
+                  width: 23.3 * SizeConfigs.widthMultiplier,
                   decoration: BoxDecoration(
-                    color: AppColors.borderPrimary,
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.darkerGrey,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(0.86 * SizeConfigs.widthMultiplier),
+                    ),
                   ),
-                  child: SvgPicture.asset(
-                    width: 5.58 * SizeConfigs.widthMultiplier,
-                    height: 2.57 * SizeConfigs.heightMultiplier,
-                    AppVectors.logout,
-                    fit: BoxFit.scaleDown,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text(AppStrings.cancel,
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ),
                 ),
-                _buildWidth20(),
-                Text(
-                  AppStrings.logOut,
-                  style: Theme.of(context).textTheme.titleLarge,
-                )
-              ],
-            ),
-          );
-        }
-        if (state is LogoutLoading) {
-          return GestureDetector(
-            onTap: null,
-            child: Row(
-              children: [
                 Container(
-                  width: 10.7 * SizeConfigs.widthMultiplier,
-                  height: 5 * SizeConfigs.heightMultiplier,
+                  width: 23.3 * SizeConfigs.widthMultiplier,
                   decoration: BoxDecoration(
-                    color: AppColors.borderPrimary,
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.lightPrimaryColor,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(0.86 * SizeConfigs.widthMultiplier),
+                    ),
                   ),
-                  child: SvgPicture.asset(
-                    width: 5.58 * SizeConfigs.widthMultiplier,
-                    height: 2.57 * SizeConfigs.heightMultiplier,
-                    AppVectors.logout,
-                    fit: BoxFit.scaleDown,
+                  child: TextButton(
+                    onPressed: () {
+                      currentLogoutCubit.logoutUser(usecase: sl<LoggedOut>());
+                      Navigator.pop(context);
+                    },
+                    child: Text(AppStrings.logOut,
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ),
                 ),
-                _buildWidth20(),
-                const SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: CircularProgressIndicator(
-                      color: AppColors.borderPrimary,
-                    )),
               ],
-            ),
-          );
-        }
-        if (state is LogoutSuccess) {
-          return GestureDetector(
-            onTap: null,
-            child: Row(
-              children: [
-                Container(
-                  width: 10.7 * SizeConfigs.widthMultiplier,
-                  height: 5 * SizeConfigs.heightMultiplier,
-                  decoration: BoxDecoration(
-                    color: AppColors.borderPrimary,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: SvgPicture.asset(
-                    width: 5.58 * SizeConfigs.widthMultiplier,
-                    height: 2.57 * SizeConfigs.heightMultiplier,
-                    AppVectors.logout,
-                    fit: BoxFit.scaleDown,
-                  ),
-                ),
-                _buildWidth20(),
-                Text(
-                  AppStrings.logOut,
-                  style: Theme.of(context).textTheme.titleLarge,
-                )
-              ],
-            ),
-          );
-        }
-        return const SizedBox.shrink();
+            );
+          },
+        );
       },
+      child: Row(
+        children: [
+          Container(
+            width: 10.7 * SizeConfigs.widthMultiplier,
+            height: 5 * SizeConfigs.heightMultiplier,
+            decoration: BoxDecoration(
+              color: AppColors.borderPrimary,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: SvgPicture.asset(
+              width: 5.58 * SizeConfigs.widthMultiplier,
+              height: 2.57 * SizeConfigs.heightMultiplier,
+              AppVectors.logout,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+          _buildWidth20(),
+          Text(
+            AppStrings.logOut,
+            style: Theme.of(context).textTheme.titleLarge,
+          )
+        ],
+      ),
     );
   }
 

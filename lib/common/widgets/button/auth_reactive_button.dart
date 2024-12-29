@@ -36,7 +36,7 @@ class AppReactiveButton extends StatelessWidget {
         disabledForegroundColor:
             isDarkTheme ? AppColors.darkFontColor : AppColors.lightFontColor,
         disabledBackgroundColor:
-            isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+            isDarkTheme ? AppColors.darkContainerColor : AppColors.lightContainerColor,
         side: BorderSide(
             color: isDarkTheme
                 ? AppColors.lightContainerColor

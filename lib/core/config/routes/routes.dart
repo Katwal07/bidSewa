@@ -34,7 +34,7 @@ class Routes {
       case AppRoutesName.authScreen:
         return MaterialPageRoute(builder: (context) => const ChooseAuthPage());
       case AppRoutesName.loginScreen:
-        return MaterialPageRoute(builder: (context) => LoginScreen());
+        return MaterialPageRoute(builder: (context) => const LoginScreen());
       case AppRoutesName.signupScreen:
         return MaterialPageRoute(builder: (context) => const SignupScreen());
 

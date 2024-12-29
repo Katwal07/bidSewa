@@ -203,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
       style: Theme.of(context)
           .textTheme
           .headlineLarge!
-          .copyWith(color: AppColors.white),
+          .copyWith(color: AppColors.darkFontColor),
     );
   }
 
@@ -213,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
       style: Theme.of(context)
           .textTheme
           .bodyLarge!
-          .copyWith(color: AppColors.white),
+          .copyWith(color: AppColors.darkFontColor),
     );
   }
 

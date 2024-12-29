@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/generic_bloc/generic_cubit.dart';
 import 'package:nepa_bid/common/bloc/logout/logout_cubit.dart';
@@ -21,11 +20,6 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor:
-          isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
-      statusBarIconBrightness: isDarkTheme ? Brightness.light : Brightness.dark,
-    ));
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -49,7 +43,7 @@ class ProfileScreen extends StatelessWidget {
           body: SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: ComponentsSizes.horizontalPadding),
+                  horizontal: ComponentsSizes.horizontalPadding, vertical: 0),
               child: BlocBuilder<GenericCubit, GenericState>(
                 builder: (context, state) {
                   if (state is DataLoaded) {
@@ -57,7 +51,9 @@ class ProfileScreen extends StatelessWidget {
                       fit: StackFit.expand,
                       children: [
                         const UserInfo(),
-                        UserDetails(userRole: state.data.user.role),
+                        UserDetails(
+                          userRole: state.data.user.role,
+                        ),
                       ],
                     );
                   }

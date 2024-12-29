@@ -8,7 +8,6 @@ class LogoutCubit extends Cubit<LogoutState>{
 
   void logoutUser({required UseCase usecase}) async{
     emit(LogoutLoading());
-    await Future.delayed(const Duration(seconds: 2));
 
     try {
       Either result = await usecase.call();

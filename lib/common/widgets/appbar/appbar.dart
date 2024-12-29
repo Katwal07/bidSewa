@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nepa_bid/core/config/theme/colors.dart';
 import 'package:nepa_bid/core/config/utils/utils.dart';
 import '../../res/size_configs.dart';
 
@@ -26,29 +27,35 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
     return AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor:
-                isDarkTheme ? darkStatusBarColor : lightStatusBarColor,
-            statusBarIconBrightness:
-                isDarkTheme ? Brightness.light : Brightness.dark,
-            statusBarBrightness: statusBarBrightness ??
-                (isDarkTheme ? Brightness.dark : Brightness.light)),
-        automaticallyImplyLeading: false,
-        title: Text(
-          title ?? "",
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-        centerTitle: true,
-        leading: icon == null
-            ? null
-            : GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(
-                  icon,
-                  size: 6 * SizeConfigs.imageSizeMultiplier,
-                ),
+      systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor:
+              isDarkTheme ? darkStatusBarColor : lightStatusBarColor,
+          statusBarIconBrightness:
+              isDarkTheme ? Brightness.light : Brightness.dark,
+          statusBarBrightness: statusBarBrightness ??
+              (isDarkTheme ? Brightness.dark : Brightness.light)),
+      automaticallyImplyLeading: false,
+      title: Column(
+        children: [
+          Text(
+            title ?? "",
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ],
+      ),
+      centerTitle: true,
+      leading: icon == null
+          ? null
+          : GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Icon(
+                icon,
+                size: 6 * SizeConfigs.imageSizeMultiplier,
+                color: isDarkTheme ? AppColors.white : AppColors.black,
               ),
-        actions: actions);
+            ),
+      actions: actions,
+    );
   }
 
   @override

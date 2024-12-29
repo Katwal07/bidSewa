@@ -55,6 +55,8 @@ class AppStrings{
   static const String addProduct = "Add Product";
   static const String productImage = "Product Image (0/4)";
   static const String addVideo = "Product Video (0/2)";
+  static const String areYouSureWantToLogout = "Are you sure want to logout?";
+  static const String cancel = "Cancel";
 
   /// User
   static const String userDetails = "User Details";
