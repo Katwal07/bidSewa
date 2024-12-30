@@ -54,6 +54,7 @@ class SignupScreen extends StatelessWidget {
                   lightStatusBarColor: AppColors.lightPrimaryColor,
                   statusBarBrightness: Brightness.dark,
                   icon: Navigator.canPop(context) ? Icons.arrow_back : null,
+                  title: "",
                 ),
                 backgroundColor: AppColors.lightPrimaryColor,
                 body: SafeArea(

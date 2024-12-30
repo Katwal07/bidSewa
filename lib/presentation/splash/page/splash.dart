@@ -27,6 +27,7 @@ class SplashScreen extends StatelessWidget {
             darkStatusBarColor: AppColors.darkBgColor,
             lightStatusBarColor: AppColors.lightBgColor,
             statusBarBrightness: Brightness.dark,
+            title: "",
           ),
           backgroundColor: AppColors.lightPrimaryColor,
           body: _splashLogo(context),

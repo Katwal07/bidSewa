@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/widgets/container/card.dart';
+import 'package:nepa_bid/core/config/routes/routes_name.dart';
+import 'package:nepa_bid/domain/bidder/entity/item_entity.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_top_bidd_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
 import '../../../../common/bloc/pagination/bidder/pagination_cubit.dart';
@@ -125,7 +127,14 @@ class _TopBiddingSectionState extends State<TopBiddingSection> {
   }
 
   Widget _post(BidderItemEntity post, BuildContext context) {
-    return CustomCard(imageUrl: post.images[0].url!, title: post.title!, currentBid: post.currentBid!);
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, AppRoutesName.detailsPage, arguments: ItemEntity(itemId: post.id, endTime: post.endTime)),
+      child: CustomCard(
+        imageUrl: post.images[0].url!,
+        title: post.title!,
+        currentBid: post.currentBid!,
+      ),
+    );
   }
 
   Widget _loadingIndicator() {

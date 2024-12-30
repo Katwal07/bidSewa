@@ -12,17 +12,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? kCustomToolBarheight;
   final List<Widget>? actions;
   final Brightness? statusBarBrightness;
+  final IconData? prefixIcon;
 
-  const CustomAppBar({
-    super.key,
-    this.title,
-    required this.darkStatusBarColor,
-    required this.lightStatusBarColor,
-    this.icon,
-    this.kCustomToolBarheight,
-    this.actions,
-    this.statusBarBrightness,
-  });
+  const CustomAppBar(
+      {super.key,
+      this.title,
+      required this.darkStatusBarColor,
+      required this.lightStatusBarColor,
+      this.icon,
+      this.kCustomToolBarheight,
+      this.actions,
+      this.statusBarBrightness,
+      this.prefixIcon});
+
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
@@ -35,14 +37,33 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           statusBarBrightness: statusBarBrightness ??
               (isDarkTheme ? Brightness.dark : Brightness.light)),
       automaticallyImplyLeading: false,
-      title: Column(
-        children: [
-          Text(
-            title ?? "",
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
-      ),
+      title: title == null
+          ? SizedBox(
+              height: 40,
+              width: 300,
+              child: TextField(
+                decoration: InputDecoration(
+                    hintText: "Search",
+                    hintStyle: Theme.of(context).textTheme.labelLarge,
+                    filled: true,
+                    fillColor: isDarkTheme
+                        ? AppColors.darkContainerColor
+                        : AppColors.lightContainerColor,
+                    prefixIcon: Icon(
+                      prefixIcon,
+                      size: 26,
+                    ),
+                    suffixIcon: const Icon(
+                      Icons.clear,
+                      size: 18,
+                    ),
+                    border: InputBorder.none),
+              ),
+            )
+          : Text(
+              title ?? "",
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
       centerTitle: true,
       leading: icon == null
           ? null

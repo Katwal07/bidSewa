@@ -50,6 +50,7 @@ class AppStrings{
   static const String loginFailed = 'Login Failed';
   static const String success = "success";
   static const String unknownUserRole = 'Unknown user role';
+  static const String bidHistry = "Bid History";
 
   /// Auctioneer
   static const String addProduct = "Add Product";

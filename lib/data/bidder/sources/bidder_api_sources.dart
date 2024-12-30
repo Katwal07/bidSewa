@@ -7,6 +7,7 @@ import 'package:nepa_bid/core/network/network_const/constant.dart';
 import 'package:nepa_bid/data/bidder/model/auction_items_details.dart';
 import 'package:nepa_bid/data/bidder/model/bidder.dart';
 import 'package:nepa_bid/data/bidder/model/category.dart';
+import 'package:nepa_bid/data/bidder/model/get_bids_by_bidder_id.dart';
 import 'package:nepa_bid/data/bidder/model/place_bid_response.dart';
 import 'package:nepa_bid/service_locator.dart';
 import '../model/place_bid.dart';
@@ -21,6 +22,8 @@ abstract class BidderApiSources {
   Future<Either<AppException, List<BidderItemModel>>> searchItems(
       String keywordName, String searchItemName);
   Future<Either<AppException, List<CategoryElementModel>>> getAllCategory();
+  Future<Either<AppException, List<BidderDetailsModel>>> getBidsByBidderId(String bidderId);
+
 }
 
 class BidderApiSourceImpl extends BidderApiSources {
@@ -181,6 +184,39 @@ class BidderApiSourceImpl extends BidderApiSources {
       var response = await sl<ApiClient>().getRequest(path: ApiEndpointUrls.category);
       final List<CategoryElementModel> category = (response.data["categories"] as List).map((e)=> CategoryElementModel.fromJson(e)).toList();
       return Right(category);
+
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        return Left(
+          NetworkException(message: "Unable to connect to the server."),
+        );
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        return Left(
+          NetworkException(message: "No internet connection."),
+        );
+      }
+      if (e.response?.statusCode == 401) {
+        return Left(
+          UnAuthorizedException(
+              message: e.response?.data['message'] ?? "Invalid credentials."),
+        );
+      }
+      return Left(
+        ServerException(
+            message: e.response?.data['message'] ?? "An error occurred."),
+      );
+    }
+  }
+  
+  @override
+  Future<Either<AppException, List<BidderDetailsModel>>> getBidsByBidderId(String bidderId) async{
+    try {
+      var response = await sl<ApiClient>().getRequest(path: "${ApiEndpointUrls.getBidDetails}$bidderId");
+      final List<BidderDetailsModel> bidderDetailsModel = (response.data["data"] as List).map((e)=> BidderDetailsModel.fromJson(e)).toList();
+      return right(bidderDetailsModel);
 
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||

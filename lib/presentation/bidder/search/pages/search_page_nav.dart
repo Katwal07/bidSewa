@@ -19,6 +19,7 @@ class SearchPageNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
     return Scaffold(
+      backgroundColor: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(6.44 * SizeConfigs.heightMultiplier),
         child: AppBar(

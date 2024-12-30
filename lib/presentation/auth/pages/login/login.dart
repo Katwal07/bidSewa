@@ -68,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   darkStatusBarColor: AppColors.lightPrimaryColor,
                   lightStatusBarColor: AppColors.lightPrimaryColor,
                   statusBarBrightness: Brightness.dark,
+                  title: "",
                 ),
                 backgroundColor: AppColors.lightPrimaryColor,
                 body: SafeArea(

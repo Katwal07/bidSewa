@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/search_bloc/search_cubit.dart';
 import 'package:nepa_bid/common/bloc/search_bloc/search_state.dart';
+import 'package:nepa_bid/common/widgets/appbar/appbar.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
 import 'package:nepa_bid/domain/bidder/entity/category_name.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_search_items_usecase.dart';
@@ -20,34 +21,10 @@ class CategoryBasedItems extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
     return BlocProvider(
-      create: (context) => SearchCubit()..execute(sl<GetSearchItemsUsecase>(), params1: "category", params2: categoryName.name),
+      create: (context) => SearchCubit()..execute(sl<GetSearchItemsUsecase>(), params1: "category", params2: categoryName.name, ),
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: AppBar(
-            centerTitle: true,
-            automaticallyImplyLeading: true,
-            title: Text(categoryName.name, style: Theme.of(context).textTheme.headlineSmall,),
-            leading: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: GestureDetector(
-                onTap: ()=> Navigator.pop(context),
-                child: Container(
-                      decoration: BoxDecoration(
-                        color: isDarkTheme
-                            ? AppColors.darkContainerColor
-                            : AppColors.lightContainerColor,
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        size: 26,
-                      ),
-                    ),
-              ),
-            ),
-          ),
-        ),
+        backgroundColor: isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+        appBar: CustomAppBar(darkStatusBarColor: AppColors.darkBgColor, lightStatusBarColor: AppColors.lightBgColor, title: categoryName.name,icon: Icons.arrow_back,),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 30, horizontal: ComponentsSizes.horizontalPadding),
           child: BlocBuilder<SearchCubit, SearchItemState>(

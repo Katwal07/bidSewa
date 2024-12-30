@@ -17,6 +17,7 @@ class ApiEndpointUrls {
   static const String bidItem = "bid/placebid/";
   static const String searchItem = "auction/search-auctions?";
   static const String category = "category";
+  static const String getBidDetails = "bid/";
 
   /// search
   static const String searchKeyword = "keyword";

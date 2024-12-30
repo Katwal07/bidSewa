@@ -158,7 +158,7 @@ class UserDetails extends StatelessWidget {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      currentLogoutCubit.logoutUser(usecase: sl<LoggedOut>());
+                       currentLogoutCubit.logoutUser(usecase: sl<LoggedOut>());
                       Navigator.pop(context);
                     },
                     child: Text(AppStrings.logOut,
