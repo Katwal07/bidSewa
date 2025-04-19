@@ -59,7 +59,7 @@ class BidPageBidder extends StatelessWidget {
   Widget _myBids(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
     return SizedBox(
-      height: 71 * SizeConfigs.heightMultiplier,
+      height: 70 * SizeConfigs.heightMultiplier,
       child: BlocBuilder<GenericCubit, GenericState>(
         builder: (context, state) {
           if (state is DataLoaded) {
@@ -72,7 +72,7 @@ class BidPageBidder extends StatelessWidget {
                     AppRoutesName.detailsPage,
                     arguments: ItemEntity(
                       itemId: state.data[index].auctionItem.id,
-                      endTime: "2080-07-05 2:15",
+                      endTime: state.data[index].auctionItem.endTime,
                     ),
                   ),
                   child: Container(

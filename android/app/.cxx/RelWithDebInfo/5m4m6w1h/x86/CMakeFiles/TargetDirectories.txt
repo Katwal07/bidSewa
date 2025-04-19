@@ -1,0 +1,2 @@
+/Users/katwal/Documents/bidSewa/android/app/.cxx/RelWithDebInfo/5m4m6w1h/x86/CMakeFiles/edit_cache.dir
+/Users/katwal/Documents/bidSewa/android/app/.cxx/RelWithDebInfo/5m4m6w1h/x86/CMakeFiles/rebuild_cache.dir

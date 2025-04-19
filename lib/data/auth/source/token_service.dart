@@ -12,6 +12,19 @@ class TokenService {
     }
   }
 
+  static Future<String?> getId() async{
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString("userId");
+    return userId;
+  }
+
+  static Future<void> saveUserId(String userId) async{
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('userId', userId);
+    debugPrint("UserId: $userId");
+  }
+
   static bool _isValidToken(String token) {
     try {
       // Decode and check token validity

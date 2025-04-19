@@ -30,9 +30,24 @@ dependencies:
   geocoding: ^3.0.0
   connectivity_plus: ^6.1.1
 
+  esewa_flutter_sdk:
+    path: ./esewa_sdk/esewa_flutter_sdk
+  video_player: ^2.9.5
+  chewie: ^1.11.1
+  shimmer: ^3.0.0
+  cached_network_image: ^3.4.1
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: "^0.14.3"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/im_app_logo.png"
 
   flutter_lints: ^4.0.0
 

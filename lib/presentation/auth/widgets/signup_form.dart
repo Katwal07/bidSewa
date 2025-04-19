@@ -63,8 +63,9 @@ class _SignupFormState extends State<SignupForm> {
           child: Container(
             height: ComponentsSizes.productItemHeight * 2.1,
             decoration: BoxDecoration(
-              color:
-                  isDarkTheme ? AppColors.darkContainerColor : AppColors.lightContainerColor,
+              color: isDarkTheme
+                  ? AppColors.darkContainerColor
+                  : AppColors.lightContainerColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(ComponentsSizes.borderRadiusLg),
               ),
@@ -120,7 +121,6 @@ class _SignupFormState extends State<SignupForm> {
 
                             /// Signup Button
                             _signupButton(context),
-
 
                             /// Don't Have an Account
                             _dontHaveAccountText(context),
@@ -214,7 +214,6 @@ class _SignupFormState extends State<SignupForm> {
 
                             /// Signup Button
                             _signupButtonForAuctioneer(context),
-
 
                             /// Don't Have an Account
                             _dontHaveAccountText(context),
@@ -539,34 +538,38 @@ class _SignupFormState extends State<SignupForm> {
       return SizedBox(
         width: double.infinity,
         child: AppReactiveButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                final String? profileImagePath =
-                    imagePickerCubit.getSelectedImagePath();
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              final String? profileImagePath =
+                  imagePickerCubit.getSelectedImagePath();
 
-                if (profileImagePath == null || profileImagePath.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text(AppStrings.pleaseSelectProfileImage)),
-                  );
-                  return;
-                }
-
-                final File profileImage = File(profileImagePath);
-
-                context.read<AuthCubit>().execute(
-                      usecase: sl<SignUpUseCase>(),
-                      params: SignupReqParamsEntity(
-                        fullName: _fullNameCon.text,
-                        phoneNumber: _phoneNumberCon.text,
-                        email: _emailCon.text,
-                        password: _passwordCon.text,
-                        profileImage: profileImage,
-                      ), context: context,
-                    );
+              if (profileImagePath == null || profileImagePath.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text(AppStrings.pleaseSelectProfileImage)),
+                );
+                return;
               }
-            },
-            label: AppStrings.singup),
+
+              final File profileImage = File(profileImagePath);
+
+              context.read<AuthCubit>().execute(
+                    usecase: sl<SignUpUseCase>(),
+                    params: SignupReqParamsEntity(
+                      fullName: _fullNameCon.text,
+                      phoneNumber: _phoneNumberCon.text,
+                      email: _emailCon.text,
+                      password: _passwordCon.text,
+                      profileImage: profileImage,
+                    ),
+                    context: context,
+                  );
+
+              
+            }
+          },
+          label: AppStrings.singup,
+        ),
       );
     });
   }
@@ -586,7 +589,10 @@ class _SignupFormState extends State<SignupForm> {
               if (profileImagePath == null || profileImagePath.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                      content: Text(AppStrings.pleaseSelectProfileImage)),
+                    content: Text(
+                      AppStrings.pleaseSelectProfileImage,
+                    ),
+                  ),
                 );
                 return;
               }
@@ -610,7 +616,8 @@ class _SignupFormState extends State<SignupForm> {
                       imepayNumber: _imePayNoCon.text,
                       khaltiNumber: _khaltiCon.text,
                       esewaNumber: _esewaCon.text,
-                    ), context: context,
+                    ),
+                    context: context,
                   );
             }
           },

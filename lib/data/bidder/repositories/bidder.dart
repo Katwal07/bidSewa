@@ -93,9 +93,9 @@ class BidderRepositoryImpl extends BidderRepository {
 
   @override
   Future<Either<Failure, List<BidderItemEntity>>> searchItems(
-      String keywordName, String searchItemName) async {
+      String keywordName, String searchItemName, int page) async {
     Either returnedData =
-        await sl<BidderApiSources>().searchItems(keywordName, searchItemName);
+        await sl<BidderApiSources>().searchItems(keywordName, searchItemName, page);
     return returnedData.fold((error) {
       return Left(error);
     }, (data) {

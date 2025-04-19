@@ -21,12 +21,14 @@ class AuctionItemEntity {
         required this.title,
         required this.description,
         required this.currentBid,
+        required this.endTime,
     });
 
     final String? id;
     final String? title;
     final String? description;
     final int? currentBid;
+    final String? endTime;
 }
 
 class BidderEntity {

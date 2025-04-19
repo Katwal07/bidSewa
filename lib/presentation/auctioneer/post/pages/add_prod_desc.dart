@@ -9,7 +9,7 @@ import 'package:nepa_bid/core/config/theme/colors.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
 import 'package:nepa_bid/core/constant/text_string.dart';
 import 'package:nepa_bid/domain/auctioneer/entity/product_argument.dart';
-import 'package:nepa_bid/presentation/auctioneer/post/bloc/date_time_picker_cubit.dart';
+import 'package:nepa_bid/presentation/auctioneer/post/bloc/date_time_picker_cubit/date_time_picker_cubit.dart';
 
 import '../widgets/add_product_details/sized_box1.dart';
 import '../widgets/add_product_details/sized_box2.dart';
@@ -22,18 +22,25 @@ class AddProductDetails extends StatefulWidget {
 }
 
 class _AddProductDetailsState extends State<AddProductDetails> {
-
   String selectedValue = "";
-  void _onItemSelectedValue(String value){
+  void _onItemSelectedValue(String value) {
     setState(() {
       selectedValue = value;
     });
   }
+
+  String selectedCategoryValue = '';
+  void _onItemSelectedCategory(String value){
+    setState(() {
+      selectedCategoryValue = value;
+    });
+  }
+
   final TextEditingController _productNameCon = TextEditingController();
 
-  final TextEditingController _productConditionCon = TextEditingController();
+  //final TextEditingController _productConditionCon = TextEditingController();
 
-  final TextEditingController _productCategoryCon = TextEditingController();
+  //final TextEditingController _productCategoryCon = TextEditingController();
 
   final TextEditingController _productDescCon = TextEditingController();
 
@@ -59,6 +66,14 @@ class _AddProductDetailsState extends State<AddProductDetails> {
         backgroundColor:
             isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor:
+                isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+            statusBarIconBrightness:
+                isDarkTheme ? Brightness.light : Brightness.dark,
+            statusBarBrightness:
+                isDarkTheme ? Brightness.dark : Brightness.light,
+          ),
           title: Text(
             AppStrings.addProduct,
             style: Theme.of(context).textTheme.headlineMedium,
@@ -78,25 +93,24 @@ class _AddProductDetailsState extends State<AddProductDetails> {
                 TopSizedBox1(
                   isDarkTheme: isDarkTheme,
                   productNameCon: _productNameCon,
-                  productCategoryCon: _productCategoryCon,
-                  productConditionCon: _productConditionCon,
-                  productDescCon: _productDescCon, 
-                  onItemSelected: _onItemSelectedValue,
+                  // productCategoryCon: _productCategoryCon,
+                  // productConditionCon: _productConditionCon,
+                  productDescCon: _productDescCon,
+                  onItemSelected: _onItemSelectedValue, 
+                  onItemCategoryValue: _onItemSelectedCategory,
                 ),
-
-
 
                 /// Bottom SizedBox
                 Builder(builder: (context) {
                   return BottomSizedBox1(
                     onContinue: () {
                       DateTime now = DateTime.now();
-                       final DateTimePickerCubit dateTimePickerCubit =
-                        context.read<DateTimePickerCubit>();
-                        final DateTime? getEndTime =
-                        dateTimePickerCubit.getUserCombinedDateTime();
+                      final DateTimePickerCubit dateTimePickerCubit =
+                          context.read<DateTimePickerCubit>();
+                      final DateTime? getEndTime =
+                          dateTimePickerCubit.getUserCombinedDateTime();
                       final productName = _productNameCon.text;
-                      final productCategory = _productCategoryCon.text;
+                      final productCategory = selectedCategoryValue;
                       final productCondition = selectedValue;
                       final productDesc = _productDescCon.text;
 
@@ -108,14 +122,15 @@ class _AddProductDetailsState extends State<AddProductDetails> {
                           productCategory: productCategory,
                           productCondition: productCondition,
                           productDesc: productDesc,
-                          startTime: DateFormat('yyyy-MM-dd HH:mm').format(now).toString(),
+                          startTime: DateFormat('yyyy-MM-dd HH:mm')
+                              .format(now)
+                              .toString(),
                           endTime: getEndTime.toString(),
                         ),
                       );
                     },
                   );
-                }
-              ),
+                }),
               ],
             ),
           ),
@@ -124,5 +139,3 @@ class _AddProductDetailsState extends State<AddProductDetails> {
     );
   }
 }
-
-

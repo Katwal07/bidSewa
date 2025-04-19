@@ -7,6 +7,7 @@ import 'package:nepa_bid/core/network/api_client.dart';
 import 'package:nepa_bid/core/network/network_const/api_endpoint_urls.dart';
 import 'package:nepa_bid/core/network/network_const/constant.dart';
 import 'package:nepa_bid/data/auctioneer/model/auction.dart';
+import 'package:nepa_bid/data/auctioneer/model/my_auction_item.dart';
 import 'package:nepa_bid/data/auctioneer/model/post_auction.dart';
 import 'package:nepa_bid/service_locator.dart';
 
@@ -14,6 +15,7 @@ abstract class AuctionApiService {
   Future<Either<AppException, List<AuctionItemModel>>> getAllAuctionItems(
       int page);
   Future<Either> createAuction(PostAuctionItemModel model);
+  Future<Either<AppException, MyAuctionItemsModel>> getMyAuctionItems(String auctioneerId);
 }
 
 class AuctionApiServiceImpl extends AuctionApiService {
@@ -97,13 +99,42 @@ class AuctionApiServiceImpl extends AuctionApiService {
         'description': model.description,
       });
 
+
       var response = await sl<ApiClient>().postRequest(
         path: ApiEndpointUrls.createItem,
         body: formData,
       );
       return Right(response.data);
     } on DioException catch (e) {
-      return Left(e.response!.data['message']);
+      return Left(e.response?.data['message'] ?? e.message ?? 'An error occurred');
+    }catch (e) {
+    return Left(e.toString());
+  }
+  }
+  
+  @override
+  Future<Either<AppException, MyAuctionItemsModel>> getMyAuctionItems(String auctioneerId) async{
+    try {
+      var response = await sl<ApiClient>().getRequest(
+          path:
+              "${ApiEndpointUrls.getMyAuctionItems}$auctioneerId");
+
+      final MyAuctionItemsModel auctionItemModel = MyAuctionItemsModel.fromJson(response.data);
+      return Right(auctionItemModel);
+
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        return Left(NetworkException(message: "Unable to connect to the server."));
+      }
+      if (e.type == DioExceptionType.connectionError) {
+        return Left(NetworkException(message: "No internet connection."));
+      }
+      if (e.response?.statusCode == 401) {
+        return Left(UnAuthorizedException(message: e.response?.data['message'] ?? "Invalid credentials."));
+      }
+      return Left(ServerException(message: e.response?.data['message'] ?? "An error occurred."));
     }
   }
 }

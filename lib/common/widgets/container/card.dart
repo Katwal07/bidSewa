@@ -30,11 +30,13 @@ class CustomCard extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
+                width: SizeConfigs.widthMultiplier * 50,
+                height: SizeConfigs.heightMultiplier * 18.4,
                 decoration: BoxDecoration(
                   color: isDarkTheme ? AppColors.darkContainerColor : AppColors.lightContainerColor,
                 ),
                 child: Image(
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                   image: NetworkImage(imageUrl))
               ),
             ),

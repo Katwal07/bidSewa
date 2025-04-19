@@ -1,29 +1,42 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:nepa_bid/presentation/auctioneer/post/widgets/modal_sheet/modal_sheet.dart';
 import '../../../../../core/config/theme/colors.dart';
 import '../../../../../core/constant/sizes.dart';
-import '../../bloc/date_time_picker_cubit.dart';
-import '../../bloc/date_time_picker_state.dart';
+import '../../bloc/date_time_picker_cubit/date_time_picker_cubit.dart';
+import '../../bloc/date_time_picker_cubit/date_time_picker_state.dart';
 
-class TopSizedBox1 extends StatelessWidget {
-  const TopSizedBox1({
+class TopSizedBox1 extends StatefulWidget {
+  TopSizedBox1({
     super.key,
     required this.isDarkTheme,
     required this.productNameCon,
-    required this.productCategoryCon,
-    required this.productConditionCon,
-    required this.productDescCon, 
+    //required this.productCategoryCon,
+    //required this.productConditionCon,
+    required this.productDescCon,
     required this.onItemSelected,
+    required this.onItemCategoryValue,
   });
 
   final bool isDarkTheme;
   final TextEditingController productNameCon;
-  final TextEditingController productCategoryCon;
-  final TextEditingController productConditionCon;
+  //final TextEditingController productCategoryCon;
+  //final TextEditingController productConditionCon;
   final TextEditingController productDescCon;
   final void Function(String) onItemSelected;
+  final void Function(String) onItemCategoryValue;
 
+
+  @override
+  State<TopSizedBox1> createState() => _TopSizedBox1State();
+}
+
+class _TopSizedBox1State extends State<TopSizedBox1> {
+   String value = "Select Product Condition";
+   String categoryValue = "Select Category";
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
@@ -32,7 +45,7 @@ class TopSizedBox1 extends StatelessWidget {
         heightFactor: 0.85,
         child: Container(
           decoration: BoxDecoration(
-            color: isDarkTheme
+            color: widget.isDarkTheme
                 ? AppColors.darkContainerColor
                 : AppColors.lightContainerColor,
             borderRadius: BorderRadius.circular(
@@ -63,83 +76,105 @@ class TopSizedBox1 extends StatelessWidget {
                           1,
                           1,
                           TextInputType.text,
-                          productNameCon,
+                          widget.productNameCon,
                         ),
                       ],
                     ),
                   ),
                   _divider(),
-                  SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildTextFieldName(
-                          context,
-                          "Product Condition",
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showMenu(
-                              elevation: 0,
-                              popUpAnimationStyle:
-                                  AnimationStyle(curve: Curves.easeInOut),
-                              context: context,
-                              position: const RelativeRect.fromLTRB(
-                                  400, 300, 50, 100),
-                              color: isDarkTheme
-                                  ? AppColors.darkBgColor
-                                  : AppColors.lightBgColor,
-                              items: [
-                                const PopupMenuItem(
-                                  value: "new",
-                                  child: Text("new"),
-                                ),
-                                const PopupMenuItem(
-                                  value: "old",
-                                  child: Text("old"),
-                                )
-                              ],
-                            ).then((selectedValue){
-                              if(selectedValue != null){
-                                onItemSelected(selectedValue);
-                              }
-                            });
-                          },
-                          child: SizedBox(
+                  GestureDetector(
+                    onTap: () async {
+                      final selectedValue = await showMenu<String>(
+                        elevation: 0,
+                        popUpAnimationStyle:
+                            AnimationStyle(curve: Curves.easeInOut),
+                        context: context,
+                        position:
+                            const RelativeRect.fromLTRB(400, 300, 50, 100),
+                        color: widget.isDarkTheme
+                            ? AppColors.darkBgColor
+                            : AppColors.lightBgColor,
+                        items: [
+                          const PopupMenuItem(
+                            value: "new",
+                            child: Text("new"),
+                          ),
+                          const PopupMenuItem(
+                            value: "old",
+                            child: Text("old"),
+                          )
+                        ],
+                      );
+
+                      if (selectedValue != null) {
+                        setState(() {
+                          value = selectedValue;
+                        });
+                        widget.onItemSelected(selectedValue);
+                      }
+                    },
+                    child: SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextFieldName(
+                            context,
+                            "Product Condition",
+                          ),
+                          SizedBox(
                             height: 50,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Select Product Condition",
+                                  value,
                                   style: Theme.of(context).textTheme.labelSmall,
                                 ),
                                 const Icon(Icons.check_circle_outline_outlined)
                               ],
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   _divider(),
                   SizedBox(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildTextFieldName(
-                          context,
-                          "Category",
-                        ),
-                        _buildTextField(
-                          context,
-                          "Set Category",
-                          1,
-                          1,
-                          TextInputType.text,
-                          productCategoryCon,
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () async {
+                        final selectedCategory =
+                            await AppBottomSheet.display(context);
+                        if (selectedCategory != null) {
+                          setState(
+                            () {
+                              categoryValue = selectedCategory;
+                            },
+                          );
+                          widget.onItemCategoryValue(selectedCategory);
+                        }
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextFieldName(
+                            context,
+                            "Category",
+                          ),
+                          SizedBox(
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  categoryValue,
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                                const Icon(Icons.check_circle_outline_outlined)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   _divider(),
@@ -261,7 +296,7 @@ class TopSizedBox1 extends StatelessWidget {
                           "Product Description",
                         ),
                         _buildTextField(context, "Input here", 10, 4,
-                            TextInputType.multiline, productDescCon)
+                            TextInputType.multiline, widget.productDescCon)
                       ],
                     ),
                   ),

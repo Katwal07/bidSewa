@@ -8,9 +8,11 @@ class SearchLoadingState extends SearchItemState {}
 
 class SearchLoadedState extends SearchItemState {
   final List<BidderItemEntity> data;
+  final bool hasMore;
+  final int currentPage;
 
-  SearchLoadedState({required this.data});
-
+  SearchLoadedState(
+      {required this.data, required this.hasMore, required this.currentPage});
 }
 
 class SearchFailureState extends SearchItemState {

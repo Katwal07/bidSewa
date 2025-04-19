@@ -5,40 +5,34 @@ import 'package:nepa_bid/core/config/routes/routes_name.dart';
 import 'package:nepa_bid/core/usecase/usecase.dart';
 import 'package:nepa_bid/domain/auth/entity/user_response.dart';
 
-import '../../../core/error/failure.dart';
-
 part 'button_state.dart';
 
 class ButtonCubit extends Cubit<ButtonState> {
   ButtonCubit() : super(ButtonInitial());
 
-  void execute({dynamic params, required UseCase usecase, required BuildContext context}) async {
+  void execute({
+    dynamic params,
+    required UseCase usecase,
+    required BuildContext context,
+    bool isLogin = false,
+  }) async {
     try {
       emit(ButtonLoading());
 
-    Either<Failure, UserResponseEntity> result =
-        await usecase.call(param: params);
-    result.fold((error) {
-      emit(ButtonFailure(
-        errorMessage: error.toString(),
-      ));
-    }, (data) {
-      if(data.success == false){
-        emit(ButtonFailure(errorMessage: data.message ?? 'Login Failed'));
-      }else{
-        emit(
-        ButtonLoaded(
-          success: data.success ?? true,
-          message: data.message ?? "success",
-          role: data.user?.role ?? "Bidder",
-        ),
-      );
-      }
-      handleLoginSuccess(data, context);
-     }
-    );
+      Either result = await usecase.call(param: params);
+      result.fold((error) {
+        emit(ButtonFailure(
+          errorMessage: error.toString(),
+        ));
+      }, (data) {
+         if (isLogin) {
+            handleLoginSuccess(data, context);
+          } else {
+            handleGenericSuccessResponse(data, context);
+          }
+      });
     } catch (e) {
-      emit(ButtonFailure(errorMessage: "Authentication Failed"));
+      emit(ButtonFailure(errorMessage: e.toString()));
     }
   }
 
@@ -69,8 +63,33 @@ class ButtonCubit extends Cubit<ButtonState> {
           );
           break;
       }
-    }else{
+    } else {
       emit(ButtonFailure(errorMessage: entity.message!));
+    }
+  }
+
+  void handleGenericSuccessResponse(dynamic data, BuildContext context) {
+    try {
+
+      final Map<String, dynamic> response = data as Map<String, dynamic>;
+      
+      if (response.containsKey('success') && response['success'] == true) {
+        emit(ButtonLoaded(
+          success: true,
+          message: response['message'] ?? "Operation successful",
+          role: "Bidder", // Default role for non-login operations
+        ));
+        // Navigate or show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response['message'] ?? "Success")),
+        );
+      } else {
+        emit(ButtonFailure(
+          errorMessage: response['message'] ?? 'Operation failed',
+        ));
+      }
+    } catch (e) {
+      emit(ButtonFailure(errorMessage: 'Invalid response format'));
     }
   }
 }

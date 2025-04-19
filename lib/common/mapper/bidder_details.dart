@@ -20,7 +20,8 @@ class BidderDetailsMapper {
       id: auctionItemModel.id,
       title: auctionItemModel.title,
       description: auctionItemModel.description,
-      currentBid: auctionItemModel.currentBid,
+      currentBid: auctionItemModel.currentBid, 
+      endTime: auctionItemModel.endTime,
     );
   }
 

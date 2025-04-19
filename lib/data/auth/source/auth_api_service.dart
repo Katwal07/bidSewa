@@ -14,13 +14,18 @@ class AuthApiServiceImpl extends AuthApiService {
   @override
   Future<Either<AppException, UserResponseModel>> signin(
       SigninReqParamsModel params) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     try {
       var response = await sl<ApiClient>().postRequest(
         path: ApiEndpointUrls.login,
         body: params.toMap(),
       );
+      
       final userResponseModel = UserResponseModel.fromJson(response.data);
+      pref.setString('userId', userResponseModel.user!.id!);
+      debugPrint('User ID: ${userResponseModel.user!.id}');
       return Right(userResponseModel);
+
     } on DioException catch (e) {
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.receiveTimeout ||

@@ -11,6 +11,7 @@ class ApiEndpointUrls {
   static const String createItem = "auction/createitem";
   static const String getAllItems = "auction/allitems";
   static const String getUserProfile = "user/me";
+  static const String getMyAuctionItems = "auction/user/";
 
   /// Bidder
   static const String getItemsDetails = "auction/item/";

@@ -129,8 +129,10 @@ class UserDetails extends StatelessWidget {
                   ],
                 ),
               ),
-              content: Text(AppStrings.areYouSureWantToLogout,
-                  style: Theme.of(context).textTheme.titleMedium),
+              content: Text(
+                AppStrings.areYouSureWantToLogout,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               actions: [
                 Container(
                   width: 23.3 * SizeConfigs.widthMultiplier,
@@ -145,7 +147,7 @@ class UserDetails extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: Text(AppStrings.cancel,
-                        style: Theme.of(context).textTheme.bodyMedium),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white)),
                   ),
                 ),
                 Container(
@@ -158,11 +160,11 @@ class UserDetails extends StatelessWidget {
                   ),
                   child: TextButton(
                     onPressed: () {
-                       currentLogoutCubit.logoutUser(usecase: sl<LoggedOut>());
+                      currentLogoutCubit.logoutUser(usecase: sl<LoggedOut>());
                       Navigator.pop(context);
                     },
                     child: Text(AppStrings.logOut,
-                        style: Theme.of(context).textTheme.bodyMedium),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppColors.white),),
                   ),
                 ),
               ],

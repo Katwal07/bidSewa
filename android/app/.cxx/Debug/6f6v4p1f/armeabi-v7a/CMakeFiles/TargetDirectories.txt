@@ -1,0 +1,2 @@
+/Users/katwal/Documents/bidSewa/android/app/.cxx/Debug/6f6v4p1f/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/katwal/Documents/bidSewa/android/app/.cxx/Debug/6f6v4p1f/armeabi-v7a/CMakeFiles/rebuild_cache.dir

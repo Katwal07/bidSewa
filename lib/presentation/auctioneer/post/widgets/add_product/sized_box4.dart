@@ -6,6 +6,9 @@ import 'package:nepa_bid/common/bloc/image_picker/image_picker_cubit.dart';
 import 'package:nepa_bid/common/bloc/video_picker/video_picker_cubit.dart';
 import 'package:nepa_bid/common/res/size_configs.dart';
 import 'package:nepa_bid/common/widgets/button/others_reactive_button.dart';
+import 'package:nepa_bid/common/widgets/snackbar/snackbar.dart';
+import 'package:nepa_bid/core/config/routes/routes_name.dart';
+import 'package:nepa_bid/core/config/theme/colors.dart';
 import 'package:nepa_bid/domain/auctioneer/usecases/create_auction_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
 import '../../../../../domain/auctioneer/entity/post_auction.dart';
@@ -32,35 +35,37 @@ class BottomSizedBox2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      alignment: Alignment.bottomCenter,
-      heightFactor: 0.12,
-      child: Padding(
-        padding: EdgeInsets.only(bottom: 3.52 * SizeConfigs.heightMultiplier),
-        child: SizedBox(
-          width: double.infinity,
-          child: Builder(builder: (context) {
-            return OthersReactiveButton(
-              onPressed: () async {
-                try {
+    return BlocListener<ButtonCubit, ButtonState>(
+      listener: (context, state) {
+        if(state is ButtonLoaded){
+          Navigator.pushNamedAndRemoveUntil(context, AppRoutesName.navPage, (route)=> false);
+        }
+      },
+      child: FractionallySizedBox(
+        alignment: Alignment.bottomCenter,
+        heightFactor: 0.12,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 3.52 * SizeConfigs.heightMultiplier),
+          child: SizedBox(
+            width: double.infinity,
+            child: Builder(builder: (context) {
+              return OthersReactiveButton(
+                onPressed: () async {
                   final MultipleImagePickerCubit imagePickerCubit =
                       context.read<MultipleImagePickerCubit>();
                   final VideoPickerCubit videoPickerCubit =
                       context.read<VideoPickerCubit>();
                   final List<String>? imagesPath =
                       imagePickerCubit.getSelectedImagePath();
-                  final List<String>? videosPath =
-                      videoPickerCubit.getSelectedVideoPath();
-        
+                  final List<String> videosPath =
+                      videoPickerCubit.getSelectedVideoPath() ?? [];
+
                   if (imagesPath == null || imagesPath.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Please select at least one image")));
-                    return;
-                  }
-        
-                  if (videosPath == null || videosPath.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Please select at least one video")));
+                    CustomSnackBar.showCustomSnackBar(
+                      context,
+                      AppColors.warning,
+                      "Please select at least one image",
+                    );
                     return;
                   }
                   debugPrint(productName);
@@ -70,7 +75,7 @@ class BottomSizedBox2 extends StatelessWidget {
                   debugPrint(receivedStartingBid.text);
                   debugPrint(startTime);
                   debugPrint(endTime);
-        
+
                   context.read<ButtonCubit>().execute(
                         usecase: sl<CreateAuctionUsecase>(),
                         params: PostAuctionItemEntity(
@@ -83,18 +88,14 @@ class BottomSizedBox2 extends StatelessWidget {
                           endTime: endTime,
                           images: imagesPath.map((e) => File(e)).toList(),
                           videos: videosPath.map((e) => File(e)).toList(),
-                        ), context: context,
+                        ),
+                        context: context,
                       );
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text('An error occurred: $e'),
-                    backgroundColor: Colors.red,
-                  ));
-                }
-              },
-              label: "Publish Product",
-            );
-          }),
+                },
+                label: "Publish Product",
+              );
+            }),
+          ),
         ),
       ),
     );

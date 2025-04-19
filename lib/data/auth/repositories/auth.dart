@@ -5,13 +5,17 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Either<Failure, UserResponseEntity>> signin(
       SigninReqParamsEntity params) async {
     try {
-      Either result = await sl<AuthApiService>()
-          .signin(SigninReqParamsMapper.toEntity(params));
+      Either result = await sl<AuthApiService>().signin(
+        SigninReqParamsMapper.toEntity(params),
+      );
       return result.fold((error) {
         return Left(error);
       }, (data) async {
         if (data.success) {
           final token = data.token;
+
+          final userId = data.user.id;
+          await TokenService.saveUserId(userId);
 
           await TokenService.saveToken(token);
         }
@@ -86,7 +90,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<Either<Failure, BidderUserEntity>> getBidderUserProfile() async{
+  Future<Either<Failure, BidderUserEntity>> getBidderUserProfile() async {
     Either returnedData = await sl<AuthApiService>().getBidderUserProfile();
     return returnedData.fold((error) {
       return Left(mapExceptionToFailure(error));

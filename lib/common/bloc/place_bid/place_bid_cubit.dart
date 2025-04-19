@@ -13,7 +13,7 @@ class PlaceBidCubit extends Cubit<PlaceBidState> {
 
     Either returnedData = await usecase.call(param1: params1, param2: params2);
     returnedData.fold((error) {
-      emit(BidFailure(errorMessage: "Bidding Error"));
+      emit(BidFailure(errorMessage: error.toString()));
     }, (data) {
       if (data.success == false) {
         emit(BidLoaded(

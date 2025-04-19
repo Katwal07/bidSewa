@@ -1,46 +1,50 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nepa_bid/common/bloc/pagination/bidder/pagination_cubit.dart';
-import 'package:nepa_bid/common/bloc/pagination/bidder/pagination_state.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc_newin/pagination_newsin_bloc.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc_newin/pagination_newsin_event.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc_newin/pagination_newsin_state.dart';
 import 'package:nepa_bid/common/widgets/container/card.dart';
-import 'package:nepa_bid/domain/bidder/entity/bidder.dart';
-import 'package:nepa_bid/domain/bidder/usecases/get_news_in_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
 import '../../../../common/res/size_configs.dart';
+import '../../../../core/config/routes/routes_name.dart';
+import '../../../../domain/bidder/entity/item_entity.dart';
+import '../../../../domain/bidder/usecases/get_top_bidd_usecase.dart';
 
 class NewBiddingSection extends StatefulWidget {
-  const NewBiddingSection({super.key});
+  final bool hasMore;
+  final PaginationNewsInLoadedState state;
+  const NewBiddingSection(
+      {super.key, required this.hasMore, required this.state});
 
   @override
   State<NewBiddingSection> createState() => _NewBiddingSectionState();
 }
 
 class _NewBiddingSectionState extends State<NewBiddingSection> {
-  final scrollController = ScrollController();
-  late PaginationCubit paginationCubit;
-
-  void setupScrollController() {
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge &&
-          scrollController.position.pixels ==
-              scrollController.position.maxScrollExtent) {
-        paginationCubit.loadPost(sl<GetNewsInUsecase>());
-      }
-    });
-  }
-
+  late ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
-    paginationCubit = context.read<PaginationCubit>();
-    setupScrollController();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        widget.hasMore) {
+      context.read<PaginationNewsInBloc>().add(
+            PaginatedNewsInEvent(
+              useCase: sl<GetTopBiddUsecase>(),
+            ),
+          );
+    }
   }
 
   @override
   void dispose() {
-    scrollController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -81,53 +85,41 @@ class _NewBiddingSectionState extends State<NewBiddingSection> {
   }
 
   Widget _buildNewsBidding() {
-    return BlocBuilder<PaginationCubit, PaginationState>(
-        builder: (context, state) {
-      if (state is PaginationLoadingState && state.isFirstFetch) {
-        return _loadingIndicator();
-      }
+    return SizedBox(
+      height: 30.26 * SizeConfigs.heightMultiplier,
+      child: ListView.separated(
+        shrinkWrap: true,
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          if (index >= widget.state.entity.length) {
+            return _loadingIndicator();
+          }
 
-      List<BidderItemEntity> posts = [];
-      bool isLoading = false;
-
-      if (state is PaginationLoadingState) {
-        posts = state.oldPost;
-        isLoading = true;
-      } else if (state is PaginationLoadedState) {
-        posts = state.post;
-      }
-
-      return SizedBox(
-        height: 30.26 * SizeConfigs.heightMultiplier,
-        child: ListView.separated(
-          shrinkWrap: true,
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            if (index < posts.length) {
-              return _post(posts[index], context);
-            } else {
-              Timer(const Duration(milliseconds: 30), () {
-                scrollController
-                    .jumpTo(scrollController.position.maxScrollExtent);
-              });
-
-              return _loadingIndicator();
-            }
-          },
-          separatorBuilder: (context, index) => SizedBox(
-            width: 2 * SizeConfigs.heightMultiplier,
-          ),
-          itemCount: posts.length + (isLoading ? 1 : 0),
+          return GestureDetector(
+            onTap: () => Navigator.pushNamed(
+              context,
+              AppRoutesName.detailsPage,
+              arguments: ItemEntity(
+                itemId: widget.state.entity[index].id,
+                endTime: widget.state.entity[index].endTime,
+              ),
+            ),
+            child: CustomCard(
+              imageUrl: widget.state.entity[index].images[0].url!,
+              title: widget.state.entity[index].title!,
+              currentBid: widget.state.entity[index].currentBid!,
+            ),
+          );
+        },
+        separatorBuilder: (context, index) => SizedBox(
+          width: 2 * SizeConfigs.heightMultiplier,
         ),
-      );
-    });
+        itemCount: widget.hasMore ? widget.state.entity.length + 1 : widget.state.entity.length,
+      ),
+    );
   }
 
-  Widget _post(BidderItemEntity post, BuildContext context) {
-
-    return CustomCard(imageUrl: post.images[0].url!, title: post.title!, currentBid: post.currentBid!);
-  }
 
   Widget _loadingIndicator() {
     return const Padding(

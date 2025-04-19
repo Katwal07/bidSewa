@@ -16,6 +16,7 @@ class AppRoutesName {
   static const String profileScreen = 'profile_screen';
   static const String userDetails = 'user_details';
   static const String searchScreen = 'search_screen';
+  static const String auctioneerDetailsScreen = 'details_screen';
 
   /// Bidder
   static const String navPageBidder = 'nav_page_bidder';

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/geolocator/geolocator_cubit.dart';
 import 'package:nepa_bid/common/bloc/pagination/bidder/pagination_cubit.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc/pagination_bloc.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc_newin/pagination_newsin_bloc.dart';
 import 'package:nepa_bid/common/bloc/search_bloc/search_cubit.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_news_in_usecase.dart';
+import 'package:nepa_bid/presentation/auctioneer/home/bloc/pagination_bloc.dart';
 import 'package:nepa_bid/service_locator.dart';
 import '../common/bloc/pagination/auctioneer/pagination_cubit_auction.dart';
 import '../common/res/size_configs.dart';
@@ -23,13 +26,24 @@ class MyApp extends StatelessWidget {
           create: (context) => GeolocatorCubit(),
         ),
         BlocProvider(
-          create: (context) => PaginationCubit()..loadPost(sl<GetNewsInUsecase>()),
+          create: (context) =>
+              PaginationCubit()..loadPost(sl<GetNewsInUsecase>()),
         ),
         BlocProvider(
-          create: (context) => PaginationCubitAuctioneer()..loadPost(sl<AuctionUseCase>()),
+          create: (context) =>
+              PaginationCubitAuctioneer()..loadPost(sl<AuctionUseCase>()),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => SearchCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PaginationBloc(),
+        ),
+        BlocProvider(
+          create: (context) => PaginationNewsInBloc(),
+        ),
+        BlocProvider(
+          create: (context) => PaginationBlocForAuctioneer(),
         ),
       ],
       child: LayoutBuilder(

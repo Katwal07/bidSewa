@@ -30,9 +30,10 @@ class SignupScreen extends StatelessWidget {
             const CircularProgressIndicator();
           }
           if (state is ButtonLoadedState) {
+            Navigator.pushReplacementNamed(context, AppRoutesName.loginScreen);
             CustomSnackBar.showCustomSnackBar(
               context,
-              AppColors.borderPrimary,
+              AppColors.white,
               state.message,
             );
           }

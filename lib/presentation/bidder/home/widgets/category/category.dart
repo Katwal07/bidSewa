@@ -72,7 +72,7 @@ class CategorySection extends StatelessWidget {
               itemBuilder: (context, index) {
                 CategoryNameEntity categoryNameEntity = CategoryNameEntity(name: state.data[index].name);
                 return GestureDetector(
-                  onTap: ()=> Navigator.pushNamed(context, AppRoutesName.categoryBasedItems, arguments: categoryNameEntity),
+                  onTap: ()=> Navigator.pushNamed(context, AppRoutesName.categoryBasedItems, arguments: categoryNameEntity,),
                   child: Column(
                     children: [
                       ClipOval(

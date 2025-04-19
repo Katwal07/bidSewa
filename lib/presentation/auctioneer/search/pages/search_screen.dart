@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../common/bloc/search_bloc/search_cubit.dart';
 import '../../../../common/bloc/search_bloc/search_state.dart';
 import '../../../../common/res/size_configs.dart';
-import '../../../../common/widgets/container/card.dart';
 import '../../../../core/config/theme/colors.dart';
 import '../../../../core/config/utils/utils.dart';
 import '../../../../core/constant/sizes.dart';
 import '../../../../core/network/network_const/api_endpoint_urls.dart';
 import '../../../../domain/bidder/usecases/get_search_items_usecase.dart';
 import '../../../../service_locator.dart';
+import '../widgets/grid_view.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final isDarkTheme = AppUtils.isDarkTheme(context);
@@ -22,6 +27,14 @@ class SearchScreen extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(6.44 * SizeConfigs.heightMultiplier),
         child: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor:
+                isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
+            statusBarIconBrightness:
+                isDarkTheme ? Brightness.light : Brightness.dark,
+            statusBarBrightness:
+                isDarkTheme ? Brightness.dark : Brightness.light,
+          ),
           automaticallyImplyLeading: false,
           title: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -66,27 +79,12 @@ class SearchScreen extends StatelessWidget {
         child: BlocBuilder<SearchCubit, SearchItemState>(
           builder: (context, state) {
             if (state is SearchInitialState) {
-              
+             
             }
             if (state is SearchLoadedState) {
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const ScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 1.72 * SizeConfigs.heightMultiplier,
-                  crossAxisSpacing: 4.72 * SizeConfigs.widthMultiplier,
-                  childAspectRatio: (30.2 * SizeConfigs.widthMultiplier) /
-                      (18.7 * SizeConfigs.heightMultiplier),
-                ),
-                itemBuilder: (context, index) {
-                  return CustomCard(
-                    imageUrl: state.data[index].images[0].url!,
-                    title: state.data[index].title!,
-                    currentBid: state.data[index].currentBid!,
-                  );
-                },
-                itemCount: state.data.length,
+              return GridViewForSearch(
+                hasMore: state.hasMore,
+                state: state,
               );
             }
             return const SizedBox.shrink();

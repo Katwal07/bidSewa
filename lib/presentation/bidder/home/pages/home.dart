@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nepa_bid/common/bloc/generic_bloc/generic_cubit.dart';
 import 'package:nepa_bid/common/bloc/geolocator/geolocator_cubit.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc/pagination_bloc.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc/pagination_event.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc/pagination_state.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc_newin/pagination_newsin_bloc.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc_newin/pagination_newsin_event.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc_newin/pagination_newsin_state.dart';
 import 'package:nepa_bid/common/res/size_configs.dart';
 import 'package:nepa_bid/core/config/routes/routes_name.dart';
 import 'package:nepa_bid/core/config/theme/colors.dart';
 import 'package:nepa_bid/core/config/utils/utils.dart';
 import 'package:nepa_bid/core/constant/sizes.dart';
 import 'package:nepa_bid/domain/auth/usecases/usecase_imports.dart';
+import 'package:nepa_bid/domain/bidder/usecases/get_news_in_usecase.dart';
+import 'package:nepa_bid/domain/bidder/usecases/get_top_bidd_usecase.dart';
 import 'package:nepa_bid/presentation/bidder/home/widgets/new_bidding.dart';
 import 'package:nepa_bid/service_locator.dart';
 
@@ -38,11 +46,11 @@ class _HomePageBidderState extends State<HomePageBidder> {
       create: (context) =>
           GenericCubit()..execute(sl<GetBidderUserProfileUseCase>()),
       child: Scaffold(
-        backgroundColor: isDarkTheme? AppColors.darkBgColor: AppColors.lightBgColor,
+        backgroundColor:
+            isDarkTheme ? AppColors.darkBgColor : AppColors.lightBgColor,
         appBar: AppBar(
           title: Padding(
-            padding:
-                EdgeInsets.only(left: 3.48 * SizeConfigs.widthMultiplier),
+            padding: EdgeInsets.only(left: 3.48 * SizeConfigs.widthMultiplier),
             child: _buildAppBarLeading(),
           ),
           actions: [
@@ -68,9 +76,45 @@ class _HomePageBidderState extends State<HomePageBidder> {
                   physics: const ScrollPhysics(),
                   child: Column(
                     children: [
-                      const TopBiddingSection(),
+                      BlocBuilder<PaginationBloc, PaginationState>(
+                        builder: (context, state) {
+                          if(state is PaginationLoadingState){
+                            return const Center(child: CircularProgressIndicator(),);
+                          }
+                          if (state is PaginationInitialState) {
+                            context.read<PaginationBloc>().add(
+                                  PaginatedEvent(
+                                    useCase: sl<GetTopBiddUsecase>(),
+                                  ),
+                                );
+                          }
+                          if (state is PaginationFailureState) {
+                            debugPrint("Error: ${state.errorMessage}");
+                          }
+                          if (state is PaginationLoadedState) {
+                            return TopBiddingSection(
+                              hasMore: state.hasMore,
+                              state: state,
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
                       _buildSpacing(),
-                      const NewBiddingSection(),
+                      BlocBuilder<PaginationNewsInBloc, PaginationNewsInState>(
+                        builder: (context, state) {
+                          if(state is PaginationNewsInLoadingState){
+                            return const Center(child: CircularProgressIndicator(),);
+                          }
+                          if(state is PaginationNewsInInitialState){
+                            context.read<PaginationNewsInBloc>().add(PaginatedNewsInEvent(useCase: sl<GetNewsInUsecase>(),),);
+                          }
+                          if(state is PaginationNewsInLoadedState){
+                            return NewBiddingSection(hasMore: state.hasMore, state: state,);
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
                       _buildSpacing(),
                     ],
                   ),
@@ -78,8 +122,7 @@ class _HomePageBidderState extends State<HomePageBidder> {
               ),
             ],
           ),
-        )
-      ),
+        )),
       ),
     );
   }

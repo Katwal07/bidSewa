@@ -20,7 +20,7 @@ abstract class BidderApiSources {
   Future<Either<AppException, PlaceBidResponseModel>> placeBid(
       PlaceBidModel placeBidModel, String itemId);
   Future<Either<AppException, List<BidderItemModel>>> searchItems(
-      String keywordName, String searchItemName);
+      String keywordName, String searchItemName,int page);
   Future<Either<AppException, List<CategoryElementModel>>> getAllCategory();
   Future<Either<AppException, List<BidderDetailsModel>>> getBidsByBidderId(String bidderId);
 
@@ -142,10 +142,10 @@ class BidderApiSourceImpl extends BidderApiSources {
 
   @override
   Future<Either<AppException, List<BidderItemModel>>> searchItems(
-      String keywordName, String searchItemName) async {
+      String keywordName, String searchItemName,int page) async {
     try {
       var response = await sl<ApiClient>().getRequest(
-        path: "${ApiEndpointUrls.searchItem}$keywordName=$searchItemName",
+        path: "${ApiEndpointUrls.searchItem}$keywordName=$searchItemName&_limit=10&page=$page",
       );
       final List<BidderItemModel> auctionItemModel =
           (response.data['items'] as List)

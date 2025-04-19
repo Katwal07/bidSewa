@@ -1,48 +1,50 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc/pagination_bloc.dart';
+import 'package:nepa_bid/common/bloc/pagination_bloc/pagination_event.dart';
 import 'package:nepa_bid/common/widgets/container/card.dart';
 import 'package:nepa_bid/core/config/routes/routes_name.dart';
 import 'package:nepa_bid/domain/bidder/entity/item_entity.dart';
 import 'package:nepa_bid/domain/bidder/usecases/get_top_bidd_usecase.dart';
 import 'package:nepa_bid/service_locator.dart';
-import '../../../../common/bloc/pagination/bidder/pagination_cubit.dart';
-import '../../../../common/bloc/pagination/bidder/pagination_state.dart';
+import '../../../../common/bloc/pagination_bloc/pagination_state.dart';
 import '../../../../common/res/size_configs.dart';
-import '../../../../domain/bidder/entity/bidder.dart';
 
 class TopBiddingSection extends StatefulWidget {
-  const TopBiddingSection({super.key});
+  const TopBiddingSection(
+      {super.key, required this.hasMore, required this.state});
+  final bool hasMore;
+  final PaginationLoadedState state;
 
   @override
   State<TopBiddingSection> createState() => _TopBiddingSectionState();
 }
 
 class _TopBiddingSectionState extends State<TopBiddingSection> {
-  final scrollController = ScrollController();
-  late PaginationCubit paginationCubit;
-
-  void setupScrollController() {
-    scrollController.addListener(() {
-      if (scrollController.position.atEdge &&
-          scrollController.position.pixels ==
-              scrollController.position.maxScrollExtent) {
-        paginationCubit.loadPost(sl<GetTopBiddUsecase>());
-      }
-    });
-  }
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    paginationCubit = context.read<PaginationCubit>();
-    setupScrollController();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent && widget.hasMore) {
+      context.read<PaginationBloc>().add(
+            PaginatedEvent(
+              useCase: sl<GetTopBiddUsecase>(),
+            ),
+          );
+    }
   }
 
   @override
   void dispose() {
-    scrollController.dispose();
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -83,59 +85,42 @@ class _TopBiddingSectionState extends State<TopBiddingSection> {
   }
 
   Widget _buildTopBidding() {
-    return BlocBuilder<PaginationCubit, PaginationState>(
-        builder: (context, state) {
-      if (state is PaginationLoadingState && state.isFirstFetch) {
-        return _loadingIndicator();
-      }
-
-      List<BidderItemEntity> posts = [];
-      bool isLoading = false;
-
-      if (state is PaginationLoadingState) {
-        posts = state.oldPost;
-        isLoading = true;
-      } else if (state is PaginationLoadedState) {
-        posts = state.post;
-      }
-
-      return SizedBox(
-        height: 30.26 * SizeConfigs.heightMultiplier,
-        child: ListView.separated(
-          shrinkWrap: true,
-          controller: scrollController,
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            if (index < posts.length) {
-              return _post(posts[index], context);
-            } else {
-              Timer(const Duration(milliseconds: 30), () {
-                scrollController
-                    .jumpTo(scrollController.position.maxScrollExtent);
-              });
-
-              return _loadingIndicator();
-            }
-          },
-          separatorBuilder: (context, index) => SizedBox(
-            width: 2 * SizeConfigs.heightMultiplier,
-          ),
-          itemCount: posts.length + (isLoading ? 1 : 0),
+    return SizedBox(
+      height: 30.26 * SizeConfigs.heightMultiplier,
+      child: ListView.separated(
+        shrinkWrap: true,
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          if (index >= widget.state.entity.length) {
+            return _loadingIndicator();
+          }
+          return GestureDetector(
+            onTap: () => Navigator.pushNamed(
+              context,
+              AppRoutesName.detailsPage,
+              arguments: ItemEntity(
+                itemId: widget.state.entity[index].id,
+                endTime: widget.state.entity[index].endTime,
+              ),
+            ),
+            child: CustomCard(
+              imageUrl: widget.state.entity[index].images[0].url!,
+              title: widget.state.entity[index].title!,
+              currentBid: widget.state.entity[index].currentBid!,
+            ),
+          );
+        },
+        separatorBuilder: (context, index) => SizedBox(
+          width: 2 * SizeConfigs.heightMultiplier,
         ),
-      );
-    });
-  }
-
-  Widget _post(BidderItemEntity post, BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, AppRoutesName.detailsPage, arguments: ItemEntity(itemId: post.id, endTime: post.endTime)),
-      child: CustomCard(
-        imageUrl: post.images[0].url!,
-        title: post.title!,
-        currentBid: post.currentBid!,
+        itemCount: widget.hasMore
+            ? widget.state.entity.length + 1
+            : widget.state.entity.length,
       ),
     );
   }
+
 
   Widget _loadingIndicator() {
     return const Padding(

@@ -12,7 +12,7 @@ abstract class BidderRepository{
   Future<Either<Failure, List<BidderItemEntity>>> getNewsIn(int page);
   Future<Either<Failure, AuctionItemsDetailsEntity>> getItemsDetails(String itemId);
   Future<Either<Failure, PlaceBidResponseEntity>> placeBid(PlaceBidEntity placeBidEntity,String itemId);
-  Future<Either<Failure, List<BidderItemEntity>>> searchItems(String keywordName, String searchItemName);
+  Future<Either<Failure, List<BidderItemEntity>>> searchItems(String keywordName, String searchItemName, int page);
   Future<Either<Failure, List<CategoryElementEntity>>> getAllCategory();
   Future<Either<Failure, List<BidderDetailsEntity>>> getBidsByBidderId(String bidderId);
 }

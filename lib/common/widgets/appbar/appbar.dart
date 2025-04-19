@@ -30,12 +30,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDarkTheme = AppUtils.isDarkTheme(context);
     return AppBar(
       systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor:
-              isDarkTheme ? darkStatusBarColor : lightStatusBarColor,
-          statusBarIconBrightness:
-              isDarkTheme ? Brightness.light : Brightness.dark,
-          statusBarBrightness: statusBarBrightness ??
-              (isDarkTheme ? Brightness.dark : Brightness.light)),
+        statusBarColor: isDarkTheme ? darkStatusBarColor : lightStatusBarColor,
+        statusBarIconBrightness:
+            isDarkTheme ? Brightness.light : Brightness.dark,
+        statusBarBrightness: statusBarBrightness ??
+            (isDarkTheme ? Brightness.dark : Brightness.light),
+      ),
       automaticallyImplyLeading: false,
       title: title == null
           ? SizedBox(
@@ -43,21 +43,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               width: 300,
               child: TextField(
                 decoration: InputDecoration(
-                    hintText: "Search",
-                    hintStyle: Theme.of(context).textTheme.labelLarge,
-                    filled: true,
-                    fillColor: isDarkTheme
-                        ? AppColors.darkContainerColor
-                        : AppColors.lightContainerColor,
-                    prefixIcon: Icon(
-                      prefixIcon,
-                      size: 26,
-                    ),
-                    suffixIcon: const Icon(
-                      Icons.clear,
-                      size: 18,
-                    ),
-                    border: InputBorder.none),
+                  hintText: "Search",
+                  hintStyle: Theme.of(context).textTheme.labelLarge,
+                  filled: true,
+                  fillColor: isDarkTheme
+                      ? AppColors.darkContainerColor
+                      : AppColors.lightContainerColor,
+                  prefixIcon: Icon(
+                    prefixIcon,
+                    size: 26,
+                  ),
+                  suffixIcon: const Icon(
+                    Icons.clear,
+                    size: 18,
+                  ),
+                  border: InputBorder.none,
+                ),
               ),
             )
           : Text(

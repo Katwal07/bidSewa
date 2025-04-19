@@ -31,12 +31,14 @@ class AuctionItemModel {
         required this.title,
         required this.description,
         required this.currentBid,
+        required this.endTime,
     });
 
     final String? id;
     final String? title;
     final String? description;
     final int? currentBid;
+    final String? endTime;
 
     factory AuctionItemModel.fromJson(Map<String, dynamic> json){ 
         return AuctionItemModel(
@@ -44,6 +46,7 @@ class AuctionItemModel {
             title: json["title"],
             description: json["description"],
             currentBid: json["currentBid"],
+            endTime: json["endTime"],
         );
     }
 

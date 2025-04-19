@@ -11,10 +11,15 @@
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>This app needs access to location when open.</string>
 
+<key>NSMicrophoneUsageDescription</key>
+<string>We need access to your microphone to record audio while playing the video.</string>
+<key>NSCameraUsageDescription</key>
+<string>We need access to your camera to play videos with camera input.</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Nepa Bid</string>
+	<string>BidSewa</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

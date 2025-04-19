@@ -342,13 +342,13 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           AppStrings.dontHaveAnAccount,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         GestureDetector(
           onTap: () => Navigator.pushNamed(context, AppRoutesName.signupScreen),
           child: Text(
             AppStrings.createAccount,
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+            style: Theme.of(context).textTheme.titleSmall!.copyWith(
                   color: AppColors.lightPrimaryColor,
                 ),
           ),

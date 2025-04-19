@@ -1,1 +1,1 @@
-const baseUrl = "http://localhost:5555/api/v1/";
+const baseUrl = "https://backend-git-main-kashyapsandeshs-projects.vercel.app/api/v1/";
